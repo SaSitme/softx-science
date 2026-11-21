@@ -16,7 +16,6 @@ from pypdf.errors import PdfReadError
 
 from . import domain as d
 from .derived import extract_plot_results
-from .dedup import consolidate, consolidate_table_citations, flag_reading_conflicts
 from .extract import DOI, VALUE, Extraction, bibliographic_doi, locate_prose_span, number
 from .export import exporter
 from .graph_api import graph
@@ -24,7 +23,6 @@ from .graphs import automatic
 from .local_ai import automatic_deepseek, provider, providers, suggestions
 from .ocr import read_ocr
 from .pdf import draw, page_file, prepare, read_lines
-from .rounding_review import flag_rounded_review
 from .publications import delete_publication
 from .qwen_review import approve_qwen_evidence
 from .science import recheck, science
@@ -83,11 +81,7 @@ def queue_pdf(version):
     worker.submit(copy_context().run, process, version)
 
 
-def finish_processing(connection, pub, version, pages, failures, lines):
-    consolidate(connection,version)
-    consolidate_table_citations(connection,version,lines)
-    flag_reading_conflicts(connection,version)
-    flag_rounded_review(connection,version)
+def finish_processing(connection, pub, version, pages, failures):
     recheck(connection,pub)
     status = "partial" if failures else "completed"
     connection.execute("UPDATE pdf_version SET processing_status=?,pages=?,failed_pages=?,error_message=NULL WHERE id=?",
@@ -159,7 +153,7 @@ def process(version):
                 for plot in rows(connection,"SELECT * FROM plot_dataset WHERE pdf_version_id=?",version):
                     extract_plot_results(connection,plot)
             if not eligible or not ai_providers:
-                finish_processing(connection,pub,version,pages,failures,extraction.body_lines if eligible else [])
+                finish_processing(connection,pub,version,pages,failures)
                 return
             covered_by_page={}
             for source in rows(connection,"""SELECT DISTINCT s.source_page,s.bbox FROM source_reference s
@@ -175,7 +169,7 @@ def process(version):
 
         ai_candidates = []
         for engine in ai_providers:
-            for group,metric,value,unit in suggestions(extraction.body_lines,engine,covered=covered):
+            for group,metric,value,unit in suggestions(lines,engine,covered=covered):
                 anchor = locate_prose_span(group,*value.span("n"))
                 if not anchor or covered(*anchor):
                     continue
@@ -198,7 +192,7 @@ def process(version):
                                       extraction_method="deepseek_vision")
                     covered_by_page.setdefault(line.page,[]).append(span.bbox)
             approve_qwen_evidence(extraction)
-            finish_processing(connection,pub,version,pages,failures,extraction.body_lines)
+            finish_processing(connection,pub,version,pages,failures)
     except Exception as exc:
         if isinstance(exc,PdfReadError):
             message="Не удалось открыть PDF. Файл повреждён или неполон. "+str(exc)

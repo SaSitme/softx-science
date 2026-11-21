@@ -49,8 +49,6 @@ const metricLabels = {
   Rsh:'Шунтирующее сопротивление',
   HI:'Индекс гистерезиса',
   Jsc_EQE:'Плотность тока короткого замыкания по внешней квантовой эффективности',
-  stabilized_PCE:'Стабилизированный КПД',
-  retained_PCE:'Доля сохранённого КПД',
   T80:'Время снижения эффективности до 80%',
   Eg:'Ширина запрещённой зоны',
   Pin:'Плотность мощности падающего света'
@@ -610,7 +608,6 @@ function renderRecords() {
       '<p>В статье <b>'+e(r.raw_value)+' '+e(r.raw_unit)+'</b> · '+e(r.value_state)+'</p>')+'<p>'+resultBadge(r)+'</p>'+
     (context.length?'<dl class="result-context">'+context.map(([label,value])=>'<dt>'+e(label)+'</dt><dd>'+e(value)+'</dd>').join('')+'</dl>':'')+
     (extractionProviders[r.extraction_method]?'<p>Показатель распознан с помощью '+e(extractionProviders[r.extraction_method])+(r.extraction_status.startsWith('Требует')?'. Проверьте его связь с источником.':'.')+'</p>':'')+
-    (r.note?'<p>'+e(r.note)+'</p>':'')+
     (r.formula?'<p>Расчёт · '+e(r.formula)+'</p>':'')+
     (r.calculation_inputs?.uncertainty!=null?'<p>Погрешность оцифровки · ±'+fmt(r.calculation_inputs.uncertainty)+' '+e(r.normalized_unit)+'</p>':'')+
     (r.calculation_inputs?.uncertainty_method?'<p>'+e(r.calculation_inputs.uncertainty_method)+'</p>':'')+
@@ -796,9 +793,6 @@ function exportView() {
     '<div class="export-grid"><article class="card details"><span class="stat-icon" data-icon="database">'+icon('database')+'</span>'+
     '<h2>Полный набор данных</h2><p>JSON, NDJSON, реляционные CSV и XLSX, исходные PDF и вырезки графиков.</p>'+
     '<a class="button" href="/api/export/dataset.zip" download>'+i('download')+' Скачать набор ZIP</a></article>'+
-    '<article class="card details"><span class="stat-icon" data-icon="database">'+icon('database')+'</span>'+
-    '<h2>Набор для сдачи</h2><p>Семь CSV по шаблону организаторов, значения и ссылки на фрагменты PDF.</p>'+
-    '<a class="button" href="/api/export/submission.zip" download>'+i('download')+' Скачать CSV для сдачи</a></article>'+
     '<article class="card details"><span class="stat-icon amber" data-icon="shield">'+icon('shield')+'</span><h2>Отчёт о проверках</h2>'+
     '<p>Правила, результаты, сравниваемые значения, допуски и ссылки на фрагменты PDF.</p>'+
     '<a class="button" href="/api/export/validation_report.json" download>'+i('download')+' Скачать отчёт JSON</a></article></div>';

@@ -3,12 +3,10 @@ import json
 import re
 
 from . import domain as d
-from .extraction_options import enabled
 from .store import insert, key, one
 
 
-PATTERN = "|".join(f"(?P<{name}>{pattern})" for name, pattern in d.METRICS.items()
-                   if name != "stabilized_PCE" or enabled("stabilized-pce"))
+PATTERN = "|".join(f"(?P<{name}>{pattern})" for name, pattern in d.METRICS.items())
 METRIC = re.compile(rf"(?<![\w])(?:{PATTERN})(?![\w])", re.I)
 UNIT = re.compile(d.UNIT_PATTERN)
 VALUE = re.compile(rf"(?P<op><=|>=|[<>≤≥])?\s*(?P<n>{d.NUM})(?:\s*(?:±|\+/-)\s*(?P<spread>{d.NUM})|\s*(?:–|—|\bto\b|-)\s*(?P<end>{d.NUM}))?")
@@ -20,98 +18,15 @@ FOOTNOTE = re.compile(r"^(?:[*†‡]|Note\s*:|\[[a-z]\])")
 REFERENCE_HEADER = re.compile(r"(?:refs?\.?|references?|sources?)", re.I)
 OWN_WORK = re.compile(r"(?:this|present|our)\s+(?:work|study|paper)", re.I)
 NUMBERED_REFERENCE = re.compile(r"\[\s*(\d+)\s*\]")
-REFERENCE_SAMPLE = re.compile(r"\breference(?:\s+(?:device|cell|sample))?\s*\(([^)]{3,80})\)",re.I)
-REFERENCE_SAMPLE_SOURCE = re.compile(
-    r"\b(?:parameters|results|values)\s+of\s+the\s+reference\s+(?:device|cell|sample)\s+"
-    r"(?:were|are)\s+(?:adopted|taken|obtained)\s+from\s+[^\[\]]{0,80}\[\s*(\d+)\s*\]", re.I
-)
-REFERENCES_HEADING = re.compile(r"^(?:references|bibliography|literature cited)\s*$",re.I)
-RUNNING_FOOTER = re.compile(r"^(?:\d{5,}\s*\(\s*\d+\s+of\s+\d+\s*\)|©\s*\d{4}|\d+\s+of\s+\d+)$",re.I)
-DERIVED_HEADER = re.compile(r"\b(?:deficit|loss|change|improvement|enhancement|retention|ratio)\b|(?:Δ|∆)\s*[A-Za-z]",re.I)
-NON_MEASUREMENT_LABEL = re.compile(
-    r"\b(?:deficit|retention|degradation|loss|ratio|enhancement|change|improvement|"
-    r"axis|tick(?: marks?)?)\b", re.I)
-EQE_CUE = re.compile(r"\bEQE\b|external quantum efficiency",re.I)
-INTEGRATED_JSC = re.compile(r"\bintegrated\s+J[ _]*[sₛ][c꜀]\s*$",re.I)
-EQE_PHOTOCURRENT = re.compile(
-    r"\b(?:integration of (?:the )?EQE spectrum|the integrated EQE spectrum)\s+"
-    r"(?:yields?|gives?|provides?)\s+(?:an? |the )?(?:photo)?current(?: density)?\s+(?:of\s+)?",
-    re.I,
-)
-MPP_EFFICIENCY = re.compile(
-    r"\b(?:at (?:the )?(?:MPP|maximum power point)[^;!?]{0,120}?,\s*"
-    r"(?:corresponding to|yielding)\s+(?:an? )?(?:power conversion )?eff(?:iciency|ci\s+iency)\s+of\s+"
-    r"|(?:stabili[sz]ed|steady[- ]state(?: output)?)\s+(?:PCE|(?:power conversion )?efficiency)\s+"
-    r"at (?:the )?(?:MPP|maximum power point)\s+(?:is|was|reached|of)\s+)",
-    re.I,
-)
 
 CURRENT_DENSITY = re.compile(r"\bcurrent\s+density\s*(?:of\s+|[:=]\s*)", re.I)
 SHORT_CIRCUIT_SUFFIX = re.compile(r"[^.!?;]{0,65}?\b(?:at|under)\s+(?:the\s+)?short[- ]circuit\b", re.I)
-RETENTION_ACTION = re.compile(
-    r"\b(?:retain(?:s|ed)?|remain(?:s|ed)?|maintain(?:s|ed)?|preserv(?:e[sd]?|ing))\s+(?:at\s+)?(?:about\s+|approximately\s+)?",
-    re.I,
-)
-RETENTION_BASE = re.compile(
-    r"\s+of\s+(?:(?:the|its|their)\s+)?(?:initial|original)\s+(?:PCE|(?:power conversion )?efficiency)\b",
-    re.I,
-)
-RETENTION_TIME = re.compile(rf"[^;.!?]{{0,40}}?\b(?:after|for)\s+({d.NUM})\s*(hours?|h|days?|min)\b", re.I)
-PERCENT_UNIT = re.compile(r"\s*(%)")
 SHARED_PERCENT = re.compile(
     rf"(?<![\w.,+-])(?P<values>{d.NUM}(?:\s+(?:and|or)\s+{d.NUM}|"
     rf",\s+(?:and\s+)?{d.NUM}){{1,5}})\s*(?P<unit>%)", re.I
 )
 PERCENT_SERIES_CUE = re.compile(r"\b(PCEs?|power conversion efficienc(?:y|ies)|fill factors?)\b", re.I)
 PERCENT_DELTA = re.compile(r"\b(?:increases?|decreases?|improvements?|reductions?|changes?|relative|deltas?)\b",re.I)
-EVIDENCE_METRIC = re.compile(
-    rf"(?<!\w)(?:{PATTERN}|(?P<PCE_ext>PCEs|(?:photovoltaic|power conversion) efficienc(?:y|ies)|"
-    r"(?:(?:champion|conversion|device|solar cell|record)\s+)efficienc(?:y|ies))|"
-    r"(?P<FF_ext>filling factor)|(?P<Jsc_EQE_ext>(?:EQE[- ]integrated|integrated EQE)\s+(?:current(?: density)?|J[ _]*sc)))(?!\w)", re.I)
-TEXT_LINK = re.compile(
-    r"[\s(),:=≈~]*"
-    r"(?:(?:of|was|is|were|are|at|reached|yielded|achieved|obtained|exhibited|"
-    r"up to|as high as|approximately|about|around|exceeding|increased to|improved to|decreased to|"
-    r"increased from|decreased from|improved from)\b[\s(),:=≈~]*)*",
-    re.I)
-REVERSE_LINK = re.compile(
-    r"[\s,()]*"
-    r"(?:(?:which\s+)?(?:represents?|corresponds?\s+to|is|was|for|in|as)\s+(?:the\s+)?)?"
-    r"(?:champion\s+|average\s+|mean\s+)?", re.I)
-
-
-def measurement_cues(text, value, unit):
-    """Return printed metric spans that assign this number, inside the same clause."""
-    n = value.start("n")
-    end = unit.end() if unit.start()>=value.end() and unit.start()-value.end()<=3 else value.end()
-    for cue in EVIDENCE_METRIC.finditer(text):
-        metric = cue.lastgroup.removesuffix("_ext")
-        if d.normalize(metric,1,unit.group())[0] is None:
-            continue
-        if enabled("axis") and (re.match(r"\s*[-–]?\s*(?:deficit|loss|retention|change|axis|ratio)\b",
-                                         text[cue.end():],re.I)
-                                or re.search(r"[Δ∆]\s*$",text[:cue.start()])):
-            continue
-        if cue.end() <= n:
-            bridge = text[cue.end():n]
-            bridge = re.sub(r"\(\s*(?:%|[a-zA-Z_ ]{1,22})\s*\)", " ", bridge)
-            if unit.group()=="%":
-                bridge = re.sub(rf"\b((?:increased|decreased|improved))\s+from\s+{d.NUM}\s*%\s+to\s*$",
-                                r"\1 to ",bridge,flags=re.I)
-            bridge = re.sub(r"\bi\.e\.,?\s*", "", bridge, flags=re.I)
-            if len(bridge)<=45 and TEXT_LINK.fullmatch(bridge):
-                yield metric,cue.span()
-        elif end <= cue.start():
-            bridge = text[end:cue.start()]
-            direct = cue.lastgroup.endswith("_ext") and bool(re.fullmatch(r"\s+",bridge))
-            relation = "(" in bridge or re.search(r"\b(?:represents?|corresponds?|is|was|for|as)\b",bridge,re.I)
-            if direct or (relation and REVERSE_LINK.fullmatch(bridge)):
-                yield metric,cue.span()
-
-
-def has_nonmeasurement_tail(text, unit):
-    return bool(re.match(r"\s*\)?\s+of\s+(?:its\s+|the\s+)?(?:initial|original|peak|maximum)\b",
-                         text[unit.end():],re.I))
 
 
 PROSE_INTERVAL = re.compile(
@@ -122,11 +37,9 @@ PROSE_INTERVAL = re.compile(
 )
 
 
-def prose_metrics(text, preceding=""):
+def prose_metrics(text):
     value_offsets = set()
     for metric_match in METRIC.finditer(text):
-        if enabled("axis") and re.search(r"[Δ∆]\s*$",text[:metric_match.start()]):
-            continue
         connector = re.match(
             r"\s*\)?\s*(?:\((?!\s*[+−-]?(?:\d|[.,]\d))[^)]{1,20}\)\s*)?(?:(?:[=:~≈]|of\b|was\b|is\b|(?:have\s+)?reached\b|at\b|(?:increased|decreased|improved|rose|fell|reduced)\s+to\b)\s*)?\(?\s*",
             text[metric_match.end():], re.I,
@@ -135,12 +48,7 @@ def prose_metrics(text, preceding=""):
         value = VALUE.match(text, value_start)
         if value:
             value_offsets.add(value.start("n"))
-            metric = metric_match.lastgroup
-            if enabled("eqe") and metric=="Jsc" and re.search(r"\bintegrated\s*$",text[:metric_match.start()],re.I):
-                vicinity = preceding[-160:]+" "+text[max(0,metric_match.start()-150):value.end()+60]
-                if EQE_CUE.search(vicinity):
-                    metric="Jsc_EQE"
-            yield metric, value, metric_match.end()
+            yield metric_match.lastgroup, value, metric_match.end()
 
     for descriptor in CURRENT_DENSITY.finditer(text):
         value = VALUE.match(text, descriptor.end())
@@ -152,21 +60,6 @@ def prose_metrics(text, preceding=""):
         if (unit and d.normalize("Jsc", 1, unit.group())[0] is not None
                 and SHORT_CIRCUIT_SUFFIX.match(text, unit.end())):
             yield "Jsc", value, descriptor.end()
-    if enabled("eqe-photocurrent"):
-        for descriptor in EQE_PHOTOCURRENT.finditer(text):
-            value = VALUE.match(text, descriptor.end())
-            if value and value.start("n") not in value_offsets:
-                tail = text[value.end():]
-                unit = UNIT.match(text, value.end()+len(tail)-len(tail.lstrip()))
-                if unit and d.normalize("Jsc_EQE",1,unit.group())[0] is not None:
-                    yield "Jsc_EQE", value, descriptor.end()
-    if enabled("mpp-efficiency"):
-        for descriptor in MPP_EFFICIENCY.finditer(text):
-            if re.search(r"\.(?!\d)",descriptor.group()):
-                continue
-            value = VALUE.match(text,descriptor.end())
-            if value and value.start("n") not in value_offsets and PERCENT_UNIT.match(text,value.end()):
-                yield "stabilized_PCE",value,descriptor.end()
 
 
 def bibliographic_doi(metadata,lines):
@@ -211,10 +104,8 @@ def table_headers(line):
             next_start = matches[index+1].start() if index+1<len(matches) else len(cell.text)
             end = match.start()+len(cell.text[match.start():next_start].rstrip())
             span = cell.part(match.start(),end)
-            if enabled("table") and DERIVED_HEADER.search(cell.text[:end]):
-                continue
             headers[span.bbox[0]] = (line, span, match.lastgroup)
-        if not matches and re.fullmatch(r"(?:Eff?\.?|photovoltaic efficiency)\s*(?:[\[(]\s*%\s*[\])])?", cell.text, re.I):
+        if not matches and re.fullmatch(r"Eff?\.?\s*(?:[\[(]\s*%\s*[\])])?", cell.text, re.I):
             headers[cell.bbox[0]] = (line, cell, "PCE")
     return headers
 
@@ -291,12 +182,7 @@ def prose_windows(lines):
 
 
 def ordered_prose_values(text):
-    connector = r"were|are"
-    broadened = enabled("prose")
-    if broadened:
-        connector += r"|being|reaching|of"
-    mode = "?" if broadened else ""
-    for group in re.finditer(rf"(?P<labels>[^.!?;]{{4,150}}{mode})\b(?:{connector})\s+(?P<values>[^!?;]{{1,185}}?)\brespectively\b", text, re.I):
+    for group in re.finditer(r"(?P<labels>[^.!?;]{4,150})\b(?:were|are)\s+(?P<values>[^!?;]{1,185}?)\brespectively\b", text, re.I):
         labels = []
         for label in METRIC.finditer(group["labels"]):
             if labels and labels[-1].lastgroup==label.lastgroup and re.fullmatch(
@@ -305,8 +191,6 @@ def ordered_prose_values(text):
             else:
                 labels.append(label)
         if not 2 <= len(labels) <= 8:
-            continue
-        if broadened and not re.fullmatch(r"[)\s,]*",group["labels"][labels[-1].end():]):
             continue
         if "," not in group["labels"] and not re.search(r"\band\b",group["labels"],re.I):
             continue
@@ -331,19 +215,6 @@ def locate_prose_span(group, start, end):
     return None
 
 
-def locate_unit_spans(group,start,end):
-    if item:=locate_prose_span(group,start,end):
-        return [item]
-    if not enabled("prose"):
-        return []
-    pieces=[]
-    for offset,line in group:
-        left,right=max(start,offset),min(end,offset+len(line.text))
-        if left<right:
-            pieces.append((line,line.span.part(left-offset,right-offset)))
-    return pieces if len(pieces)==2 else []
-
-
 def shared_percentage_values(text):
     for series in SHARED_PERCENT.finditer(text):
         prefix = re.split(r"[;!?]|\.\s+(?=[A-Z])", text[max(0,series.start()-130):series.start()])[-1]
@@ -353,7 +224,7 @@ def shared_percentage_values(text):
         tail = prefix[cues[-1].end():]
         if not re.search(r"\b(?:are|were|of|reached)\s*(?:approximately\s*)?$|[=:]\s*$", tail, re.I):
             continue
-        if METRIC.search(tail) or PERCENT_DELTA.search(tail) or (enabled("axis") and NON_MEASUREMENT_LABEL.search(tail)):
+        if METRIC.search(tail) or PERCENT_DELTA.search(tail):
             continue
         metric = "FF" if cues[-1][0].lower().startswith("fill") else "PCE"
         unit = UNIT.match(text,series.start("unit"))
@@ -362,16 +233,6 @@ def shared_percentage_values(text):
             value = VALUE.fullmatch(text,start,start+len(item[0]))
             if value:
                 yield metric,value,unit
-
-
-def retained_efficiency_values(text):
-    for action in RETENTION_ACTION.finditer(text):
-        value = VALUE.match(text, action.end())
-        if not value:
-            continue
-        unit = PERCENT_UNIT.match(text, value.end())
-        if unit and (basis := RETENTION_BASE.match(text, unit.end())):
-            yield value, UNIT.match(text, unit.start(1)), basis
 
 
 def scientific_cell_value(cell):
@@ -416,16 +277,11 @@ class Extraction:
         self.measurement_spectra = {}
         self.conditions = {}
         self.sections = {}
-        self.body_lines = []
         current=None
         for line in self.lines:
             if re.fullmatch(r"(?:[0-9.]+\s+)?(?:abstract|introduction|methods?|materials and methods|experimental methods?|experimental section|results(?: and discussion)?|discussion|conclusions?|references|supporting information)",line.text,re.I):
                 current=line.text
             self.sections[id(line)] = current
-            if not enabled("context") or not (current and REFERENCES_HEADING.fullmatch(current)):
-                self.body_lines.append(line)
-            if enabled("context") and REFERENCES_HEADING.fullmatch(line.text):
-                current=line.text
 
     def ref(self, line, span, role, kind="text", table=None, figure=None):
         ident = key(self.version, line.page, span.bbox, role, kind)
@@ -607,7 +463,7 @@ class Extraction:
                measurement_type=kind, **evidence)
         return ident
 
-    def result(self, metric, match, line, span, unit, refs, device, scan, origin, cited=None, extra="", conditions=None, row_aggregation=None, extraction_method=None, numeric_override=None, recorded_time=None, caption_origin=False, raw_literal=None):
+    def result(self, metric, match, line, span, unit, refs, device, scan, origin, cited=None, extra="", conditions=None, row_aggregation=None, extraction_method=None, numeric_override=None, raw_literal=None):
         value = numeric_override if numeric_override is not None else number(match["n"]) if match else None
         op = match["op"] if match else None
         spread = number(match["spread"]) if match and match["spread"] else None
@@ -615,9 +471,7 @@ class Extraction:
         low, high = sorted((value,end)) if end is not None else (None,None)
         local = self.conditions_for(line)
         local.update(conditions or {})
-        kind = {"T80": "stability", "retained_PCE": "stability", "stabilized_PCE": "MPP tracking"}.get(metric, "JV")
-        measurement = self.measurement(device, scan if metric not in ("retained_PCE","stabilized_PCE") else None,
-                                       local, kind) if origin == "primary" and metric != "Eg" else None
+        measurement = self.measurement(device, scan, local, "stability" if metric == "T80" else "JV") if origin == "primary" and metric != "Eg" else None
         agg = row_aggregation or aggregation(extra + " " + line.text)
         fraction = (metric == "FF" and unit is None and match and op is None and end is None
                     and re.fullmatch(r"(?:0[.,]|[.,])\d+",match["n"]) and 0 < value < 1)
@@ -631,48 +485,15 @@ class Extraction:
         raw_record = dict(value=original_value, unit=unit, spread_value=spread, range_min=low, range_max=high,
                           inequality_op=op, aggregation=agg, scan_direction=scan)
         count = re.search(r"\bn\s*=\s*(\d+)", extra + " " + line.text, re.I)
-        point = recorded_time
-        if metric != "retained_PCE" and point is None:
-            point = re.search(rf"\bafter\s+({d.NUM})\s*(h|hours?|days?|min)\b", line.text, re.I)
+        point = re.search(rf"\bafter\s+({d.NUM})\s*(h|hours?|days?|min)\b", line.text, re.I)
         if count:
             raw_record["n_devices"] = int(count[1])
         if point:
             raw_record["time_point"], raw_record["time_unit"] = point[1], point[2]
         time, time_unit = d.normalize("T80", number(point[1]), point[2]) if point else (None, None)
         result_id = key(self.version, line.page, metric, span.bbox)
-        previous_metric = {"stabilized_PCE": "PCE", "Jsc_EQE": "Jsc"}.get(metric)
-        if previous_metric:
-            previous_id = key(self.version, line.page, previous_metric, span.bbox)
-            previous = one(self.db, """SELECT manual,deleted FROM measurement_result
-                WHERE id=? AND raw_value=? AND raw_unit IS ? AND duplicate_of IS NULL""",
-                previous_id,span.text,unit)
-            if previous and (previous["manual"] or previous["deleted"]):
-                return previous_id
-            if previous and not one(self.db,"SELECT id FROM measurement_result WHERE id=?",result_id):
-                self.db.execute("""UPDATE measurement_result SET metric_name=?,metric_value=?,metric_unit=?,
-                    normalized_value=?,normalized_unit=?,measurement_id=?
-                    WHERE id=? AND manual=0 AND deleted=0""",
-                    (metric,value,effective_unit,norm,norm_unit,measurement,previous_id))
-                result_id = previous_id
-        existing = one(self.db,"SELECT device_id,measurement_id FROM measurement_result WHERE id=?",result_id)
-        if existing and any(value and existing[field] and value!=existing[field]
-                            for field,value in (("device_id",device),("measurement_id",measurement))):
-            result_id = key(result_id,device,measurement)
         from_table = any(kind == "table_cell" for _, kind in refs)
         status = d.REVIEW if uncertain else d.AUTO
-        reasons = []
-        if fraction:
-            reasons.append("FF без указанной единицы интерпретирован как доля.")
-        if line.ocr:
-            reasons.append("Число распознано на изображении. Сверьте его с оригиналом.")
-        if extraction_method in d.AI_EXTRACTION_METHODS.values():
-            reasons.append("Связь числа с показателем предложена моделью.")
-        if ambiguous:
-            reasons.append("Прибор не привязан однозначно.")
-        if origin == "cited" and cited is None:
-            reasons.append("Цитируемая публикация не определена.")
-        if value is not None and norm is None:
-            reasons.append("Пересчёт в целевую единицу не подтверждён.")
         insert(self.db, "measurement_result", id=result_id, publication_id=self.pub, pdf_version_id=self.version,
                material_id=self.material_id if origin == "primary" else None, device_id=device, measurement_id=measurement,
                metric_name=metric, metric_value=value, metric_unit=effective_unit, raw_value=original_value, raw_unit=unit,
@@ -682,20 +503,12 @@ class Extraction:
                result_origin=origin, cited_publication_id=cited, extraction_status=status,
                extraction_method=("local_ocr" if line.ocr and extraction_method in (None,"pdf_prose_context")
                                   else extraction_method or ("geometry_table" if from_table else "pdf_text")),
-               note=" ".join(reasons) or None)
-        if caption_origin:
-            self.db.execute("""UPDATE measurement_result SET result_origin=?, cited_publication_id=?, device_id=?,
-                measurement_id=?, material_id=?, value_state=?, extraction_status=?, note=?,
-                candidate_device_ids='[]', candidate_measurement_ids='[]'
-                WHERE id=? AND manual=0 AND deleted=0 AND raw_value=? AND raw_unit IS ?
-                  AND (result_origin<>? OR cited_publication_id IS NOT ?)""",
-                (origin,cited,device,measurement,self.material_id if origin=="primary" else None,
-                 state,status," ".join(reasons) or None,result_id,span.text,unit,origin,cited))
+               note="FF без указанной единицы интерпретирован как доля; требуется проверка." if fraction else None)
         if fraction:
             self.db.execute("""UPDATE measurement_result SET metric_unit=?, normalized_value=?, normalized_unit=?,
                 value_state=?, extraction_status=?, note=?
                 WHERE id=? AND manual=0 AND raw_unit IS NULL AND normalized_value IS NULL""",
-                (effective_unit,norm,norm_unit,state,status," ".join(reasons),result_id))
+                (effective_unit,norm,norm_unit,state,status,"FF без указанной единицы интерпретирован как доля; требуется проверка.",result_id))
         if from_table and measurement:
             # A table header can identify a device that an earlier text pass left unresolved.
             self.db.execute(
@@ -758,7 +571,7 @@ class Extraction:
                         raw_literal=text[interval.start("low"):interval.end("high")])
 
     def extra_prose(self):
-        for text, group in prose_windows(self.body_lines):
+        for text, group in prose_windows(self.lines):
             self.add_reported_intervals(text, group)
             candidates = [*ordered_prose_values(text), *shared_percentage_values(text)]
             if len(group)>1:
@@ -766,8 +579,7 @@ class Extraction:
                 first_line = group[0][1]
                 local_offsets = {(metric, value.start("n")) for metric,value,_ in prose_metrics(first_line.text)}
                 for metric,value,descriptor_end in prose_metrics(text):
-                    if ((descriptor_end >= boundary and metric not in ("stabilized_PCE","Jsc_EQE"))
-                            or (metric,value.start("n")) in local_offsets):
+                    if descriptor_end >= boundary or (metric,value.start("n")) in local_offsets:
                         continue
                     unit_start = value.end()+len(text[value.end():])-len(text[value.end():].lstrip())
                     unit = UNIT.match(text,unit_start)
@@ -775,16 +587,11 @@ class Extraction:
                         candidates.append((metric,value,unit))
             for metric,value,unit in candidates:
                 self.add_prose_candidate(group, metric, value, unit, "pdf_prose_context")
-            if enabled("retention"):
-                for value,unit,basis in retained_efficiency_values(text):
-                    point = RETENTION_TIME.match(text,basis.end())
-                    self.add_prose_candidate(group,"retained_PCE",value,unit,"pdf_prose_context",
-                                             recorded_time=point, conditions_span=basis.span())
 
-    def add_prose_candidate(self, group, metric, value, unit, method, *, recorded_time=None, conditions_span=None):
+    def add_prose_candidate(self, group, metric, value, unit, method):
         source = locate_prose_span(group,value.start("n") if not value["op"] else value.start(),value.end())
-        unit_sources = locate_unit_spans(group,*unit.span())
-        if not source or not unit_sources:
+        unit_source = locate_prose_span(group,*unit.span())
+        if not source or not unit_source:
             return
         line, span = source
         if one(self.db, """SELECT 1 FROM source_reference s JOIN result_source l ON l.source_reference_id=s.id
@@ -796,23 +603,9 @@ class Extraction:
             return
         context = " ".join(part.text for _,part in group)
         origin = "cited" if re.search(r"\bpreviously reported\b|\bet al\.",context,re.I) else "primary"
-        refs = [(self.ref(line,span,"value"),"text")]
-        refs.extend((self.ref(*item,"unit"),"text") for item in unit_sources)
-        device = None
-        if metric == "retained_PCE" and origin == "primary" and (label:=DEVICE.search(line.text)):
-            device = self.devices.get(label[1])
-            if device:
-                refs.append((self.ref(line,line.span.part(*label.span()),"sample_label"),"text"))
-        if conditions_span and (basis:=locate_prose_span(group,*conditions_span)):
-            refs.append((self.ref(*basis,"condition"),"text"))
-        if recorded_time and (duration:=locate_prose_span(group,recorded_time.start(1),recorded_time.end(2))):
-            refs.append((self.ref(*duration,"condition"),"text"))
-        if method in d.AI_EXTRACTION_METHODS.values():
-            for matched,(start,end) in measurement_cues(context,value,unit):
-                if matched == metric and (cue:=locate_prose_span(group,start,end)):
-                    refs.append((self.ref(*cue,"condition"),"text"))
-        self.result(metric,value,line,span,unit.group(),refs,device,None,origin,
-                    self.cited_publication(context) if origin=="cited" else None,extraction_method=method,recorded_time=recorded_time)
+        refs = [(self.ref(line,span,"value"),"text"),(self.ref(*unit_source,"unit"),"text")]
+        self.result(metric,value,line,span,unit.group(),refs,None,None,origin,
+                    self.cited_publication(context) if origin=="cited" else None,extraction_method=method)
 
     def grouped_table_rows(self):
         """Associate vertically centered sample labels with paired mean and record rows."""
@@ -866,18 +659,12 @@ class Extraction:
         ambiguous = []
         header_units = {}
         table_right, reference_header = None, None
-        caption_lines = []
-        sample_origin = None
         for index,line in enumerate(self.lines):
-            if enabled("context") and (self.sections.get(id(line)) and REFERENCES_HEADING.fullmatch(self.sections[id(line)])
-                                      or REFERENCES_HEADING.fullmatch(line.text)):
-                continue
             if active_page != line.page or line.image_annotation:
                 table, heading, headers, subheaders = None, "", {}, {}
                 transposed_labels, table_left = [], None
                 header_units = {}
                 table_right, reference_header = None, None
-                caption_lines, sample_origin = [], None
                 active_page = line.page
             cap = TABLE.match(line.text)
             if cap:
@@ -885,7 +672,6 @@ class Extraction:
                 transposed_labels, table_left = [], line.cells[0].bbox[0]
                 header_units = {}
                 table_right, reference_header = None, None
-                caption_lines, sample_origin = [(line,line.span)], None
                 continue
             if table_left is not None and headers:
                 right = table_right or max(span.bbox[2] for _,span,_ in headers.values())
@@ -922,7 +708,6 @@ class Extraction:
                 if not candidate and (len(line.cells)==1 or (
                         abs(first.bbox[0]-table_left)<12 and len(first.text)>33)):
                     heading += " "+first.text
-                    caption_lines.append((line,first))
                     continue
             if candidate and (len(candidate)>=2 or table) and not any(VALUE.match(cell.text) for cell in line.cells):
                 if index>0 and self.lines[index-1].page==line.page:
@@ -968,30 +753,8 @@ class Extraction:
                         origin = "primary" if OWN_WORK.fullmatch(reference.text) else "cited"
                         if label_line is line and re.fullmatch(r"\d+[.)]?", label.text):
                             label = next((cell for cell in line.cells[1:] if cell.bbox[2] < min(headers)-4), reference)
-                scoped_source = None
-                caption_origin = False
-                if reference is None and enabled("caption-reference") and (cited_sample := REFERENCE_SAMPLE.search(heading)) and (
-                        cited_source := REFERENCE_SAMPLE_SOURCE.search(heading)):
-                    stop = {"and","with","contact","electrode","layer","device","cell","sample"}
-                    signature = set(re.findall(r"\w+",cited_sample[1].casefold()))-stop
-                    tokens = set(re.findall(r"\w+",label.text.casefold()))
-                    if signature and (signature <= tokens or label.text.casefold().strip()=="reference"):
-                        sample_origin = "cited"
-                    elif not VALUE.match(label.text) and not re.fullmatch(r"(?:front|back|rear)(?:side)?",label.text,re.I):
-                        sample_origin = "primary"
-                    origin = sample_origin or origin
-                    caption_origin = sample_origin is not None
-                    if sample_origin == "cited":
-                        for caption_line,span in caption_lines:
-                            match = next((m for m in NUMBERED_REFERENCE.finditer(span.text) if m[1]==cited_source[1]),None)
-                            if match:
-                                scoped_source=(caption_line,span.part(*match.span()))
-                                break
                 if origin=="cited":
-                    if scoped_source:
-                        cited=self.cited_publication(scoped_source[1].text,numbered=True)
-                    else:
-                        cited=self.cited_publication(reference.text, numbered=True) if reference else self.cited_publication(label.text)
+                    cited=self.cited_publication(reference.text, numbered=True) if reference else self.cited_publication(label.text)
                 device = self.devices.get(label.text) if origin == "primary" else None
                 if not device and origin=="primary" and table and label is not reference and len(label.text)<46 and not VALUE.fullmatch(label.text) and not SCAN.fullmatch(label.text) and not re.search(r"[.!?]",label.text):
                     device=self.device(label.text,label.text)
@@ -1017,9 +780,6 @@ class Extraction:
                     match = VALUE.match(cell.text, 1 if row_aggregation == "champion" and cell.text.startswith("(") else 0)
                     if not match and cell.text.strip() not in ("—", "–", "-", "N/A", "NA"):
                         continue
-                    if enabled("table") and (any(RUNNING_FOOTER.fullmatch(item.text) for item in line.cells)
-                            or (label is cell and len(headers)>1 and abs(cell.bbox[0]-header_cell.bbox[0])>12)):
-                        continue
                     used = True
                     unit_match = None
                     alternate = re.fullmatch(rf"\s*\(\s*({d.NUM})\s*\)\s*[*†‡]?\s*",cell.text[match.end():]) if match and match["spread"] else None
@@ -1029,8 +789,6 @@ class Extraction:
                         refs.append((self.ref(label_line, label, "sample_label", "table_cell", table), "table_cell"))
                     if reference is not None and reference is not label:
                         refs.append((self.ref(line,reference,"sample_label","table_cell",table),"table_cell"))
-                    if scoped_source:
-                        refs.append((self.ref(*scoped_source,"condition","caption",table),"caption"))
                     for unit_line, unit_span, kind in ((line, cell, "table_cell"),
                             (qualifier_line, qualifier, "table_header"), (header_line, header_cell, "table_header")):
                         if unit_span is None:
@@ -1042,8 +800,7 @@ class Extraction:
                             break
                     unit = unit_match.group() if unit_match else None
                     split = header_units.get(header_cell.bbox[0])
-                    if split and (not unit or (enabled("units") and unit in ("Ω","Ω")
-                                               and d.normalize(metric,1,split[0])[1]=="Ω·cm²")):
+                    if not unit and split:
                         unit,pieces=split
                         refs.extend((self.ref(piece_line,fragment,"unit","table_header",table),"table_header")
                                     for piece_line,fragment in pieces)
@@ -1067,7 +824,7 @@ class Extraction:
                                     if not unit and foot_unit:
                                         unit=foot_unit.group()
                     result_id = self.result(metric, match, line, cell, unit, refs, device, metric_scan, origin, cited, heading+" "+header_cell.text,local_conditions,row_aggregation,
-                                            numeric_override=scientific_cell_value(cell),caption_origin=caption_origin)
+                                            numeric_override=scientific_cell_value(cell))
                     if origin == "primary" and device is None:
                         ambiguous.append(result_id)
                     if alternate:
@@ -1077,8 +834,7 @@ class Extraction:
                             re.search(r"\b(?:champion|best|record)\b",heading,re.I)
                             and re.search(r"\bparenthes(?:es|is)\b",heading,re.I)) else "unknown"
                         other_id=self.result(metric,VALUE.fullmatch(other.text),line,other,unit,other_refs,device,
-                                             metric_scan,origin,cited,heading,local_conditions,value_aggregation,
-                                             caption_origin=caption_origin)
+                                             metric_scan,origin,cited,heading,local_conditions,value_aggregation)
                         if origin == "primary" and device is None:
                             ambiguous.append(other_id)
                 if used:
@@ -1095,24 +851,9 @@ class Extraction:
             explicit_device = self.devices.get(device_match[1]) if device_match else None
             if not explicit_device and len(self.devices) == 1 and "Образец без обозначения" in self.devices:
                 explicit_device = next(iter(self.devices.values()))
-            preceding = ""
-            if enabled("eqe") and len(line.cells)==1:
-                prior = self.lines[max(0,index-2):index]
-                preceding = " ".join(other.text for other in prior if other.page==line.page and len(other.cells)==1
-                                     and abs(other.span.bbox[0]-line.span.bbox[0])<=16
-                                     and 0<other.span.bbox[1]-line.span.bbox[1]<=42)
-            for metric, match, descriptor_end in prose_metrics(line.text,preceding):
+            for metric, match, descriptor_end in prose_metrics(line.text):
                 value_fragment = span.part(match.start(), match.end())
-                if enabled("eqe") and metric=="Jsc" and INTEGRATED_JSC.search(line.text[:descriptor_end]):
-                    x,y,_,_=value_fragment.bbox
-                    target = next((cell for cell in line.cells if cell.bbox[0]<=x<=cell.bbox[2]),None)
-                    if target and any(EQE_CUE.search(cell.text) for prior in self.lines[max(0,index-3):index]
-                                      if prior.page==line.page for cell in prior.cells
-                                      if abs(cell.bbox[0]-target.bbox[0])<=16 and 0<cell.bbox[1]-y<=50):
-                        metric="Jsc_EQE"
                 unit_match = UNIT.match(line.text, match.end() + len(line.text[match.end():]) - len(line.text[match.end():].lstrip()))
-                if unit_match and has_nonmeasurement_tail(line.text,unit_match):
-                    continue
                 unit = unit_match.group() if unit_match else None
                 unit_offset=0
                 if not unit:

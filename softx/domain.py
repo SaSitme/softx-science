@@ -8,7 +8,6 @@ AI_EXTRACTION_METHODS = {"local":"local_ai_pdf_quote", "openai":"openai_pdf_quot
                          "deepseek":"deepseek_pdf_quote", "deepseek_vision":"deepseek_vision"}
 UNITS = {
     "PCE": {"%": 1, "1": 100}, "FF": {"%": 1, "1": 100}, "HI": {"%": 1, "1": 100},
-    "stabilized_PCE": {"%": 1}, "retained_PCE": {"%": 1},
     "Voc": {"V": 1, "mV": .001}, "Jsc": {"mA/cm²": 1, "A/m²": .1, "A/cm²": 1000},
     "Jsc_EQE": {"mA/cm²": 1, "A/m²": .1, "A/cm²": 1000},
     "Eg": {"eV": 1, "meV": .001}, "T80": {"h": 1, "min": 1/60, "s": 1/3600, "days": 24},
@@ -18,7 +17,6 @@ UNITS = {
     "Rs": {"Ω·cm²": 1, "Ω": 1}, "Rsh": {"Ω·cm²": 1, "Ω": 1},
 }
 METRICS = {
-    "stabilized_PCE": r"(?:stabili[sz]ed|steady[- ]state(?: output)?)\s+(?:PCE|(?:power conversion )?efficiency)",
     "PCE": r"PCE|power conversion efficiency|[ηɳ]",
     "Voc": r"V[ _]*[oₒ][c꜀]|open[- ]circuit voltage",
     "Jsc_EQE": r"J[ _]*[sₛ][c꜀][ _-]*EQE|EQE[- ]integrated J[ _]*[sₛ][c꜀]",
@@ -69,20 +67,6 @@ def classify(text, material_class):
         return "excluded_tandem", "Тандемный или многопереходный прибор указан в начале публикации"
     if re.search(r"simulation.only|purely theoretical|no (?:devices?|samples?) (?:were |was )?fabricated|without experimental", text, re.I):
         return "excluded_theoretical", "Публикация явно указывает на расчётный характер работы"
-    methods = re.sub(r"\s+", " ", text)
-    computational_study = re.search(
-        r"\bsimulations? (?:was|were) performed using [^.]{0,100}\b(?:numerical|diff?usion) model\b"
-        r"|\bwe simulated\b[^.]{0,100}\bsolar cells?\b"
-        r"|\bdemonstrat\w*\s+(?:quantitatively\s+)?using ab\s+initio\b[^.]{0,100}\bmolecular dynamics\b",
-        methods[:14000], re.I,
-    )
-    if computational_study and not re.search(
-        r"\bwe (?:also )?(?:fabricated|manufactured|produced)\b[^.]{0,100}\b(?:devices?|cells?|modules?)\b"
-        r"|\b(?:devices?|cells?|modules?)\b[^.]{0,70}\b(?:were|was)\s+(?:experimentally\s+)?fabricated\b"
-        r"|\b(?:device|solar cell) fabrication\b",
-        methods, re.I,
-    ):
-        return "excluded_theoretical", "В описании работы приведено моделирование без подтверждения изготовления прибора"
     if not has_photovoltaic_context(text, material_class):
         return "needs_review", "В тексте не подтверждён фотоэлектрический контекст; извлечение солнечных метрик приостановлено"
     if material_class and re.search(r"fabricat|deposit|experimentally prepar", text, re.I) and re.search(r"\b(?:PCE|Voc|Jsc|FF)\b|power conversion efficiency", text, re.I):

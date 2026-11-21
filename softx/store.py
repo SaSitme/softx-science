@@ -52,7 +52,7 @@ def initialize():
         connection.execute("DROP VIEW IF EXISTS active_pv_result")
         connection.execute("""CREATE VIEW active_pv_result AS
             SELECT r.*,r.rowid AS record_order FROM measurement_result r JOIN pdf_version f ON f.id=r.pdf_version_id
-            WHERE f.pv_extraction_enabled IS NOT 0 AND r.deleted=0 AND r.duplicate_of IS NULL""")
+            WHERE f.pv_extraction_enabled IS NOT 0 AND r.deleted=0""")
 
 
 def encode(value):
