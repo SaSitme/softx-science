@@ -3,34 +3,95 @@ import io
 import math
 import os
 import re
+import secrets
 import subprocess
 import threading
 import xml.etree.ElementTree as ET
 from concurrent.futures import ThreadPoolExecutor
+from contextvars import copy_context
 from pathlib import Path
 
-from flask import Flask, abort, jsonify, request, send_file
+from flask import Flask, abort, g, jsonify, request, send_file
 from pypdf.errors import PdfReadError
 
 from . import domain as d
 from .derived import extract_plot_results
-from .extract import DOI, Extraction, bibliographic_doi
+from .dedup import consolidate, consolidate_table_citations, flag_reading_conflicts
+from .extract import DOI, VALUE, Extraction, bibliographic_doi, locate_prose_span, number
 from .export import exporter
 from .graph_api import graph
 from .graphs import automatic
-from .local_ai import suggestions
+from .local_ai import automatic_deepseek, provider, providers, suggestions
+from .ocr import read_ocr
 from .pdf import draw, page_file, prepare, read_lines
+from .rounding_review import flag_rounded_review
+from .publications import delete_publication
+from .qwen_review import approve_qwen_evidence
 from .science import recheck, science
-from .store import DATA, db, edit, encode, initialize, insert, key, one, rows
+from .store import DATA, data_dir, db, edit, encode, initialize, insert, key, one, rows, workspace
+from .vision import vision_suggestions
 
 app = Flask(__name__, static_url_path="/static")
 app.config["MAX_CONTENT_LENGTH"] = 85 * 1024 * 1024
 worker = ThreadPoolExecutor(max_workers=2, thread_name_prefix="softx-pdf")
 lock = threading.Lock()
+workspace_lock = threading.Lock()
+private_workspaces = os.getenv("SOFTX_PRIVATE_WORKSPACES", "0") == "1"
+workspace_root = DATA / "workspaces"
+workspace_id = re.compile(r"[0-9a-f]{64}")
 initialize()
 app.register_blueprint(graph)
 app.register_blueprint(science)
 app.register_blueprint(exporter)
+
+
+@app.before_request
+def select_workspace():
+    if not private_workspaces or (request.path != "/" and not request.path.startswith("/api/")):
+        return
+    cookie_name = "__Host-softx_workspace" if request.is_secure else "softx_workspace"
+    ident = request.cookies.get(cookie_name, "")
+    if not workspace_id.fullmatch(ident):
+        ident = secrets.token_hex(32)
+        g.new_workspace = (cookie_name, ident)
+    g.workspace_token = workspace.set(workspace_root / ident)
+    if request.path.startswith("/api/"):
+        with workspace_lock:
+            if not (data_dir() / "softx.sqlite").is_file():
+                initialize()
+
+
+@app.after_request
+def private_response(response):
+    if private_workspaces and (request.path == "/" or request.path.startswith("/api/")):
+        response.cache_control.private = True
+        response.cache_control.no_store = True
+        response.vary.add("Cookie")
+        if new_cookie := g.get("new_workspace"):
+            response.set_cookie(*new_cookie, max_age=365*24*60*60, secure=request.is_secure,
+                                httponly=True, samesite="Lax")
+    return response
+
+
+@app.teardown_request
+def release_workspace(_):
+    if token := g.pop("workspace_token", None):
+        workspace.reset(token)
+
+
+def queue_pdf(version):
+    worker.submit(copy_context().run, process, version)
+
+
+def finish_processing(connection, pub, version, pages, failures, lines):
+    consolidate(connection,version)
+    consolidate_table_citations(connection,version,lines)
+    flag_reading_conflicts(connection,version)
+    flag_rounded_review(connection,version)
+    recheck(connection,pub)
+    status = "partial" if failures else "completed"
+    connection.execute("UPDATE pdf_version SET processing_status=?,pages=?,failed_pages=?,error_message=NULL WHERE id=?",
+                       (status, encode(pages), encode(failures), version))
 
 
 def process(version):
@@ -39,13 +100,25 @@ def process(version):
         if not changed:
             return
         entry = one(connection, "SELECT * FROM pdf_version WHERE id=?", version)
-    directory = DATA / version
+    directory = data_dir() / version
     try:
         pages, metadata = prepare(directory / "original.pdf", directory / "pages")
         good, lines, failures = [], [], []
+        ai_providers = providers(cloud=bool(entry["allow_cloud"]))
+        vision_enabled = "deepseek" in ai_providers and os.getenv("SOFTX_DEEPSEEK_VISION","0") == "1"
+        image_evidence = []
+        use_ocr = vision_enabled or os.getenv("SOFTX_OCR", "0") == "1"
         for page in pages:
             try:
-                extracted = read_lines(page_file(directory, page["page"]), page)
+                path = page_file(directory, page["page"])
+                extracted = read_lines(path, page)
+                if use_ocr:
+                    try:
+                        extracted = read_ocr(path,page,extracted,vision_regions=image_evidence if vision_enabled else None)
+                    except (ValueError, subprocess.SubprocessError, ET.ParseError, OSError) as exc:
+                        app.logger.warning("OCR unavailable on page %s (%s)", page["page"], type(exc).__name__)
+                        if not extracted:
+                            raise ValueError("Нет текстового слоя, локальный OCR недоступен") from exc
                 if not extracted:
                     raise ValueError("Текстовый слой отсутствует или не распознан")
                 lines.extend(extracted)
@@ -53,7 +126,6 @@ def process(version):
             except (ValueError, subprocess.SubprocessError, ET.ParseError, OSError) as exc:
                 failures.append({"page": page["page"], "reason": str(exc)[:240],
                                  "value_state": "unparseable", "fields": list(d.METRICS)})
-        ai_candidates = suggestions(lines)
         with db() as connection:
             connection.execute("BEGIN IMMEDIATE")
             pub=entry["publication_id"]
@@ -73,10 +145,9 @@ def process(version):
                     connection.execute("DELETE FROM publication WHERE id=?",(pub,))
                     pub=candidate["id"]
             extraction = Extraction(connection, pub, version, lines)
-            if extraction.discover(metadata):
+            eligible=extraction.discover(metadata)
+            if eligible:
                 extraction.parse()
-                for group,metric,value,unit in ai_candidates:
-                    extraction.add_prose_candidate(group,metric,value,unit,"local_ai_pdf_quote")
                 for page in pages:
                     if page["page"] not in good:
                         continue
@@ -87,10 +158,47 @@ def process(version):
                         failures.append({"page":page["page"],"reason":str(exc)[:240],"fields":["plot_dataset"],"value_state":"unparseable"})
                 for plot in rows(connection,"SELECT * FROM plot_dataset WHERE pdf_version_id=?",version):
                     extract_plot_results(connection,plot)
-            recheck(connection,pub)
-            status = "partial" if failures else "completed"
-            connection.execute("UPDATE pdf_version SET processing_status=?,pages=?,failed_pages=?,error_message=NULL WHERE id=?",
-                               (status, encode(pages), encode(failures), version))
+            if not eligible or not ai_providers:
+                finish_processing(connection,pub,version,pages,failures,extraction.body_lines if eligible else [])
+                return
+            covered_by_page={}
+            for source in rows(connection,"""SELECT DISTINCT s.source_page,s.bbox FROM source_reference s
+                JOIN result_source l ON l.source_reference_id=s.id
+                WHERE s.pdf_version_id=? AND s.fragment_role='value'""",version):
+                covered_by_page.setdefault(source["source_page"],[]).append(source["bbox"])
+
+        # Network requests run after the SQLite write transaction has released its lock.
+        def covered(line,span):
+            x0,y0,x1,y1=span.bbox
+            x,y=(x0+x1)/2,(y0+y1)/2
+            return any(a<=x<=c and b<=y<=d for a,b,c,d in covered_by_page.get(line.page,()))
+
+        ai_candidates = []
+        for engine in ai_providers:
+            for group,metric,value,unit in suggestions(extraction.body_lines,engine,covered=covered):
+                anchor = locate_prose_span(group,*value.span("n"))
+                if not anchor or covered(*anchor):
+                    continue
+                line,span = anchor
+                covered_by_page.setdefault(line.page,[]).append(span.bbox)
+                ai_candidates.append((group,metric,value,unit,d.AI_EXTRACTION_METHODS[engine]))
+        visual = vision_suggestions(image_evidence,covered=covered) if vision_enabled else []
+        with db() as connection:
+            connection.execute("BEGIN IMMEDIATE")
+            extraction.db=connection
+            publication=one(connection,"SELECT corpus_status FROM publication WHERE id=?",pub)
+            if not publication["corpus_status"].startswith("excluded"):
+                for group,metric,value,unit,method in ai_candidates:
+                    extraction.add_prose_candidate(group,metric,value,unit,method)
+                for metric,line,span,value,unit_line,unit in visual:
+                    if covered(line,span):
+                        continue
+                    refs = [(extraction.ref(line,span,"value"),"text"),(extraction.ref(unit_line,unit,"unit"),"text")]
+                    extraction.result(metric,value,line,span,unit.text,refs,None,None,"primary",
+                                      extraction_method="deepseek_vision")
+                    covered_by_page.setdefault(line.page,[]).append(span.bbox)
+            approve_qwen_evidence(extraction)
+            finish_processing(connection,pub,version,pages,failures,extraction.body_lines)
     except Exception as exc:
         if isinstance(exc,PdfReadError):
             message="Не удалось открыть PDF. Файл повреждён или неполон. "+str(exc)
@@ -102,14 +210,14 @@ def process(version):
                                (message[:550], version))
 
 
-def ingest(content, filename):
+def ingest(content, filename, *, allow_cloud=False):
     sha = hashlib.sha256(content).hexdigest()
     version, pub = sha, key("publication", sha)
     with lock, db() as connection:
         existing = one(connection, "SELECT * FROM pdf_version WHERE sha256=?", sha)
         if existing:
             return existing
-        directory = DATA / version
+        directory = data_dir() / version
         directory.mkdir(exist_ok=True)
         tmp = directory / "upload.tmp"
         tmp.write_bytes(content)
@@ -117,25 +225,47 @@ def ingest(content, filename):
         insert(connection, "publication", id=pub, title=Path(filename).stem,
                is_fixture=int(b"SYNTHETIC TEST" in content[:16000]))
         insert(connection, "pdf_version", id=version, publication_id=pub, sha256=sha,
-               filename=Path(filename).name, processing_status="queued")
+               filename=Path(filename).name, processing_status="queued",allow_cloud=int(allow_cloud))
         created = one(connection, "SELECT * FROM pdf_version WHERE id=?", version)
-    worker.submit(process, version)
+    queue_pdf(version)
     return created
 
 
-def start():
+def resume_queue():
     with db() as connection:
         connection.execute("UPDATE pdf_version SET processing_status='queued' WHERE processing_status='processing'")
         waiting = rows(connection, "SELECT id FROM pdf_version WHERE processing_status='queued'")
     for value in waiting:
-        worker.submit(process, value["id"])
+        queue_pdf(value["id"])
+
+
+def start():
+    if private_workspaces:
+        workspace_root.mkdir(mode=0o700, exist_ok=True)
+        for directory in workspace_root.iterdir():
+            if not workspace_id.fullmatch(directory.name) or not (directory / "softx.sqlite").is_file():
+                continue
+            token = workspace.set(directory)
+            try:
+                initialize()
+                resume_queue()
+            finally:
+                workspace.reset(token)
+        return
+    resume_queue()
     if os.getenv("SOFTX_DEMO", "1") == "1":
         for path in sorted((Path(__file__).resolve().parents[1] / "fixtures").glob("*.pdf")):
             ingest(path.read_bytes(), path.name)
 
 
+def production_app():
+    start()
+    return app
+
+
 @app.errorhandler(400)
 @app.errorhandler(404)
+@app.errorhandler(409)
 @app.errorhandler(413)
 def error(exc):
     return jsonify(error=exc.description), exc.code
@@ -151,19 +281,32 @@ def upload():
     files = request.files.getlist("files")
     if not files:
         abort(400, "Выберите хотя бы один PDF")
-    return jsonify([ingest(file.read(), file.filename or "document.pdf") for file in files]), 202
+    allow_cloud = automatic_deepseek() or request.form.get("allow_cloud") == "1"
+    return jsonify([ingest(file.read(), file.filename or "document.pdf",allow_cloud=allow_cloud) for file in files]), 202
 
 
 @app.post("/api/pdf/<version>/retry")
 def retry(version):
+    body = request.get_json(silent=True)
     with db() as connection:
+        connection.execute("BEGIN IMMEDIATE")
         entry = one(connection, "SELECT * FROM pdf_version WHERE id=?", version)
         if not entry:
             abort(404)
         if entry["processing_status"] not in ("queued", "processing"):
-            connection.execute("UPDATE pdf_version SET processing_status='queued',error_message=NULL WHERE id=?", (version,))
-    worker.submit(process, version)
+            requested = body.get("allow_cloud") is True if isinstance(body,dict) else entry["allow_cloud"]
+            allow_cloud = int(automatic_deepseek() or requested)
+            connection.execute("UPDATE pdf_version SET processing_status='queued',error_message=NULL,allow_cloud=? WHERE id=?",
+                               (allow_cloud,version))
+    queue_pdf(version)
     return jsonify(status="queued"), 202
+
+
+@app.delete("/api/publication/<publication_id>")
+def remove_publication(publication_id):
+    with lock:
+        delete_publication(publication_id)
+    return jsonify(ok=True)
 
 
 @app.get("/api/library")
@@ -177,7 +320,8 @@ def library():
             FROM publication p JOIN pdf_version f ON f.publication_id=p.id ORDER BY f.created_at DESC, f.filename""")
         result_list = results(connection)
         active_issues = connection.execute("SELECT COUNT(*) FROM validation_issue WHERE resolution_status='open' AND severity IN ('error','warning')").fetchone()[0]
-    return jsonify(publications=publications, results=result_list, active_issues=active_issues)
+    return jsonify(publications=publications, results=result_list, active_issues=active_issues,
+                   ai_provider=provider(), cloud_automatic=automatic_deepseek(), private_workspace=private_workspaces)
 
 
 def results(connection, version=None):
@@ -249,14 +393,89 @@ def original(version):
         entry = one(connection,"SELECT filename FROM pdf_version WHERE id=?",version)
     if not entry:
         abort(404)
-    return send_file(DATA / version / "original.pdf", mimetype="application/pdf", download_name=entry["filename"])
+    return send_file(data_dir() / version / "original.pdf", mimetype="application/pdf", download_name=entry["filename"])
+
+
+@app.post("/api/pdf/<version>/result")
+def add_result(version):
+    body = request.get_json()
+    if not isinstance(body,dict):
+        abort(400,"Укажите параметры записи")
+    page,box = body.get("page"),body.get("bbox")
+    metric,origin,agg = body.get("metric_name"),body.get("result_origin"),body.get("aggregation","unknown")
+    literal,raw_unit = body.get("raw_value"),body.get("raw_unit") or None
+    unit = body.get("metric_unit") or raw_unit
+    if (not isinstance(metric,str) or metric not in d.METRICS or origin not in ("primary","cited")
+            or agg not in ("champion","mean","median","single","unknown")):
+        abort(400,"Укажите показатель, происхождение и агрегацию")
+    if not isinstance(literal,str) or len(literal)>120 or not (match:=VALUE.fullmatch(literal.strip())):
+        abort(400,"Перепишите число, диапазон или погрешность из выделенного фрагмента")
+    if any(u is not None and (not isinstance(u,str) or len(u)>40) for u in (raw_unit,unit)):
+        abort(400,"Недопустимая единица")
+    value,spread,end = [number(match[k]) if match[k] is not None else None for k in ("n","spread","end")]
+    if any(v is not None and not math.isfinite(v) for v in (value,spread,end)):
+        abort(400,"Недопустимое числовое значение")
+    normalized, normal_unit = d.normalize(metric,value,unit)
+    if unit and (normalized is None or not math.isfinite(normalized)):
+        abort(400,"Укажите единицу, совместимую с показателем")
+    if match["op"] or end is not None:
+        normalized,normal_unit = None,None
+    low,high = sorted((value,end)) if end is not None else (None,None)
+    with db() as connection:
+        connection.execute("BEGIN IMMEDIATE")
+        pdf=one(connection,"SELECT * FROM pdf_version WHERE id=?",version)
+        if not pdf:
+            abort(404)
+        if pdf["pv_extraction_enabled"] == 0:
+            abort(400,"Сначала проверьте решение о включении публикации в корпус")
+        if (type(page) is not int or not 1<=page<=len(pdf["pages"]) or not isinstance(box,list)
+                or len(box)!=4 or any(type(n) not in (int,float) or not math.isfinite(n) for n in box)):
+            abort(400,"Выделите фрагмент на странице PDF")
+        a,b,c,d_box = pdf["pages"][page-1]["crop_box"]
+        x0,y0,x1,y1 = box
+        if not (a<=x0<x1<=c and b<=y0<y1<=d_box):
+            abort(400,"Выделение должно лежать внутри страницы")
+        pub = pdf["publication_id"]
+        device,measurement = body.get("device_id") or None,body.get("measurement_id") or None
+        if any(val is not None and not isinstance(val,str) for val in (device,measurement)):
+            abort(400,"Некорректная привязка")
+        bound = one(connection,"SELECT material_id FROM device WHERE id=? AND publication_id=?",device,pub) if device else None
+        if device and not bound or measurement and not one(connection,"SELECT id FROM measurement WHERE id=? AND device_id=?",measurement,device):
+            abort(400,"Прибор и измерение должны принадлежать публикации")
+        quote = body.get("quote") or literal
+        if not isinstance(quote,str) or len(quote)>1500:
+            abort(400,"Цитата должна быть короче 1500 символов")
+        bbox = [round(n,4) for n in box]
+        ident = key(version,page,metric,bbox,literal.strip(),raw_unit,device,measurement,origin,agg)
+        existing=one(connection,"SELECT * FROM measurement_result WHERE id=?",ident)
+        if existing:
+            if existing["deleted"]:
+                abort(409,"Такая запись была удалена")
+            return jsonify(existing)
+        wanted = body.get("confirmed") is True
+        state = "numeric_zero" if normalized == 0 else "numeric" if normalized is not None else "ambiguous"
+        insert(connection,"measurement_result",id=ident,publication_id=pub,pdf_version_id=version,metric_name=metric,
+               result_origin=origin,aggregation=agg,device_id=device,measurement_id=measurement,
+               material_id=bound["material_id"] if bound else None,metric_value=value,metric_unit=unit,value_state=state,
+               raw_value=literal.strip(),raw_unit=raw_unit,raw_record={"value":literal.strip(),"unit":raw_unit,"quote":quote},
+               normalized_value=normalized,normalized_unit=normal_unit,range_min=low,range_max=high,
+               inequality_op=match["op"],spread_value=spread,extraction_method="manual_pdf",manual=1,
+               extraction_status=d.CONFIRMED if wanted else d.REVIEW)
+        source=key(version,page,bbox,quote,"manual_pdf")
+        insert(connection,"source_reference",id=source,publication_id=pub,pdf_version_id=version,source_page=page,
+               source_fragment=quote,bbox=bbox,source_type="text",fragment_role="value")
+        insert(connection,"result_source",result_id=ident,source_reference_id=source)
+        insert(connection,"audit_log",entity_type="measurement_result",entity_id=ident,field_name="created",
+               new_value=encode({"metric":metric,"source_reference_id":source}),author="local-reviewer")
+        recheck(connection,pub)
+        return jsonify(one(connection,"SELECT * FROM measurement_result WHERE id=?",ident)),201
 
 
 @app.get("/api/pdf/<version>/page/<int:page>")
 def page_image(version, page):
     if not re.fullmatch(r"[0-9a-f]{64}", version):
         abort(404)
-    path = page_file(DATA / version, page)
+    path = page_file(data_dir() / version, page)
     if not path.is_file():
         abort(404)
     width = max(500, min(request.args.get("w", 1300, type=int), 2600))
@@ -282,12 +501,14 @@ def update_publication(pub):
         recheck(connection,pub)
         if status=="included":
             versions=rows(connection,"SELECT id FROM pdf_version WHERE publication_id=? AND processing_status IN ('completed','partial')",pub)
+            allow_cloud = int(automatic_deepseek())
             for version in versions:
-                connection.execute("UPDATE pdf_version SET processing_status='queued' WHERE id=?",(version["id"],))
+                connection.execute("UPDATE pdf_version SET processing_status='queued',allow_cloud=MAX(allow_cloud,?) WHERE id=?",
+                                   (allow_cloud,version["id"]))
         else:
             versions=[]
     for version in versions:
-        worker.submit(process,version["id"])
+        queue_pdf(version["id"])
     return jsonify(ok=True)
 
 
@@ -296,7 +517,7 @@ def update_result(ident):
     body = request.get_json()
     with db() as connection:
         connection.execute("BEGIN IMMEDIATE")
-        result = one(connection,"SELECT * FROM measurement_result WHERE id=?",ident)
+        result = one(connection,"SELECT * FROM measurement_result WHERE id=? AND deleted=0",ident)
         if not result:
             abort(404)
         editable = ("metric_value","metric_unit","device_id","measurement_id","result_origin","aggregation",
@@ -342,6 +563,19 @@ def update_result(ident):
                        else "numeric_zero" if norm == 0 else "numeric", extraction_status=d.CONFIRMED)
         edit(connection,"measurement_result",result,changes)
         recheck(connection,result["publication_id"])
+    return jsonify(ok=True)
+
+
+@app.delete("/api/result/<ident>")
+def delete_result(ident):
+    with db() as connection:
+        connection.execute("BEGIN IMMEDIATE")
+        result = one(connection, "SELECT * FROM measurement_result WHERE id=?", ident)
+        if not result:
+            abort(404)
+        if not result["deleted"]:
+            edit(connection, "measurement_result", result, {"deleted":1, "manual":1})
+            recheck(connection, result["publication_id"])
     return jsonify(ok=True)
 
 

@@ -10,7 +10,7 @@ from .derived import RETENTION_LABEL
 from .domain import NUM, UNIT_PATTERN
 from .extract import DEVICE, SCAN, VALUE, number
 from .pdf import draw, page_file, union
-from .store import DATA, insert, key
+from .store import data_dir, insert, key
 
 TYPES = {
     "JV": r"\b(?:J\s*[-–−]?\s*V|I\s*[-–−]\s*V)\b|(?:photo)?current(?:[\s-]+density)?\s*(?:[-–−/]|versus|vs\.?)[\s-]*voltage|current.density.{0,20}voltage",
@@ -162,7 +162,7 @@ def axis_fit(ticks, unit):
 
 
 def save_crop(version, page, meta, box):
-    directory = DATA / version
+    directory = data_dir() / version
     ident = key(version,page,box)+".png"
     file = directory / ident
     if not file.exists():
@@ -245,7 +245,7 @@ def automatic(extraction, pages, *, raster_only=False):
                          if FIGURE_HEADING.match(line.text) and (kind:=raster_kind(line.text))]
         if not raster_captions and (raster_only or not graph_captions):
             continue
-        path = page_file(DATA/extraction.version,page)
+        path = page_file(data_dir()/extraction.version,page)
         root = ET.fromstring(draw(path,"trace"))
         save_raster_figures(extraction,meta,root,raster_captions)
         if raster_only:

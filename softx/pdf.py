@@ -72,6 +72,8 @@ class Span:
 class Line:
     page: int
     cells: list
+    ocr: bool = False
+    image_annotation: bool = False
 
     @property
     def span(self):

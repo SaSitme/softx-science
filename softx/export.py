@@ -13,7 +13,8 @@ from openpyxl.styles import Alignment, Font, PatternFill
 from openpyxl.utils import get_column_letter
 
 from .science import issue_report
-from .store import DATA, TABLES, db, rows
+from .store import TABLES, data_dir, db, rows
+from .submission import submission_files
 
 exporter=Blueprint("exports",__name__)
 
@@ -113,13 +114,13 @@ def artifacts(data,columns,report,asset_files=False):
     files.update({"csv/"+table+".csv":table_csv(columns[table],records) for table,records in data.items()})
     if asset_files:
         for row in data["pdf_version"]:
-            original=DATA/row["id"]/"original.pdf"
+            original=data_dir()/row["id"]/"original.pdf"
             if original.is_file():
                 files["assets/"+row["id"]+"/original.pdf"]=original
         for row in data["plot_dataset"]:
             if row["crop_image"]:
                 name=row["pdf_version_id"]+"/"+row["crop_image"]
-                image=DATA/name
+                image=data_dir()/name
                 if image.is_file():
                     files["assets/"+name]=image
     return files
@@ -155,3 +156,14 @@ def validation():
         connection.execute("BEGIN")
         result=dump(issue_report(connection))
     return send_file(io.BytesIO(result),mimetype="application/json",as_attachment=True,download_name="validation_report.json")
+
+
+@exporter.get("/api/export/submission.zip")
+def submission():
+    data,_,issues=relational_snapshot()
+    output=io.BytesIO()
+    with ZipFile(output,"w",ZIP_DEFLATED) as archive:
+        for name,content in submission_files(data,issues):
+            archive.writestr(name,content)
+    output.seek(0)
+    return send_file(output,as_attachment=True,download_name="softx-submission.zip",mimetype="application/zip")

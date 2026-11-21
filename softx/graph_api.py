@@ -9,9 +9,11 @@ from openpyxl import Workbook
 
 from .derived import PLOT_METRICS, extract_plot_results, publish
 from .graphs import TYPES, projection, save_crop, uncertainty
+from .pdf import page_file
+from .raster_trace import trace_curve
 from .science import recheck
 from .export import csv_value
-from .store import DATA, db, edit, insert, one, rows
+from .store import data_dir, db, edit, insert, one, rows
 
 graph = Blueprint("graph", __name__)
 
@@ -28,6 +30,33 @@ def label(value):
     if value is not None and (not isinstance(value,str) or len(value)>140):
         abort(400,"Некорректная подпись")
     return value
+
+
+@graph.post("/api/pdf/<ident>/trace")
+def trace_plot(ident):
+    body=request.get_json()
+    if not isinstance(body,dict):
+        abort(400,"Укажите область графика")
+    with db() as connection:
+        pdf=one(connection,"SELECT * FROM pdf_version WHERE id=?",ident)
+    if not pdf:
+        abort(404)
+    page,box,seed=body.get("source_page"),body.get("plot_bbox"),body.get("seed")
+    if (type(page) is not int or not 1<=page<=len(pdf["pages"]) or not isinstance(box,list)
+            or len(box)!=4 or not isinstance(seed,list) or len(seed)!=2):
+        abort(400,"Укажите область графика и точку на кривой")
+    x0,y0,x1,y1=map(number,box)
+    x,y=map(number,seed)
+    a,b,c,d=pdf["pages"][page-1]["crop_box"]
+    if not (a<=x0<x1<=c and b<=y0<y1<=d and x0<=x<=x1 and y0<=y<=y1) or min(x1-x0,y1-y0)<3:
+        abort(400,"Область и точка должны лежать внутри графика на странице")
+    try:
+        points=trace_curve(page_file(data_dir()/ident,page),(a,b,c,d),(x0,y0,x1,y1),(x,y))
+    except (OSError,ValueError,subprocess.SubprocessError) as exc:
+        abort(400,str(exc))
+    if len(points)<12:
+        abort(400,"На изображении слишком мало однозначных точек")
+    return jsonify(points=points)
 
 
 @graph.route("/api/plot/<ident>", methods=["PATCH"])
@@ -83,8 +112,9 @@ def save_plot(ident):
         prior_raw=[{"px":p["px"],"py":p["py"]} for p in current["points"]] if current else []
         width=current["stroke_width_pdf"] if current and prior_raw==raw and page==current["source_page"] else None
         estimate,method=uncertainty(axes,points,width)
+        raster = body.get("digitization_method") == "raster_trace"
         fields=dict(source_page=page,plot_type=kind,plot_bbox=box,axes=axes,points=points,crop_image=crop,
-                    digitization_method="manual_calibration" if current and prior_raw==raw else "manual_points",
+                    digitization_method="raster_trace" if raster else "manual_calibration" if current and prior_raw==raw else "manual_points",
                     stroke_width_pdf=width,uncertainty=estimate,uncertainty_method=method,
                     device_id=device,measurement_id=measurement,series_label=label(body.get("series_label")) or "Серия",
                     panel_id=label(body.get("panel_id")),source_figure=label(body.get("source_figure")),
@@ -125,6 +155,8 @@ def calculate(ident):
             if aggregation not in ("champion","mean","median","single","unknown"):
                 abort(400,"Укажите допустимую агрегацию")
             result=publish(connection,plot,metric,coverage_confirmed=body.get("coverage_confirmed") is True,aggregation=aggregation)
+            if result["deleted"]:
+                abort(409,"Этот показатель уже удалён из рабочей области")
             recheck(connection,result["publication_id"])
         except ValueError as exc:
             abort(400,str(exc))
@@ -137,7 +169,7 @@ def crop_image(ident):
         plot=one(connection,"SELECT pdf_version_id,crop_image FROM plot_dataset WHERE id=?",ident)
     if not plot or not plot["crop_image"]:
         abort(404)
-    return send_file(DATA/plot["pdf_version_id"]/plot["crop_image"],mimetype="image/png")
+    return send_file(data_dir()/plot["pdf_version_id"]/plot["crop_image"],mimetype="image/png")
 
 
 @graph.get("/api/plot/<ident>/export/<kind>")

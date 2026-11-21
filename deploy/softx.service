@@ -1,0 +1,17 @@
+[Unit]
+Description=SoftX Science
+After=network.target
+
+[Service]
+Type=simple
+DynamicUser=yes
+WorkingDirectory=/opt/softx
+StateDirectory=softx
+StateDirectoryMode=0700
+Environment=SOFTX_DATA=/var/lib/softx SOFTX_DEMO=0 SOFTX_PRIVATE_WORKSPACES=1
+EnvironmentFile=-/etc/softx.env
+ExecStart=/opt/softx/.venv/bin/gunicorn --workers 1 --threads 4 --no-control-socket --bind 127.0.0.1:8000 "softx.app:production_app()"
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

@@ -57,14 +57,15 @@ class expect:
 
 
 @contextlib.contextmanager
-def server(data):
+def server(data, *, private=False):
     with socket.socket() as sock:
         sock.bind(("127.0.0.1", 0))
         port = sock.getsockname()[1]
     url = f"http://127.0.0.1:{port}"
     with (data / "server.log").open("w+") as log:
         process = subprocess.Popen([sys.executable, "-m", "softx.app"], cwd=ROOT, stdout=log, stderr=log,
-                                   env=dict(os.environ, SOFTX_DATA=str(data), SOFTX_DEMO="0", PORT=str(port)))
+                                   env=dict(os.environ, SOFTX_DATA=str(data), SOFTX_DEMO="0", PORT=str(port),
+                                            SOFTX_PRIVATE_WORKSPACES="1" if private else "0"))
         try:
             for _ in range(80):
                 try:
@@ -190,18 +191,10 @@ def stage1(page, url):
 
 def stage2a(page, url, output):
     version=hashlib.sha256((FIXTURES/"01-fabricated.pdf").read_bytes()).hexdigest()
-    rotated=hashlib.sha256((FIXTURES/"02-rotated.pdf").read_bytes()).hexdigest()
-    page.goto(url+"/#graphs")
-    expect(page.locator("main a[href^='#graphs/']")).to_have_count(1)
-    expect(page.locator(f"main a[href='#graphs/{rotated}']")).to_have_count(0)
-    page.goto(url+"/#xray/"+rotated)
-    page.get_by_role("link",name="Добавить график",exact=True).click()
-    expect(page.get_by_label("Серия графика")).to_be_visible()
-    assert page.url.endswith(f"#graphs/{rotated}/new")
-    page.get_by_role("link",name="Публикации с графиками",exact=True).click()
-    page.locator(f"main a[href='#graphs/{version}']").click()
-    expect(page.get_by_role("heading",name="Graph Hunter",exact=True)).to_be_visible()
-    expect(page.locator(".graph-results a")).to_have_count(4)
+    for retired in ("graphs","detective"):
+        page.goto(url+"/#"+retired)
+        expect(page.get_by_role("heading",name="Корпус публикаций")).to_be_visible()
+    expect(page.locator('nav a[href="#graphs"], nav a[href="#detective"]')).to_have_count(0)
     detail=page.request.get(url+"/api/pdf/"+version).json()
     results={r["metric_name"]:r for r in detail["results"] if r["extraction_method"]=="plot_calculation"}
     assert set(results)=={"Voc","Jsc","FF","PCE"}
@@ -210,32 +203,22 @@ def stage2a(page, url, output):
     assert abs(results["PCE"]["normalized_value"]-10.6392)<.001
     assert results["PCE"]["calculation_inputs"]["pin_mW_cm2"]==100
     assert all(r["raw_value"] is None and r["plot_id"] for r in results.values())
-    page.locator(".graph-results a").filter(has_text="(Voc)").click()
-    expect(page.get_by_role("link",name="Приближённое значение по графику")).to_be_visible()
-    expect(page.locator(".highlight-focused")).to_be_visible()
-    page.get_by_role("link",name="Приближённое значение по графику").click()
-    expect(page.locator("#point-count")).to_have_text("11 точек")
-    expect(page.locator("#source-plot img")).to_be_visible()
-    expect(page.locator("[data-reconstruction]")).to_have_count(11)
-    page.get_by_label("Значение X2",exact=True).fill("1.2")
-    last=page.locator('[data-reconstruction="10"]')
-    expect(last.locator("title")).to_contain_text("1.2 V")
-    last.click()
-    page.get_by_role("link",name="К точке на PDF").click()
-    expect(page.locator("#graph-marker")).to_be_visible()
-    page.goto(url+"/#graphs/"+version)
-    page.get_by_label("Значение X2",exact=True).fill("1.2")
-    page.get_by_role("button",name="Сохранить серию").click()
-    expect(page.get_by_text("Серия сохранена",exact=True)).to_be_visible()
-    expect(page.locator('[data-reconstruction="10"] title')).to_contain_text("1.2 V")
-    expect(page.locator(".graph-results a").filter(has_text="(Voc)")).to_contain_text("1.2 V")
+    plot=detail["plots"][0]
+    page.goto(url+"/#xray/"+version+"/"+results["Voc"]["id"])
+    expect(page.locator("#active-record")).to_contain_text("Приближённое значение по графику")
+    excepted_source=next(s for s in detail["sources"] if s["source_type"]=="figure" and s["fragment_role"]=="condition")
+    page.goto(url+"/#xray/"+version+"/ref,"+excepted_source["id"])
+    expect(page.locator(".highlight-focused").first).to_be_visible()
+    plot["axes"]["x"]["v1"]=1.2
+    changed=page.request.patch(url+"/api/plot/"+plot["id"],data=plot)
+    assert changed.ok,changed.text()
     updated=page.request.get(url+"/api/pdf/"+version).json()
     voc=[r for r in updated["results"] if r["id"]==results["Voc"]["id"]]
     assert len(voc)==1 and voc[0]["normalized_value"]==1.2
-    for extension in ("CSV","XLSX"):
-        with page.expect_download() as info:
-            page.get_by_role("link",name=extension,exact=True).click()
-        info.value.save_as(output/f"series.{extension.lower()}")
+    for extension in ("csv","xlsx"):
+        downloaded=page.request.get(url+"/api/plot/"+plot["id"]+"/export/"+extension)
+        assert downloaded.ok
+        (output/f"series.{extension}").write_bytes(downloaded.body())
     with (output/"series.csv").open(encoding="utf-8-sig") as file:
         records=list(csv.DictReader(file))
     assert len(records)==11 and float(records[-1]["x"])==1.2 and float(records[-1]["pdf_x"])==495
@@ -261,22 +244,17 @@ def stage2b(page, url):
         expect(row.get_by_text("Обработан",exact=True)).to_be_visible(timeout=15000)
         file=FIXTURES/"graphs"/(name+".pdf")
         version=hashlib.sha256(file.read_bytes()).hexdigest()
-        page.goto(url+"/#graphs/"+version)
-        expect(page.locator("#point-count")).to_have_text(f"{count} точек")
-        assert page.locator("select[name=plot_type]").input_value()==kind
+        detail=page.request.get(url+"/api/pdf/"+version).json()
+        series=detail["plots"][0]
+        assert series["plot_type"]==kind and len(series["points"])==count
         if kind in ("EQE","stability"):
             metric="Jsc_EQE" if kind=="EQE" else "T80"
-            expect(page.locator(".graph-results a")).to_have_count(1)
-            button, label = {
-                "Jsc_EQE":("Рассчитать плотность тока по спектру","Плотность тока короткого замыкания по внешней квантовой эффективности (Jsc_EQE)"),
-                "T80":("Рассчитать время до 80% эффективности","Время снижения эффективности до 80% (T80)"),
-            }[metric]
-            page.get_by_role("button",name=button,exact=True).click()
-            page.locator("#edit-dialog").get_by_role("button",name="Сохранить",exact=True).click()
-            expect(page.locator("#active-record")).to_contain_text("Расчёт")
-            expect(page.locator("#active-record h3")).to_contain_text(label)
+            answer=page.request.post(url+"/api/plot/"+series["id"]+"/calculate",data={"metric":metric})
+            assert answer.ok,answer.text()
+            result=answer.json()
+            assert result["formula"]
             if metric=="T80":
-                expect(page.locator("#active-record h3")).to_contain_text("67.857")
+                assert abs(result["normalized_value"]-67.857)<.001
         page.goto(url)
     print("PASS 2B · EQE integration, T80 interpolation, thermal, process and scatter graphs", flush=True)
 
@@ -292,33 +270,23 @@ def graph_without_irradiance(page,url):
     page.get_by_role("button",name="Обработать PDF").click()
     row=page.locator("tr").filter(has_text="irradiance-unreported.pdf")
     expect(row.get_by_text("Обработан",exact=True)).to_be_visible(timeout=15000)
-    page.goto(url+"/#graphs/"+version)
-    expect(page.locator(".graph-results a")).to_have_count(3)
     detail=page.request.get(url+"/api/pdf/"+version).json()
     assert {r["metric_name"] for r in detail["results"] if r["plot_id"]}=={"Voc","Jsc","FF"}
     print("PASS · graph extraction skips PCE without published irradiance",flush=True)
 
 
 def stage3(page,url,output):
-    page.goto(url+"/#detective")
-    pce=page.locator('[data-issue=PCE_CONSISTENCY]')
-    discrepancy=pce.filter(has_text="Расхождение 5.55555556")
-    expect(discrepancy).to_be_visible()
-    expect(discrepancy.locator(".rule-threshold")).to_contain_text("3%")
-    expect(page.locator('[data-issue=EQE_JSC]')).to_contain_text("15 %")
-    # The recalibrated graph at 1.2 V adds a third over-bandgap result.
-    expect(page.locator('[data-issue=VOC_BANDGAP]')).to_have_count(3)
-    page.get_by_label("Состояние проверки",exact=True).select_option("passed")
-    expect(pce.filter(has_text="Коэффициент полезного действия (PCE) 14 %")).to_be_visible()
-    expect(pce.filter(has_text="Коэффициент полезного действия (PCE) 18 %")).to_have_count(1)
-    page.get_by_label("Состояние проверки",exact=True).select_option("not_applicable")
-    missing=pce.filter(has_text="Experimental CdTe")
-    expect(missing).to_contain_text("нет подтверждённой Pin")
-    expect(missing).to_contain_text("Проверка невозможна")
-    page.get_by_label("Состояние проверки",exact=True).select_option("open")
-    discrepancy.locator("summary").click()
-    assert discrepancy.locator("a.issue-source").count()>=9
-    discrepancy.get_by_role("link",name="с. 1 · Значение · 17.00",exact=True).click()
+    issues=page.request.get(url+"/api/issues").json()
+    discrepancy=next(i for i in issues if i["rule_code"]=="PCE_CONSISTENCY"
+                     and i["resolution_status"]=="open" and any(
+                         source["source_fragment"]=="17.00" for source in i["sources"]))
+    assert discrepancy["threshold"]["relative"]==.03
+    assert any(i["rule_code"]=="EQE_JSC" and i["severity"]=="warning" for i in issues)
+    assert any(i["rule_code"]=="VOC_BANDGAP" and i["severity"] in ("warning","error") for i in issues)
+    assert any(i["rule_code"]=="PCE_CONSISTENCY" and i["resolution_status"]=="not_applicable"
+               and "Pin" in i["description"] for i in issues)
+    source=next(s for s in discrepancy["sources"] if s["source_fragment"]=="17.00" and s["fragment_role"]=="value")
+    page.goto(url+source["href"])
     expect(page.locator(".record.active")).to_contain_text("A · Обратный ход")
     expect(page.locator("#active-record")).to_contain_text("17.00 %")
     page.get_by_role("button",name="Проверить и исправить").click()
@@ -327,12 +295,9 @@ def stage3(page,url,output):
     editor.get_by_role("button",name="Сохранить").click()
     expect(page.locator("#active-record h3")).to_contain_text("18 %")
     expect(page.locator("#active-record")).to_contain_text("17.00 %")
-    page.locator('nav a[href="#detective"]').click()
-    expect(page.locator('[data-issue=EQE_JSC]')).to_be_visible()
-    expect(discrepancy).to_have_count(0)
-    page.get_by_label("Состояние проверки",exact=True).select_option("resolved")
-    expect(pce.filter(has_text="Коэффициент полезного действия (PCE) 18 %")).to_have_count(1)
-    print("PASS 6 · PCE 3%, EQE 5%, Eg, passed checks, isolated scans, missing Pin and reactive resolution",flush=True)
+    updated=page.request.get(url+"/api/issues").json()
+    assert any(i["id"]==discrepancy["id"] and i["resolution_status"]=="resolved" for i in updated)
+    print("PASS 6 · validation API, PDF evidence and reactive resolution",flush=True)
 
     page.goto(url+"/#compare")
     left,right=page.get_by_label("Запись A",exact=True),page.get_by_label("Запись B",exact=True)
@@ -433,19 +398,140 @@ def raster_figure(page,url):
     page.locator("#files").set_input_files({"name":"embedded-figure.pdf","mimeType":"application/pdf","buffer":content})
     page.get_by_role("button",name="Обработать PDF").click()
     expect(page.locator("tr").filter(has_text="embedded-figure.pdf").get_by_text("Обработан",exact=True)).to_be_visible(timeout=15000)
-    page.goto(url+"/#graphs")
-    page.locator(f"main a[href='#graphs/{version}']").click()
-    expect(page.get_by_text("Изображение из PDF",exact=True)).to_be_visible()
-    expect(page.locator("#source-plot img")).to_be_visible()
     detail=page.request.get(f"{url}/api/pdf/{version}").json()
     assert len(detail["plots"])==1
     plot=detail["plots"][0]
     assert plot["source_figure"]=="8" and plot["source_page"]==2 and plot["plot_bbox"]==[95,462,395,662]
     assert not plot["points"] and not any(result["plot_id"] for result in detail["results"])
-    page.get_by_role("link",name="Рисунок в PDF",exact=True).click()
-    expect(page.locator("#pdf-pagination")).to_have_text("2 / 2")
-    expect(page.locator("#condition-evidence")).to_be_visible()
-    print("PASS · bitmap graph discovery, artwork crop and link to the correct PDF page",flush=True)
+    assert page.request.get(url+"/api/plot/"+plot["id"]+"/image").ok
+    trace=page.request.post(url+"/api/pdf/"+version+"/trace",data={
+        "source_page":2,"plot_bbox":plot["plot_bbox"],"seed":[240,608],
+    })
+    assert trace.ok,trace.text()
+    points=trace.json()["points"]
+    assert len(points)>50
+    plot.update(digitization_method="raster_trace",points=points,axes={
+        "x":{"p0":95,"p1":395,"v0":0,"v1":1.2,"unit":"V"},
+        "y":{"p0":462,"p1":662,"v0":0,"v1":25,"unit":"mA/cm2"},
+    })
+    response=page.request.patch(url+"/api/plot/"+plot["id"],data=plot)
+    assert response.ok,response.text()
+    saved=response.json()
+    assert saved["digitization_method"]=="raster_trace" and saved["is_approximate"] and saved["points"][0]["x"] is not None
+    print("PASS · raster curve tracing, calibration and saving approximate pixels",flush=True)
+
+
+def manual_result(page,url):
+    version=hashlib.sha256((FIXTURES/"02-rotated.pdf").read_bytes()).hexdigest()
+    detail_url=f"{url}/api/pdf/{version}"
+    initial=page.request.get(detail_url).json()
+    existing=next(r for r in initial["results"] if r["metric_name"]=="PCE" and r["normalized_value"]==12)
+    page.goto(f"{url}/#xray/{version}/{existing['id']}")
+    highlight=page.locator(".highlight-value.highlight-focused")
+    expect(highlight).to_be_visible()
+    highlight.scroll_into_view_if_needed()
+    coords=highlight.bounding_box()
+    page.get_by_role("button",name="Добавить запись из PDF").click()
+    page.mouse.move(coords["x"]+1,coords["y"]+1)
+    page.mouse.down()
+    page.mouse.move(coords["x"]+coords["width"]+8,coords["y"]+coords["height"]+5,steps=6)
+    page.mouse.up()
+    form=page.locator("dialog[open]")
+    form.get_by_label("Число как в PDF").fill("12.00")
+    form.get_by_label("Единица как в PDF").fill("%")
+    form.get_by_label("Цитата из выделения").fill("PCE = 12.00 %")
+    with page.expect_response(lambda res:res.url.endswith("/result") and res.status==201) as created:
+        form.get_by_role("button",name="Добавить запись").click()
+    result=created.value.json()
+    expect(page.locator(".highlight-value.highlight-focused")).to_be_visible()
+    page.get_by_label("Только требуют проверки").check()
+    expect(page.locator(f'[data-result="{result["id"]}"]')).to_be_visible()
+    page.get_by_role("button",name="Проверить и исправить").click()
+    page.locator("dialog[open]").get_by_role("button",name="Сохранить").click()
+    expect(page.get_by_text("Подтверждено пользователем",exact=True)).to_be_visible()
+    after=page.request.get(detail_url).json()
+    record=next(r for r in after["results"] if r["id"]==result["id"])
+    assert record["raw_value"]=="12.00" and record["raw_unit"]=="%" and record["extraction_method"]=="manual_pdf"
+    assert any(row["entity_id"]==result["id"] and row["field_name"]=="created" for row in after["audit"])
+    print("PASS · manual result from a rotated PDF, review queue, confirmation and audit",flush=True)
+
+
+def linked_table_result(page,url):
+    writer = PdfWriter()
+    pdf = writer.add_blank_page(width=620,height=790)
+    pdf[NameObject("/Resources")] = DictionaryObject({NameObject("/Font"):DictionaryObject({
+        NameObject("/F1"):DictionaryObject({NameObject("/Type"):NameObject("/Font"),
+            NameObject("/Subtype"):NameObject("/Type1"),NameObject("/BaseFont"):NameObject("/Helvetica")})})})
+    lines = [
+        (45,730,"Experimental single-junction CdTe solar cells were fabricated."),
+        (45,695,"Table 1. Measured photovoltaic characteristics."),
+        (45,665,"Sample"),(130,665,"Scan"),(220,665,"PCE (%)"),(320,665,"Voc (V)"),
+        (45,641,"A"),(130,641,"reverse"),(220,641,"15.0"),(320,641,"0.80"),
+        (45,617,"B"),(130,617,"reverse"),(220,617,"15.0"),(320,617,"0.90"),
+        (45,593,"A"),(130,593,"forward"),(220,593,"15.0"),(320,593,"0.95"),
+        (45,490,"As shown in Table 1, PCE = 15.0 % and Voc = 0.80 V."),
+        (45,440,"Device A, with a stabilized PCE of 14.8%, was monitored."),
+        (45,400,"The cell retained 92% of its initial PCE for 500 h."),
+        (45,360,"Integration of the EQE spectrum yields a photocurrent of 21.1 mA/cm2."),
+    ]
+    stream=DecodedStreamObject()
+    parts=[]
+    for x,y,text in lines:
+        escaped=text.replace("(","\\(").replace(")","\\)")
+        parts.append(f"BT /F1 11 Tf {x} {y} Td ({escaped}) Tj ET")
+    stream.set_data("\n".join(parts).encode("ascii"))
+    pdf[NameObject("/Contents")]=writer._add_object(stream)
+    packet=io.BytesIO()
+    writer.write(packet)
+    content=packet.getvalue()
+    version=hashlib.sha256(content).hexdigest()
+    page.goto(url)
+    page.get_by_role("button",name="Загрузить PDF",exact=True).click()
+    page.locator("#files").set_input_files({"name":"synthetic-linked-table.pdf","mimeType":"application/pdf","buffer":content})
+    page.get_by_role("button",name="Обработать PDF").click()
+    expect(page.locator("tr").filter(has_text="synthetic-linked-table.pdf").get_by_text("Обработан",exact=True)).to_be_visible(timeout=15000)
+    detail=page.request.get(f"{url}/api/pdf/{version}").json()
+    results=[result for result in detail["results"] if result["metric_name"]=="PCE"]
+    assert {(r["device_label"],r["scan_direction"],r["normalized_value"]) for r in results}=={
+        ("A","reverse",15),("B","reverse",15),("A","forward",15)}
+    assert len(results)==3
+    matched=next(r for r in results if r["device_label"]=="A" and r["scan_direction"]=="reverse")
+    page.goto(f"{url}/#xray/{version}/{matched['id']}")
+    value_buttons=page.locator('#active-record [data-focus-ref]').filter(has_text="Значение")
+    expect(value_buttons).to_have_count(2)
+    value_buttons.first.click()
+    first=page.locator(".highlight-value.highlight-focused").get_attribute("y")
+    value_buttons.last.click()
+    second=page.locator(".highlight-value.highlight-focused").get_attribute("y")
+    assert float(first)!=float(second)
+    print("PASS · linked table and prose collapse into one record with two clickable sources, other scans stay distinct",flush=True)
+    specialized={r["metric_name"]:r for r in detail["results"] if r["metric_name"] in
+                 {"stabilized_PCE","retained_PCE","Jsc_EQE"}}
+    assert {metric: row["normalized_value"] for metric,row in specialized.items()} == {
+        "stabilized_PCE":14.8,"retained_PCE":92,"Jsc_EQE":21.1}
+    retained=specialized["retained_PCE"]
+    assert (retained["time_point"],retained["time_unit"]) == (500,"h")
+    page.goto(f"{url}/#xray/{version}/{retained['id']}")
+    expect(page.locator("#active-record h3")).to_contain_text("Доля сохранённого КПД (retained_PCE)")
+    expect(page.locator('#active-record [data-focus-ref]').filter(has_text="Условие")).to_have_count(2)
+    print("PASS · stabilized PCE, retained PCE with duration, and integrated EQE current",flush=True)
+    page.goto(f"{url}/#export")
+    with page.expect_download() as submission:
+        page.get_by_role("link",name="Скачать CSV для сдачи").click()
+    with ZipFile(submission.value.path()) as archive:
+        assert sorted(archive.namelist())==[
+            "devices.csv","issues.csv","layers.csv","materials.csv","measurements.csv","publications.csv","results.csv",
+        ]
+        rows=list(csv.DictReader(io.StringIO(archive.read("results.csv").decode())))
+    exported=[r for r in rows if r["publication_id"]=="synthetic-linked-table" and r["metric_name"]=="PCE"]
+    assert len(exported)==4
+    duplicates=[r for r in exported if r["duplicate_of"]]
+    assert len(duplicates)==1
+    primary=next(r for r in exported if r["result_id"]==duplicates[0]["duplicate_of"])
+    assert primary["source_table"] and not duplicates[0]["source_table"]
+    assert primary["normalized_value"]==duplicates[0]["normalized_value"]=="15"
+    assert len({r["measurement_id"] for r in exported})==3
+    print("PASS · submission CSV keeps distinct published mentions and scan directions",flush=True)
 
 
 def mobile_layout(browser,url):
@@ -475,6 +561,71 @@ def mobile_layout(browser,url):
     print("PASS · phone layout, expandable result fields, PDF navigation and table scrolling",flush=True)
 
 
+def private_libraries(browser, url, data=None):
+    first = browser.new_context()
+    second = browser.new_context()
+    a, b = first.new_page(), second.new_page()
+    pdf = FIXTURES / "01-fabricated.pdf"
+    version = hashlib.sha256(pdf.read_bytes()).hexdigest()
+    detail = f"{url}/api/pdf/{version}"
+
+    def upload(page):
+        page.get_by_role("button", name="Загрузить публикации").first.click()
+        page.locator("#files").set_input_files(str(pdf))
+        page.get_by_role("button",name="Обработать PDF").click()
+        row = page.locator("tr").filter(has_text=pdf.name)
+        expect(row.get_by_text("Обработан", exact=True)).to_be_visible(timeout=20000)
+
+    try:
+        a.goto(url)
+        b.goto(url)
+        expect(a.get_by_text("Моя библиотека", exact=True)).to_be_visible()
+        expect(b.get_by_text("Моя библиотека", exact=True)).to_be_visible()
+        upload(a)
+        assert len(a.request.get(url + "/api/library").json()["publications"]) == 1
+        assert b.request.get(url + "/api/library").json()["publications"] == []
+        assert b.request.get(detail).status == 404
+        assert b.request.get(detail + "/original").status == 404
+        assert b.request.get(detail + "/page/1").status == 404
+        first_record = a.request.get(detail).json()["results"][0]
+        result_url = url + "/api/result/" + first_record["id"]
+        assert b.request.delete(result_url).status == 404
+
+        upload(b)
+        a.goto(f"{url}/#xray/{version}/{first_record['id']}")
+        a.get_by_role("button", name="Удалить запись").click()
+        a.get_by_role("button", name="Отмена").click()
+        assert any(r["id"] == first_record["id"] for r in a.request.get(detail).json()["results"])
+        a.get_by_role("button", name="Удалить запись").click()
+        a.locator("dialog[open]").get_by_role("button", name="Удалить запись").click()
+        expect(a.get_by_text("Запись удалена", exact=True)).to_be_visible()
+        a.reload()
+        a.locator("[data-retry]").click()
+        expect(a.locator("main").get_by_text("Обработан", exact=True)).to_be_visible(timeout=20000)
+        own = a.request.get(detail).json()
+        other = b.request.get(detail).json()
+        assert all(r["id"] != first_record["id"] for r in own["results"])
+        assert any(r["id"] == first_record["id"] for r in other["results"])
+        assert any(row["entity_id"] == first_record["id"] and row["field_name"] == "deleted"
+                   for row in own["audit"])
+        assert a.request.get(detail + "/original").ok
+        a.get_by_role("button",name="Удалить статью").click()
+        a.locator("dialog[open]").get_by_role("button",name="Удалить статью").click()
+        expect(a.get_by_text("Статья удалена",exact=True)).to_be_visible()
+        assert a.request.get(detail + "/original").status == 404
+        assert b.request.get(detail + "/original").ok
+        if data is not None:
+            assert len(list((data / "workspaces").glob("*/softx.sqlite"))) == 2
+        else:
+            key_a, = [cookie for cookie in first.cookies() if cookie["name"] == "__Host-softx_workspace"]
+            key_b, = [cookie for cookie in second.cookies() if cookie["name"] == "__Host-softx_workspace"]
+            assert key_a["value"] != key_b["value"] and key_a["secure"] and key_b["secure"]
+    finally:
+        first.close()
+        second.close()
+    print("PASS · separate browser libraries, isolated PDF files and deletion preserved after reprocessing",flush=True)
+
+
 def main():
     with tempfile.TemporaryDirectory(prefix="softx-e2e-") as directory, server(Path(directory)) as url, sync_playwright() as playwright:
         browser = playwright.chromium.launch(executable_path=os.environ.get("CHROMIUM","/usr/bin/chromium"),
@@ -490,6 +641,10 @@ def main():
         off_topic_pdf(page,url)
         raster_figure(page,url)
         mobile_layout(browser,url)
+        manual_result(page,url)
+        linked_table_result(page,url)
+        with tempfile.TemporaryDirectory(prefix="softx-private-e2e-") as workspaces, server(Path(workspaces), private=True) as private_url:
+            private_libraries(browser,private_url,Path(workspaces))
         browser.close()
 
 

@@ -1,0 +1,13 @@
+[Unit]
+Description=SoftX local text model
+After=network.target
+
+[Service]
+Type=simple
+DynamicUser=yes
+ExecStart=/opt/softx-model/bin/llama-server -m /opt/softx-model/model.gguf --host 127.0.0.1 --port 8090 --alias local --ctx-size 3072 --threads 2 --threads-batch 2 --parallel 1 --no-ui
+Restart=on-failure
+NoNewPrivileges=yes
+
+[Install]
+WantedBy=multi-user.target
