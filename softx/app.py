@@ -13,6 +13,7 @@ from flask import Flask, abort, jsonify, request, send_file
 from pypdf.errors import PdfReadError
 
 from . import domain as d
+from .derived import extract_plot_results
 from .extract import DOI, Extraction, bibliographic_doi
 from .export import exporter
 from .graph_api import graph
@@ -84,6 +85,8 @@ def process(version):
                     except (subprocess.SubprocessError, ET.ParseError, ValueError, OSError) as exc:
                         app.logger.warning("Graph detection failed in %s, page %s: %s", version, page["page"], exc)
                         failures.append({"page":page["page"],"reason":str(exc)[:240],"fields":["plot_dataset"],"value_state":"unparseable"})
+                for plot in rows(connection,"SELECT * FROM plot_dataset WHERE pdf_version_id=?",version):
+                    extract_plot_results(connection,plot)
             recheck(connection,pub)
             status = "partial" if failures else "completed"
             connection.execute("UPDATE pdf_version SET processing_status=?,pages=?,failed_pages=?,error_message=NULL WHERE id=?",
@@ -185,6 +188,7 @@ def results(connection, version=None):
             (SELECT group_concat(DISTINCT s.source_page) FROM result_source rs JOIN source_reference s ON s.id=rs.source_reference_id WHERE rs.result_id=r.id) AS source_page,
             (SELECT group_concat(DISTINCT s.source_table) FROM result_source rs JOIN source_reference s ON s.id=rs.source_reference_id WHERE rs.result_id=r.id) AS source_table,
             (SELECT group_concat(DISTINCT s.source_figure) FROM result_source rs JOIN source_reference s ON s.id=rs.source_reference_id WHERE rs.result_id=r.id) AS source_figure,
+            (SELECT rp.plot_id FROM result_plot rp WHERE rp.result_id=r.id ORDER BY rp.plot_id LIMIT 1) AS plot_id,
 d.device_label,d.architecture,d.device_type,
             m.material_class,q.scan_direction,q.certified,(SELECT cp.doi FROM publication cp WHERE cp.id=r.cited_publication_id) AS cited_doi,
             (SELECT group_concat(s.source_fragment,' ') FROM result_source rs JOIN source_reference s ON s.id=rs.source_reference_id

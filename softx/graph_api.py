@@ -7,7 +7,7 @@ from uuid import uuid4
 from flask import Blueprint, abort, jsonify, request, send_file
 from openpyxl import Workbook
 
-from .derived import publish
+from .derived import PLOT_METRICS, extract_plot_results, publish
 from .graphs import TYPES, projection, save_crop, uncertainty
 from .science import recheck
 from .export import csv_value
@@ -104,8 +104,7 @@ def save_plot(ident):
                        source_page=page,source_figure=fields["source_figure"],bbox=box,source_type="figure",fragment_role="condition")
                 insert(connection,"plot_source",plot_id=ident,source_reference_id=source)
         result=one(connection,"SELECT * FROM plot_dataset WHERE id=?",ident)
-        for item in rows(connection,"SELECT r.metric_name FROM measurement_result r JOIN result_plot rp ON r.id=rp.result_id WHERE rp.plot_id=?",ident):
-            publish(connection,result,item["metric_name"],refresh=True)
+        extract_plot_results(connection,result)
         recheck(connection,result["publication_id"])
     return jsonify(result)
 
@@ -114,7 +113,7 @@ def save_plot(ident):
 def calculate(ident):
     body=request.get_json()
     metric=body.get("metric")
-    if metric not in ("Jsc_EQE","T80","Voc","Jsc"):
+    if not isinstance(metric,str) or not any(metric in allowed for allowed in PLOT_METRICS.values()):
         abort(400,"Неизвестный расчёт")
     with db() as connection:
         connection.execute("BEGIN IMMEDIATE")

@@ -2,6 +2,7 @@
 import contextlib
 import csv
 import hashlib
+import io
 import json
 import os
 from pathlib import Path
@@ -14,7 +15,10 @@ import urllib.request
 from zipfile import ZipFile
 
 from openpyxl import load_workbook
+from PIL import Image, ImageDraw
 from playwright.sync_api import sync_playwright
+from pypdf import PdfReader, PdfWriter
+from pypdf.generic import DecodedStreamObject, DictionaryObject, NameObject, NumberObject
 
 ROOT = Path(__file__).resolve().parents[1]
 FIXTURES = ROOT / "fixtures"
@@ -124,12 +128,21 @@ def stage1(page, url):
     expect(page.locator("tbody tr")).to_have_count(4)
     page.get_by_label("Поиск данных").fill("Voc")
     expect(page.locator("tbody tr")).to_have_count(1)
+    headers=page.get_by_role("columnheader").all_text_contents()
+    assert headers[:5]==["Код публикации","Показатель","Значение","Единица измерения","Обозначение прибора"]
+    page.get_by_label("Поиск данных").fill("Напряжение холостого хода")
+    expect(page.locator("tbody tr")).to_have_count(1)
+    page.get_by_role("link",name="Напряжение холостого хода (Voc)",exact=True).click()
+    focused=page.locator("rect.highlight-value.highlight-focused")
+    expect(focused).to_have_count(1)
+    assert focused.evaluate("node => getComputedStyle(node).fill")=="rgba(239, 49, 64, 0.48)"
+    assert focused.evaluate("node => getComputedStyle(node).strokeDasharray")=="none"
     print("PASS 2 · devices, layers, origin, candidates, search and filter", flush=True)
 
     page.locator('nav a[href="#library"]').click()
     page.locator("tr").filter(has_text="02-rotated.pdf").get_by_role("link",name="Открыть PDF X-Ray").click()
     expect(page.locator("#pdf-angle")).to_have_text("90°")
-    target=page.locator(".record").filter(has_text="Voc")
+    target=page.locator(".record").filter(has_text="Напряжение холостого хода")
     target.click()
     ref=page.locator("rect.highlight-value.highlight-current").first
     expect(ref).to_be_visible()
@@ -141,8 +154,8 @@ def stage1(page, url):
         target.click()
         ref=page.locator(f'rect[data-ref="{ref_id}"]')
         ref.click()
-        expect(page.locator(".record.active")).to_contain_text("Voc")
-        expect(ref).to_have_class("highlight-value highlight-current")
+        expect(page.locator(".record.active")).to_contain_text("Напряжение холостого хода (Voc)")
+        expect(ref).to_have_class("highlight-value highlight-current highlight-focused")
         image=page.locator(".pdf-page img")
         expect(image).to_be_visible()
         assert image.evaluate("(image) => image.complete && image.naturalWidth > 0")
@@ -166,19 +179,41 @@ def stage1(page, url):
     expect(page.get_by_text("Обработан",exact=True)).to_be_visible(timeout=15000)
     page.reload()
     page.locator(".record").filter(has_text="15.5").click()
-    expect(page.locator(".record.active")).to_contain_text("A · forward")
+    expect(page.locator(".record.active")).to_contain_text("A · Прямой ход")
     expect(page.locator("#active-record")).to_contain_text("16.00 %")
     page.get_by_text("История изменений",exact=False).click()
-    for name in ("metric_value","metric_unit","device_id","measurement_id"):
+    for name in ("Значение","Единица измерения","Идентификатор прибора","Идентификатор измерения"):
         expect(page.locator("details").last.get_by_text(name,exact=True).first).to_be_visible()
-    expect(page.locator(".record")).to_have_count(19)
+    expect(page.locator(".record")).to_have_count(23)
     print("PASS 4 · manual edits, immutable original, audit and reprocess", flush=True)
 
 
 def stage2a(page, url, output):
     version=hashlib.sha256((FIXTURES/"01-fabricated.pdf").read_bytes()).hexdigest()
-    page.goto(url+"/#graphs/"+version)
+    rotated=hashlib.sha256((FIXTURES/"02-rotated.pdf").read_bytes()).hexdigest()
+    page.goto(url+"/#graphs")
+    expect(page.locator("main a[href^='#graphs/']")).to_have_count(1)
+    expect(page.locator(f"main a[href='#graphs/{rotated}']")).to_have_count(0)
+    page.goto(url+"/#xray/"+rotated)
+    page.get_by_role("link",name="Добавить график",exact=True).click()
+    expect(page.get_by_label("Серия графика")).to_be_visible()
+    assert page.url.endswith(f"#graphs/{rotated}/new")
+    page.get_by_role("link",name="Публикации с графиками",exact=True).click()
+    page.locator(f"main a[href='#graphs/{version}']").click()
     expect(page.get_by_role("heading",name="Graph Hunter",exact=True)).to_be_visible()
+    expect(page.locator(".graph-results a")).to_have_count(4)
+    detail=page.request.get(url+"/api/pdf/"+version).json()
+    results={r["metric_name"]:r for r in detail["results"] if r["extraction_method"]=="plot_calculation"}
+    assert set(results)=={"Voc","Jsc","FF","PCE"}
+    assert results["Voc"]["normalized_value"]==1 and results["Jsc"]["normalized_value"]==20
+    assert abs(results["FF"]["normalized_value"]-53.196)<.001
+    assert abs(results["PCE"]["normalized_value"]-10.6392)<.001
+    assert results["PCE"]["calculation_inputs"]["pin_mW_cm2"]==100
+    assert all(r["raw_value"] is None and r["plot_id"] for r in results.values())
+    page.locator(".graph-results a").filter(has_text="(Voc)").click()
+    expect(page.get_by_role("link",name="Приближённое значение по графику")).to_be_visible()
+    expect(page.locator(".highlight-focused")).to_be_visible()
+    page.get_by_role("link",name="Приближённое значение по графику").click()
     expect(page.locator("#point-count")).to_have_text("11 точек")
     expect(page.locator("#source-plot img")).to_be_visible()
     expect(page.locator("[data-reconstruction]")).to_have_count(11)
@@ -193,6 +228,10 @@ def stage2a(page, url, output):
     page.get_by_role("button",name="Сохранить серию").click()
     expect(page.get_by_text("Серия сохранена",exact=True)).to_be_visible()
     expect(page.locator('[data-reconstruction="10"] title')).to_contain_text("1.2 V")
+    expect(page.locator(".graph-results a").filter(has_text="(Voc)")).to_contain_text("1.2 V")
+    updated=page.request.get(url+"/api/pdf/"+version).json()
+    voc=[r for r in updated["results"] if r["id"]==results["Voc"]["id"]]
+    assert len(voc)==1 and voc[0]["normalized_value"]==1.2
     for extension in ("CSV","XLSX"):
         with page.expect_download() as info:
             page.get_by_role("link",name=extension,exact=True).click()
@@ -227,14 +266,37 @@ def stage2b(page, url):
         assert page.locator("select[name=plot_type]").input_value()==kind
         if kind in ("EQE","stability"):
             metric="Jsc_EQE" if kind=="EQE" else "T80"
-            page.get_by_role("button",name="Рассчитать "+metric,exact=True).click()
+            expect(page.locator(".graph-results a")).to_have_count(1)
+            button, label = {
+                "Jsc_EQE":("Рассчитать плотность тока по спектру","Плотность тока короткого замыкания по внешней квантовой эффективности (Jsc_EQE)"),
+                "T80":("Рассчитать время до 80% эффективности","Время снижения эффективности до 80% (T80)"),
+            }[metric]
+            page.get_by_role("button",name=button,exact=True).click()
             page.locator("#edit-dialog").get_by_role("button",name="Сохранить",exact=True).click()
             expect(page.locator("#active-record")).to_contain_text("Расчёт")
-            expect(page.locator("#active-record h3")).to_contain_text(metric)
+            expect(page.locator("#active-record h3")).to_contain_text(label)
             if metric=="T80":
                 expect(page.locator("#active-record h3")).to_contain_text("67.857")
         page.goto(url)
     print("PASS 2B · EQE integration, T80 interpolation, thermal, process and scatter graphs", flush=True)
+
+
+def graph_without_irradiance(page,url):
+    source=(FIXTURES/"01-fabricated.pdf").read_bytes()
+    content=source.replace(b"100 mW/cm2",b"unreported")
+    assert len(source)==len(content) and source!=content
+    version=hashlib.sha256(content).hexdigest()
+    page.goto(url)
+    page.get_by_role("button",name="Загрузить PDF",exact=True).click()
+    page.locator("#files").set_input_files({"name":"irradiance-unreported.pdf","mimeType":"application/pdf","buffer":content})
+    page.get_by_role("button",name="Обработать PDF").click()
+    row=page.locator("tr").filter(has_text="irradiance-unreported.pdf")
+    expect(row.get_by_text("Обработан",exact=True)).to_be_visible(timeout=15000)
+    page.goto(url+"/#graphs/"+version)
+    expect(page.locator(".graph-results a")).to_have_count(3)
+    detail=page.request.get(url+"/api/pdf/"+version).json()
+    assert {r["metric_name"] for r in detail["results"] if r["plot_id"]}=={"Voc","Jsc","FF"}
+    print("PASS · graph extraction skips PCE without published irradiance",flush=True)
 
 
 def stage3(page,url,output):
@@ -244,10 +306,11 @@ def stage3(page,url,output):
     expect(discrepancy).to_be_visible()
     expect(discrepancy.locator(".rule-threshold")).to_contain_text("3%")
     expect(page.locator('[data-issue=EQE_JSC]')).to_contain_text("15 %")
-    expect(page.locator('[data-issue=VOC_BANDGAP]')).to_have_count(2)
+    # The recalibrated graph at 1.2 V adds a third over-bandgap result.
+    expect(page.locator('[data-issue=VOC_BANDGAP]')).to_have_count(3)
     page.get_by_label("Состояние проверки",exact=True).select_option("passed")
-    expect(pce.filter(has_text="PCE 14 %")).to_be_visible()
-    expect(pce.filter(has_text="PCE 18 %")).to_have_count(1)
+    expect(pce.filter(has_text="Коэффициент полезного действия (PCE) 14 %")).to_be_visible()
+    expect(pce.filter(has_text="Коэффициент полезного действия (PCE) 18 %")).to_have_count(1)
     page.get_by_label("Состояние проверки",exact=True).select_option("not_applicable")
     missing=pce.filter(has_text="Experimental CdTe")
     expect(missing).to_contain_text("нет подтверждённой Pin")
@@ -256,7 +319,7 @@ def stage3(page,url,output):
     discrepancy.locator("summary").click()
     assert discrepancy.locator("a.issue-source").count()>=9
     discrepancy.get_by_role("link",name="с. 1 · Значение · 17.00",exact=True).click()
-    expect(page.locator(".record.active")).to_contain_text("A · reverse")
+    expect(page.locator(".record.active")).to_contain_text("A · Обратный ход")
     expect(page.locator("#active-record")).to_contain_text("17.00 %")
     page.get_by_role("button",name="Проверить и исправить").click()
     editor=page.locator("#edit-dialog")
@@ -268,19 +331,19 @@ def stage3(page,url,output):
     expect(page.locator('[data-issue=EQE_JSC]')).to_be_visible()
     expect(discrepancy).to_have_count(0)
     page.get_by_label("Состояние проверки",exact=True).select_option("resolved")
-    expect(pce.filter(has_text="PCE 18 %")).to_have_count(1)
+    expect(pce.filter(has_text="Коэффициент полезного действия (PCE) 18 %")).to_have_count(1)
     print("PASS 6 · PCE 3%, EQE 5%, Eg, passed checks, isolated scans, missing Pin and reactive resolution",flush=True)
 
     page.goto(url+"/#compare")
     left,right=page.get_by_label("Запись A",exact=True),page.get_by_label("Запись B",exact=True)
-    choose(left,"PCE · 18 % · A · forward")
-    choose(right,"PCE · 14 % · B · reverse")
+    choose(left,"Коэффициент полезного действия (PCE) · 18 % · A · Прямой ход")
+    choose(right,"Коэффициент полезного действия (PCE) · 14 % · B · Обратный ход")
     expect(page.get_by_text("Несопоставимы",exact=True)).to_be_visible()
     expect(page.locator(".criteria-failed").filter(has_text="Направление развёртки")).to_have_count(1)
     page.get_by_role("link",name="Сертифицированные",exact=True).click()
     expect(page.get_by_text("В этой вкладке пока нет записей.",exact=True)).to_be_visible()
     page.get_by_role("link",name="Стабильность",exact=True).click()
-    expect(page.locator("select[name=compare-a] option").filter(has_text="T80")).to_have_count(1)
+    expect(page.locator("select[name=compare-a] option").filter(has_text="Время снижения эффективности до 80% (T80)")).to_have_count(1)
 
     page.goto(url+"/#export")
     with page.expect_download() as package:
@@ -339,6 +402,79 @@ def off_topic_pdf(page, url):
     print("PASS · power supply efficiency is not extracted as photovoltaic PCE", flush=True)
 
 
+def raster_figure(page,url):
+    writer=PdfWriter(clone_from=PdfReader(FIXTURES/"02-rotated.pdf"))
+    added=writer.add_blank_page(width=620,height=790)
+    image=Image.new("RGB",(300,200),"white")
+    draw=ImageDraw.Draw(image)
+    draw.rectangle((25,15,285,170),outline="black",width=2)
+    draw.line(((25,49),(145,54),(208,72),(248,112),(268,170)),fill="green",width=3)
+    bitmap=DecodedStreamObject()
+    bitmap.update({NameObject(k):NameObject(v) if isinstance(v,str) else NumberObject(v) for k,v in
+                   {"/Type":"/XObject","/Subtype":"/Image","/ColorSpace":"/DeviceRGB",
+                    "/Width":image.width,"/Height":image.height,"/BitsPerComponent":8}.items()})
+    bitmap.set_data(image.tobytes())
+    added[NameObject("/Resources")]=DictionaryObject({
+        NameObject("/XObject"):DictionaryObject({NameObject("/Curve"):writer._add_object(bitmap)}),
+        NameObject("/Font"):writer.pages[0]["/Resources"]["/Font"],
+    })
+    stream=DecodedStreamObject()
+    stream.set_data(b"""q 300 0 0 200 95 462 cm /Curve Do Q
+        BT /F1 11 Tf 95 440 Td (Figure 8. Photocurrent-voltage curves of CdTe devices.) Tj ET
+        q 300 0 0 200 95 160 cm /Curve Do Q
+        BT /F1 11 Tf 95 138 Td (Figure 9. Photo of the thermal annealing equipment.) Tj ET""")
+    added[NameObject("/Contents")]=writer._add_object(stream)
+    output=io.BytesIO()
+    writer.write(output)
+    content=output.getvalue()
+    version=hashlib.sha256(content).hexdigest()
+    page.goto(url)
+    page.get_by_role("button",name="Загрузить PDF",exact=True).click()
+    page.locator("#files").set_input_files({"name":"embedded-figure.pdf","mimeType":"application/pdf","buffer":content})
+    page.get_by_role("button",name="Обработать PDF").click()
+    expect(page.locator("tr").filter(has_text="embedded-figure.pdf").get_by_text("Обработан",exact=True)).to_be_visible(timeout=15000)
+    page.goto(url+"/#graphs")
+    page.locator(f"main a[href='#graphs/{version}']").click()
+    expect(page.get_by_text("Изображение из PDF",exact=True)).to_be_visible()
+    expect(page.locator("#source-plot img")).to_be_visible()
+    detail=page.request.get(f"{url}/api/pdf/{version}").json()
+    assert len(detail["plots"])==1
+    plot=detail["plots"][0]
+    assert plot["source_figure"]=="8" and plot["source_page"]==2 and plot["plot_bbox"]==[95,462,395,662]
+    assert not plot["points"] and not any(result["plot_id"] for result in detail["results"])
+    page.get_by_role("link",name="Рисунок в PDF",exact=True).click()
+    expect(page.locator("#pdf-pagination")).to_have_text("2 / 2")
+    expect(page.locator("#condition-evidence")).to_be_visible()
+    print("PASS · bitmap graph discovery, artwork crop and link to the correct PDF page",flush=True)
+
+
+def mobile_layout(browser,url):
+    phone=browser.new_page(viewport={"width":390,"height":844},is_mobile=True,has_touch=True)
+    try:
+        phone.goto(url)
+        expect(phone.locator(".publication-card").first).to_be_visible()
+        assert phone.locator("#nav").evaluate("nav => nav.scrollWidth === nav.clientWidth")
+        phone.locator('nav a[href="#results"]').tap()
+        result=phone.locator(".result-card").first
+        expect(result).to_be_visible()
+        assert phone.locator(".result-filter-panel").get_attribute("open") is None
+        result.get_by_text("Все поля",exact=True).tap()
+        expect(result.get_by_text("Нормализованное значение",exact=True)).to_be_visible()
+        result.get_by_role("link",name="К источнику в PDF").tap()
+        expect(phone.locator(".highlight-focused").first).to_be_visible()
+        phone.get_by_role("button",name="Записи",exact=True).tap()
+        expect(phone.locator("#active-record h3")).to_be_visible()
+        phone.locator('nav a[href="#results"]').tap()
+        phone.get_by_role("button",name="Таблица результатов").tap()
+        table=phone.get_by_role("region",name="Таблица данных")
+        expect(table).to_be_visible()
+        assert table.evaluate("region => {region.scrollLeft=200; return region.scrollLeft>0;}")
+        assert phone.evaluate("document.documentElement.scrollWidth === innerWidth")
+    finally:
+        phone.close()
+    print("PASS · phone layout, expandable result fields, PDF navigation and table scrolling",flush=True)
+
+
 def main():
     with tempfile.TemporaryDirectory(prefix="softx-e2e-") as directory, server(Path(directory)) as url, sync_playwright() as playwright:
         browser = playwright.chromium.launch(executable_path=os.environ.get("CHROMIUM","/usr/bin/chromium"),
@@ -350,7 +486,10 @@ def main():
         stage2a(page,url,Path(directory))
         stage2b(page,url)
         stage3(page,url,Path(directory))
+        graph_without_irradiance(page,url)
         off_topic_pdf(page,url)
+        raster_figure(page,url)
+        mobile_layout(browser,url)
         browser.close()
 
 

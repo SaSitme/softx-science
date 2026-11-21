@@ -1,4 +1,4 @@
-"""Recover series from vector PDF artwork and calibrate in canonical user space."""
+"""Locate embedded graph figures and recover vector series in canonical user space."""
 import io
 import math
 import re
@@ -6,13 +6,14 @@ import xml.etree.ElementTree as ET
 
 from PIL import Image
 
+from .derived import RETENTION_LABEL
 from .domain import NUM, UNIT_PATTERN
 from .extract import DEVICE, SCAN, VALUE, number
 from .pdf import draw, page_file, union
 from .store import DATA, insert, key
 
 TYPES = {
-    "JV": r"\b(?:J\s*[-–]?\s*V|I\s*[-–]\s*V)\b|current.density.{0,20}voltage",
+    "JV": r"\b(?:J\s*[-–−]?\s*V|I\s*[-–−]\s*V)\b|(?:photo)?current(?:[\s-]+density)?\s*(?:[-–−/]|versus|vs\.?)[\s-]*voltage|current.density.{0,20}voltage",
     "EQE": r"\bEQE\b|external quantum efficiency",
     "stability": r"\bstability\b|ageing|aging|\bT80\b",
     "thermal": r"anneal|heat treatment|thermal|temperature",
@@ -20,6 +21,7 @@ TYPES = {
     "PCE_vs_param": r"(?:PCE|efficiency).*(?:versus| vs\.? |as a function of|dependence)",
 }
 CAPTION = re.compile(r"^(?:Figure|Fig\.?)\s*(\d+)\s*(?:\(([a-z])\))?\s*[.:]?", re.I)
+FIGURE_HEADING = re.compile(r"^(?:Figure|Fig\.?)\s*\d+\s*(?:\([a-zA-Z]\))?\s*[.:|–—]\s+|^FIGURE\s+\d+\s+")
 
 
 def projection(axes, points):
@@ -53,8 +55,7 @@ def uncertainty(axes, points, width):
     return error, "Полуширина штриха в координатах PDF, умноженная на модуль наклона шкалы. Вклад исходного эксперимента и ошибки калибровки не оценён."
 
 
-def vectors(path, meta):
-    root = ET.fromstring(draw(path, "trace"))
+def vectors(root, meta):
     x0, _, _, y1 = meta["crop_box"]
     unit = meta["user_unit"]
     found = []
@@ -179,7 +180,58 @@ def save_crop(version, page, meta, box):
     return ident
 
 
-def automatic(extraction, pages):
+def raster_boxes(root, meta):
+    left,bottom,right,top = meta["crop_box"]
+    unit = meta["user_unit"]
+    for element in root.iter("fill_image"):
+        if "alpha" not in element.attrib or "transform" not in element.attrib:
+            continue
+        a,b,c,d,e,f = map(float,element.get("transform").split())
+        xs=[left+x/unit for x in (e,a+e,c+e,a+c+e)]
+        ys=[top-y/unit for y in (f,b+f,d+f,b+d+f)]
+        box=[max(left,min(xs)),max(bottom,min(ys)),min(right,max(xs)),min(top,max(ys))]
+        if box[2]-box[0]>=85 and box[3]-box[1]>=50:
+            yield box
+
+
+def raster_kind(caption):
+    for kind in ("JV","EQE"):
+        if re.search(TYPES[kind],caption,re.I):
+            return kind
+    if re.search(TYPES["stability"],caption,re.I) and re.search(r"test|curve|under|time|operat|shelf|retention|T80",caption,re.I):
+        return "stability"
+    if re.search(r"(?:temperature|anneal).*(?:dependence|variation|vs\.? |versus|as a function)|(?:dependence|variation|vs\.? |versus|as a function).*(?:temperature|anneal)",caption,re.I):
+        return "thermal"
+    if re.search(TYPES["PCE_vs_param"],caption,re.I):
+        return "PCE_vs_param"
+    if re.search(r"scatter\s+(?:plot|data)|\b(?:PCE|Voc|Jsc)\s+(?:distribution|histogram|box plot)",caption,re.I):
+        return "scatter"
+    return None
+
+
+def save_raster_figures(extraction, meta, root, captions):
+    images = list(raster_boxes(root,meta))
+    for caption,label,kind in captions:
+        x0,_,x1,top=caption.span.bbox
+        candidates=[box for box in images if -4<=box[1]-top<=55 and
+                    min(x1,box[2])-max(x0,box[0])>=.4*min(x1-x0,box[2]-box[0])]
+        if not candidates:
+            continue
+        box=min(candidates,key=lambda b:(abs(b[1]-top),-(b[2]-b[0])*(b[3]-b[1])))
+        ident=key(extraction.version,meta["page"],label[1],box,"raster_figure")
+        crop=save_crop(extraction.version,meta["page"],meta,box)
+        if not crop:
+            continue
+        insert(extraction.db,"plot_dataset",id=ident,publication_id=extraction.pub,pdf_version_id=extraction.version,
+               source_page=meta["page"],source_figure=label[1],panel_id=label[2],plot_type=kind,plot_bbox=box,
+               caption_text=caption.text,crop_image=crop,axes={axis:axis_fit([],None) for axis in "xy"},
+               points=[],digitization_method="raster_figure",series_label="Исходный рисунок",
+               uncertainty_method="Для изображения ещё не заданы точки и калибровка осей.")
+        for ref in figure_sources(extraction,meta,box,caption,label):
+            insert(extraction.db,"plot_source",plot_id=ident,source_reference_id=ref)
+
+
+def automatic(extraction, pages, *, raster_only=False):
     for meta in pages:
         page = meta["page"]
         lines = [line for line in extraction.lines if line.page == page]
@@ -187,15 +239,21 @@ def automatic(extraction, pages):
         for line in lines:
             match = CAPTION.match(line.text)
             kind = next((k for k, pattern in TYPES.items() if re.search(pattern,line.text,re.I)),None) if match else None
-            if kind:
-                captions.append((line,match,kind))
-        if not captions:
+            captions.append((line,match,kind))
+        graph_captions=[caption for caption in captions if caption[2]]
+        raster_captions=[(line,label,kind) for line,label,_ in captions
+                         if FIGURE_HEADING.match(line.text) and (kind:=raster_kind(line.text))]
+        if not raster_captions and (raster_only or not graph_captions):
             continue
         path = page_file(DATA/extraction.version,page)
-        items = vectors(path,meta)
+        root = ET.fromstring(draw(path,"trace"))
+        save_raster_figures(extraction,meta,root,raster_captions)
+        if raster_only:
+            continue
+        items = vectors(root,meta)
         for box in frames(items):
             center = (box[1]+box[3])/2
-            line, label, kind = min(captions, key=lambda c:abs((c[0].span.bbox[1]+c[0].span.bbox[3])/2-center))
+            line, label, kind = min(graph_captions, key=lambda c:abs((c[0].span.bbox[1]+c[0].span.bbox[3])/2-center))
             if abs(line.span.bbox[1]-center)>max(200,(box[3]-box[1])*1.7):
                 continue
             produce(extraction,meta,box,items,lines,line,label,kind)
@@ -221,10 +279,24 @@ def units_for_plot(kind, lines, box):
     return tuple(match[1].replace("μ","µ") if match else None for match in matches)
 
 
+def figure_sources(extraction,meta,box,caption,label):
+    source=extraction.ref(caption,caption.span,"condition","caption",figure=label[1])
+    source_figure=key(extraction.version,meta["page"],box,"figure")
+    insert(extraction.db,"source_reference",id=source_figure,publication_id=extraction.pub,pdf_version_id=extraction.version,
+           source_page=meta["page"],source_figure=label[1],source_fragment=caption.text,bbox=box,source_type="figure",fragment_role="condition")
+    return source,source_figure
+
+
 def produce(extraction, meta, box, items, lines, caption, label, kind):
     x0,y0,x1,y1=box
     units=units_for_plot(kind,lines,box)
     axes={axis:axis_fit(number_ticks(lines,items,box,axis),unit) for axis,unit in zip("xy",units)}
+    if kind=="stability":
+        # Identify the retention axis in or beside this panel, excluding distant captions.
+        nearby = " ".join(s.text for line in lines for s in line.cells
+                          if x0-85 <= s.bbox[0] < x0 and y0 <= s.bbox[1] <= y1+60)
+        if match := RETENTION_LABEL.search(nearby):
+            axes["y"]["label"] = match[0]
     series = []
     for p in items:
         a,b,c,d=p["bbox"]
@@ -248,14 +320,11 @@ def produce(extraction, meta, box, items, lines, caption, label, kind):
 
     legend = [s.text for line in lines for s in line.cells if x0<s.bbox[0]<x1 and y0<s.bbox[1]<y1
               and re.search(r"[A-Za-z]",s.text)]
-    source=extraction.ref(caption,caption.span,"condition","caption",figure=label[1])
-    source_figure=key(extraction.version,meta["page"],box,"figure")
-    insert(extraction.db,"source_reference",id=source_figure,publication_id=extraction.pub,pdf_version_id=extraction.version,
-           source_page=meta["page"],source_figure=label[1],source_fragment=caption.text,bbox=box,source_type="figure",fragment_role="condition")
+    sources=figure_sources(extraction,meta,box,caption,label)
     named=re.search(r"\b(?:for|of)\s+(?:(?:device|sample|cell)\s+)?([\w.-]+)\b",caption.text,re.I)
     device=extraction.devices.get(named[1]) if named else None
     scan=SCAN.search(caption.text)
-    measurement=extraction.measurement(device,scan[1].lower(),kind=kind) if device and scan and len(series)==1 else None
+    measurement=extraction.measurement(device,scan[1].lower(),extraction.conditions_for(caption),kind=kind) if device and scan and len(series)==1 else None
     for index,(raw,width,color) in enumerate(series):
         ident=key(extraction.version,meta["page"],box,"series",index)
         points=projection(axes,[dict(px=x,py=y) for x,y in raw])
@@ -266,5 +335,5 @@ def produce(extraction, meta, box, items, lines, caption, label, kind):
                axes=axes,points=points,digitization_method="vector_pdf" if raw else "manual_pending",
                stroke_width_pdf=width,uncertainty=estimate,uncertainty_method=method,device_id=device if len(series)==1 else None,
                measurement_id=measurement,series_label=f"Серия {index+1}")
-        for ref in (source,source_figure):
+        for ref in sources:
             insert(extraction.db,"plot_source",plot_id=ident,source_reference_id=ref)

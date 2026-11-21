@@ -215,7 +215,7 @@ def checks(connection, publication, corpus_status):
         gap=gap_for(r,eg_by_material)
         group=measurement_groups[r["pdf_version_id"],r["measurement_id"]] if r["measurement_id"] else []
         yield from physical(r,gap)
-        if metric=="PCE":
+        if metric=="PCE" and r["acquisition_method"]=="published_numeric":
             yield pce(r,group,references,verified)
         if metric in ("PCE","Jsc"):
             yield sq(r,gap)
