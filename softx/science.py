@@ -49,7 +49,7 @@ def candidates(connection, mode):
     return rows(connection,f"""SELECT r.id,r.metric_name,r.normalized_value,r.normalized_unit,r.value_state,
         r.pdf_version_id,r.result_origin,r.aggregation,p.title,p.corpus_status,d.device_label,d.device_type,m.material_class,
         d.active_area,d.area_unit,d.area_definition,q.certified,q.scan_direction,q.spectrum,q.light_intensity,q.light_intensity_unit,
-        q.intensity_source_id,q.stability_protocol,q.stress_conditions FROM measurement_result r
+        q.intensity_source_id,q.stability_protocol,q.stress_conditions FROM active_pv_result r
         JOIN publication p ON p.id=r.publication_id LEFT JOIN device d ON d.id=r.device_id
         LEFT JOIN material m ON m.id=COALESCE(d.material_id,r.material_id)
         LEFT JOIN measurement q ON q.id=r.measurement_id WHERE {clause}

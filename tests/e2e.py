@@ -320,6 +320,25 @@ def stage3(page,url,output):
     print("PASS 7 · comparison criteria, downloaded JSON/NDJSON/CSV/XLSX, PDF hashes and foreign keys",flush=True)
 
 
+def off_topic_pdf(page, url):
+    path = ROOT / "output" / "pdf" / "softx-off-topic-power-supply.pdf"
+    version = hashlib.sha256(path.read_bytes()).hexdigest()
+    page.goto(url)
+    page.get_by_role("button", name="Загрузить PDF", exact=True).click()
+    page.locator("#files").set_input_files(path)
+    page.get_by_role("button", name="Обработать PDF").click()
+    row = page.locator("tr").filter(has_text=path.name)
+    expect(row.get_by_text("Обработан", exact=True)).to_be_visible(timeout=15000)
+    expect(row.get_by_text("На рассмотрении", exact=True)).to_be_visible()
+    row.get_by_role("link", name="Открыть PDF X-Ray").click()
+    expect(page.locator(".pdf-page img")).to_be_visible()
+    expect(page.locator(".highlight-value, .highlight-unit")).to_have_count(0)
+    detail = page.request.get(f"{url}/api/pdf/{version}").json()
+    assert detail["pdf"]["pv_extraction_enabled"] == 0
+    assert not detail["results"] and not detail["links"]
+    print("PASS · power supply efficiency is not extracted as photovoltaic PCE", flush=True)
+
+
 def main():
     with tempfile.TemporaryDirectory(prefix="softx-e2e-") as directory, server(Path(directory)) as url, sync_playwright() as playwright:
         browser = playwright.chromium.launch(executable_path=os.environ.get("CHROMIUM","/usr/bin/chromium"),
@@ -331,6 +350,7 @@ def main():
         stage2a(page,url,Path(directory))
         stage2b(page,url)
         stage3(page,url,Path(directory))
+        off_topic_pdf(page,url)
         browser.close()
 
 

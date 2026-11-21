@@ -40,6 +40,11 @@ def initialize():
             fields={row["name"] for row in connection.execute(f"PRAGMA table_info({table})")}
             if field not in fields:
                 connection.execute(f"ALTER TABLE {table} ADD COLUMN {field} {kind}")
+        if "pv_extraction_enabled" not in {row["name"] for row in connection.execute("PRAGMA table_info(pdf_version)")}:
+            connection.execute("ALTER TABLE pdf_version ADD COLUMN pv_extraction_enabled INTEGER CHECK(pv_extraction_enabled IN (0,1))")
+        connection.execute("""CREATE VIEW IF NOT EXISTS active_pv_result AS
+            SELECT r.*,r.rowid AS record_order FROM measurement_result r JOIN pdf_version f ON f.id=r.pdf_version_id
+            WHERE f.pv_extraction_enabled IS NOT 0""")
 
 
 def encode(value):

@@ -15,13 +15,13 @@ UNITS = {
     "Rs": {"Ω·cm²": 1, "Ω": 1}, "Rsh": {"Ω·cm²": 1, "Ω": 1},
 }
 METRICS = {
-    "PCE": r"PCE|power conversion efficiency|η",
+    "PCE": r"PCE|power conversion efficiency|[ηɳ]",
     "Voc": r"V[ _]*[oₒ][c꜀]|open[- ]circuit voltage",
     "Jsc_EQE": r"J[ _]*[sₛ][c꜀][ _-]*EQE|EQE[- ]integrated J[ _]*[sₛ][c꜀]",
     "Jsc": r"J[ _]*[sₛ][c꜀]|short[- ]circuit current density",
     "FF": r"FF|fill factor",
-    "Rs": r"R[ _]?s|series resistance",
-    "Rsh": r"R[ _]?sh|shunt resistance",
+    "Rs": r"R[ _]?s(?:eries)?|series resistance",
+    "Rsh": r"R[ _]?sh(?:unt)?|shunt resistance",
     "HI": r"HI|hysteresis index",
     "T80": r"T[ _]?80",
     "Eg": r"E[ _]?g|band gap|bandgap",
@@ -32,19 +32,19 @@ CLASSES = {
     "Sb₂Se₃": r"Sb[₂2]Se[₃3]|antimony selenide", "Тонкоплёночный Si": r"thin[- ]film silicon|a-Si|amorphous silicon|µc-Si",
 }
 UNIT_PATTERN = (r"m?V\b|m?eV\b|%|m?A\s*/\s*(?:cm|m)\s*(?:\^?2|²)|"
-                r"m?A\s*(?:cm|m)\s*[−-][²2]|m?W\s*/\s*(?:cm|m)\s*(?:\^?2|²)|"
+                r"m?A\s*(?:cm|m)\s*[−-�][²2]|m?W\s*/\s*(?:cm|m)\s*(?:\^?2|²)|"
                 r"[cm]m\s*(?:\^2|²|2)|m\s*(?:\^2|²|2)|nm\b|[µμu]m\b|Å|"
-                r"hours?\b|days?\b|h\b|min\b|s\b|Ω(?:[· ]cm[²2])?|dimensionless\b|fraction\b")
+                r"hours?\b|days?\b|h\b|min\b|s\b|(?:[ΩΩ]|O(?=\s*cm))(?:\s*[·*]?\s*cm\s*(?:\^2|[²2]))?|dimensionless\b|fraction\b")
 NUM = r"[+−-]?(?:\d{1,3}(?:,\d{3})+(?:\.\d+)?|\d+(?:[.,]\d+)?|[.,]\d+)(?:[Ee][+-]?\d+)?"
 
 
 def normalize(metric, value, unit):
     if unit is None or value is None:
         return None, None
-    clean = re.sub(r"\s+", "", unit).replace("^2", "²").replace("cm2", "cm²").replace("mm2", "mm²").replace("/m2", "/m²")
-    clean = re.sub(r"(m?A)(cm|m)[−-]2", r"\1/\2²", clean)
+    clean = re.sub(r"\s+", "", unit.replace("Ω", "Ω")).replace("^2", "²").replace("cm2", "cm²").replace("mm2", "mm²").replace("/m2", "/m²")
+    clean = re.sub(r"(m?A)(cm|m)[−-�][²2]", r"\1/\2²", clean)
     clean = {"μm": "µm", "um": "µm", "hour": "h", "hours": "h", "day": "days",
-             "m2": "m²", "Ωcm²": "Ω·cm²"}.get(clean, clean)
+             "m2": "m²", "Ocm²": "Ω·cm²", "Ωcm²": "Ω·cm²", "Ω*cm²": "Ω·cm²"}.get(clean, clean)
     clean = {"dimensionless":"1","fraction":"1"}.get(clean.lower(),clean)
     factors = UNITS.get(metric, {})
     if clean in factors:
@@ -53,12 +53,20 @@ def normalize(metric, value, unit):
     return None, None
 
 
+def has_photovoltaic_context(text, material_class):
+    return bool(re.search(r"\b(?:photovoltaics?|solar|PV)\s*(?:[-–]\s*)?(?:cells?|devices?|modules?|panels?)\b"
+                          r"|\bphotovoltaic\b|\bAM\s*1[.,]5\s*G\b|фотоэлектрическ\w*|солнечн\w*\s+элемент", text, re.I)
+                or (material_class and re.search(r"\bsingle[-\s]+junction\b", text, re.I)))
+
+
 def classify(text, material_class):
     tandem = r"\btandem (?:solar cells?|devices?)\b|\b(?:two|multi)[- ]junction solar cells?"
     if re.search(tandem, text[:260], re.I) and not re.search(r"single[- ]junction", text[:260], re.I):
         return "excluded_tandem", "Тандемный или многопереходный прибор указан в начале публикации"
     if re.search(r"simulation.only|purely theoretical|no (?:devices?|samples?) (?:were |was )?fabricated|without experimental", text, re.I):
         return "excluded_theoretical", "Публикация явно указывает на расчётный характер работы"
+    if not has_photovoltaic_context(text, material_class):
+        return "needs_review", "В тексте не подтверждён фотоэлектрический контекст; извлечение солнечных метрик приостановлено"
     if material_class and re.search(r"fabricat|deposit|experimentally prepar", text, re.I) and re.search(r"\b(?:PCE|Voc|Jsc|FF)\b|power conversion efficiency", text, re.I):
         return "included", "Обнаружены изготовление тонкоплёночного прибора и фотоэлектрические данные"
     return "needs_review", "Недостаточно явных признаков изготовленного однопереходного тонкоплёночного прибора"

@@ -126,6 +126,15 @@
           "type": "TEXT",
           "nullable": true,
           "default_sql": "CURRENT_TIMESTAMP"
+        },
+        "pv_extraction_enabled": {
+          "type": "INTEGER",
+          "nullable": true,
+          "default_sql": null,
+          "enum": [
+            0,
+            1
+          ]
         }
       }
     },
@@ -688,6 +697,20 @@
             "Требует проверки"
           ]
         },
+        "duplicate_of": {
+          "type": "TEXT",
+          "nullable": true,
+          "default_sql": null,
+          "references": {
+            "table": "measurement_result",
+            "column": "id"
+          }
+        },
+        "note": {
+          "type": "TEXT",
+          "nullable": true,
+          "default_sql": null
+        },
         "manual": {
           "type": "INTEGER",
           "nullable": false,
@@ -1178,13 +1201,13 @@
     }
   },
   "metric_registry": {
-    "PCE": "PCE|power conversion efficiency|η",
+    "PCE": "PCE|power conversion efficiency|[ηɳ]",
     "Voc": "V[ _]*[oₒ][c꜀]|open[- ]circuit voltage",
     "Jsc_EQE": "J[ _]*[sₛ][c꜀][ _-]*EQE|EQE[- ]integrated J[ _]*[sₛ][c꜀]",
     "Jsc": "J[ _]*[sₛ][c꜀]|short[- ]circuit current density",
     "FF": "FF|fill factor",
-    "Rs": "R[ _]?s|series resistance",
-    "Rsh": "R[ _]?sh|shunt resistance",
+    "Rs": "R[ _]?s(?:eries)?|series resistance",
+    "Rsh": "R[ _]?sh(?:unt)?|shunt resistance",
     "HI": "HI|hysteresis index",
     "T80": "T[ _]?80",
     "Eg": "E[ _]?g|band gap|bandgap"

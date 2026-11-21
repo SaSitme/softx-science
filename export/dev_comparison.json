@@ -1,11 +1,127 @@
 {
   "criterion": "One-to-one metric, normalized value (5 decimal places), unit and publication. Device, aggregation and source accuracy are not covered by this diagnostic.",
+  "totals": {
+    "matches": 510,
+    "predicted": 696,
+    "expected": 605,
+    "ai_predictions": 153,
+    "ai_additional_matches": 38
+  },
+  "pdf_statuses": [
+    {
+      "filename": "D001.pdf",
+      "processing_status": "completed",
+      "error_message": null
+    },
+    {
+      "filename": "D002.pdf",
+      "processing_status": "completed",
+      "error_message": null
+    },
+    {
+      "filename": "D003.pdf",
+      "processing_status": "completed",
+      "error_message": null
+    },
+    {
+      "filename": "D004.pdf",
+      "processing_status": "completed",
+      "error_message": null
+    },
+    {
+      "filename": "D005.pdf",
+      "processing_status": "completed",
+      "error_message": null
+    },
+    {
+      "filename": "D006.pdf",
+      "processing_status": "completed",
+      "error_message": null
+    },
+    {
+      "filename": "D007.pdf",
+      "processing_status": "completed",
+      "error_message": null
+    },
+    {
+      "filename": "D008.pdf",
+      "processing_status": "completed",
+      "error_message": null
+    },
+    {
+      "filename": "D009.pdf",
+      "processing_status": "completed",
+      "error_message": null
+    },
+    {
+      "filename": "D010.pdf",
+      "processing_status": "completed",
+      "error_message": null
+    },
+    {
+      "filename": "D012.pdf",
+      "processing_status": "completed",
+      "error_message": null
+    },
+    {
+      "filename": "D013.pdf",
+      "processing_status": "completed",
+      "error_message": null
+    },
+    {
+      "filename": "D014.pdf",
+      "processing_status": "completed",
+      "error_message": null
+    },
+    {
+      "filename": "D015.pdf",
+      "processing_status": "completed",
+      "error_message": null
+    },
+    {
+      "filename": "D016.pdf",
+      "processing_status": "completed",
+      "error_message": null
+    },
+    {
+      "filename": "D017.pdf",
+      "processing_status": "completed",
+      "error_message": null
+    },
+    {
+      "filename": "D018.pdf",
+      "processing_status": "completed",
+      "error_message": null
+    },
+    {
+      "filename": "D019.pdf",
+      "processing_status": "completed",
+      "error_message": null
+    },
+    {
+      "filename": "D020.pdf",
+      "processing_status": "completed",
+      "error_message": null
+    },
+    {
+      "filename": "D021.pdf",
+      "processing_status": "completed",
+      "error_message": null
+    },
+    {
+      "filename": "D022.pdf",
+      "processing_status": "completed",
+      "error_message": null
+    }
+  ],
   "publications": [
     {
       "publication": "D001",
-      "matches": 25,
-      "predicted": 31,
+      "matches": 28,
+      "predicted": 40,
       "expected": 39,
+      "ai_predictions": 6,
+      "ai_additional_matches": 3,
       "missing": [
         {
           "metric": "FF",
@@ -38,18 +154,6 @@
           "count": 2
         },
         {
-          "metric": "Jsc_EQE",
-          "value": 15.37,
-          "unit": "mA/cm2",
-          "count": 1
-        },
-        {
-          "metric": "Jsc_EQE",
-          "value": 15.24,
-          "unit": "mA/cm2",
-          "count": 1
-        },
-        {
           "metric": "PCE",
           "value": 14.66,
           "unit": "%",
@@ -62,12 +166,6 @@
           "count": 1
         },
         {
-          "metric": "Voc",
-          "value": 1.245,
-          "unit": "V",
-          "count": 1
-        },
-        {
           "metric": "PCE",
           "value": 19.0,
           "unit": "%",
@@ -77,67 +175,15 @@
     },
     {
       "publication": "D002",
-      "matches": 1,
-      "predicted": 4,
+      "matches": 11,
+      "predicted": 17,
       "expected": 12,
+      "ai_predictions": 5,
+      "ai_additional_matches": 2,
       "missing": [
-        {
-          "metric": "Voc",
-          "value": 0.855,
-          "unit": "V",
-          "count": 1
-        },
-        {
-          "metric": "Jsc",
-          "value": 14.8,
-          "unit": "mA/cm2",
-          "count": 1
-        },
-        {
-          "metric": "FF",
-          "value": 61.64,
-          "unit": "%",
-          "count": 1
-        },
-        {
-          "metric": "PCE",
-          "value": 7.8,
-          "unit": "%",
-          "count": 1
-        },
-        {
-          "metric": "Voc",
-          "value": 0.982,
-          "unit": "V",
-          "count": 1
-        },
-        {
-          "metric": "Jsc",
-          "value": 17.9,
-          "unit": "mA/cm2",
-          "count": 1
-        },
-        {
-          "metric": "FF",
-          "value": 87.04,
-          "unit": "%",
-          "count": 1
-        },
-        {
-          "metric": "PCE",
-          "value": 15.3,
-          "unit": "%",
-          "count": 2
-        },
         {
           "metric": "PCE",
           "value": 11.65,
-          "unit": "%",
-          "count": 1
-        },
-        {
-          "metric": "PCE",
-          "value": 13.5,
           "unit": "%",
           "count": 1
         }
@@ -145,34 +191,12 @@
     },
     {
       "publication": "D003",
-      "matches": 7,
-      "predicted": 8,
+      "matches": 13,
+      "predicted": 20,
       "expected": 18,
+      "ai_predictions": 9,
+      "ai_additional_matches": 3,
       "missing": [
-        {
-          "metric": "Jsc",
-          "value": 24.89,
-          "unit": "mA/cm2",
-          "count": 1
-        },
-        {
-          "metric": "PCE",
-          "value": 23.05,
-          "unit": "%",
-          "count": 1
-        },
-        {
-          "metric": "Voc",
-          "value": 1.11,
-          "unit": "V",
-          "count": 1
-        },
-        {
-          "metric": "Jsc",
-          "value": 24.23,
-          "unit": "mA/cm2",
-          "count": 1
-        },
         {
           "metric": "FF",
           "value": 79.5,
@@ -182,12 +206,6 @@
         {
           "metric": "Rs",
           "value": 3.15,
-          "unit": "Ohm*cm2",
-          "count": 1
-        },
-        {
-          "metric": "Rs",
-          "value": 2.66,
           "unit": "Ohm*cm2",
           "count": 1
         },
@@ -208,20 +226,16 @@
           "value": 24.0,
           "unit": "mA/cm2",
           "count": 1
-        },
-        {
-          "metric": "Jsc_EQE",
-          "value": 23.5,
-          "unit": "mA/cm2",
-          "count": 1
         }
       ]
     },
     {
       "publication": "D004",
-      "matches": 18,
-      "predicted": 18,
+      "matches": 20,
+      "predicted": 23,
       "expected": 31,
+      "ai_predictions": 5,
+      "ai_additional_matches": 2,
       "missing": [
         {
           "metric": "PCE",
@@ -240,12 +254,6 @@
           "value": 10.32,
           "unit": "%",
           "count": 1
-        },
-        {
-          "metric": "PCE",
-          "value": 11.46,
-          "unit": "%",
-          "count": 2
         },
         {
           "metric": "PCE",
@@ -299,19 +307,15 @@
     },
     {
       "publication": "D005",
-      "matches": 17,
-      "predicted": 23,
+      "matches": 19,
+      "predicted": 38,
       "expected": 24,
+      "ai_predictions": 10,
+      "ai_additional_matches": 1,
       "missing": [
         {
           "metric": "FF",
           "value": 77.96,
-          "unit": "%",
-          "count": 1
-        },
-        {
-          "metric": "FF",
-          "value": 78.2,
           "unit": "%",
           "count": 1
         },
@@ -324,12 +328,6 @@
         {
           "metric": "Jsc_EQE",
           "value": 25.41,
-          "unit": "mA/cm2",
-          "count": 1
-        },
-        {
-          "metric": "Jsc_EQE",
-          "value": 25.73,
           "unit": "mA/cm2",
           "count": 1
         },
@@ -349,34 +347,12 @@
     },
     {
       "publication": "D007",
-      "matches": 8,
-      "predicted": 8,
+      "matches": 12,
+      "predicted": 19,
       "expected": 13,
+      "ai_predictions": 7,
+      "ai_additional_matches": 0,
       "missing": [
-        {
-          "metric": "PCE",
-          "value": 22.97,
-          "unit": "%",
-          "count": 1
-        },
-        {
-          "metric": "Jsc",
-          "value": 24.29,
-          "unit": "mA/cm2",
-          "count": 1
-        },
-        {
-          "metric": "PCE",
-          "value": 22.8,
-          "unit": "%",
-          "count": 1
-        },
-        {
-          "metric": "Voc",
-          "value": 9.399,
-          "unit": "V",
-          "count": 1
-        },
         {
           "metric": "PCE",
           "value": 19.1,
@@ -387,16 +363,12 @@
     },
     {
       "publication": "D008",
-      "matches": 5,
-      "predicted": 5,
+      "matches": 8,
+      "predicted": 13,
       "expected": 17,
+      "ai_predictions": 6,
+      "ai_additional_matches": 1,
       "missing": [
-        {
-          "metric": "Jsc",
-          "value": 23.75,
-          "unit": "mA/cm2",
-          "count": 1
-        },
         {
           "metric": "PCE",
           "value": 15.8,
@@ -435,12 +407,6 @@
         },
         {
           "metric": "PCE",
-          "value": 26.4,
-          "unit": "%",
-          "count": 1
-        },
-        {
-          "metric": "PCE",
           "value": 20.0,
           "unit": "%",
           "count": 1
@@ -450,37 +416,21 @@
           "value": 21.3,
           "unit": "%",
           "count": 1
-        },
-        {
-          "metric": "PCE",
-          "value": 24.0,
-          "unit": "%",
-          "count": 1
         }
       ]
     },
     {
       "publication": "D009",
-      "matches": 9,
-      "predicted": 12,
+      "matches": 11,
+      "predicted": 24,
       "expected": 16,
+      "ai_predictions": 10,
+      "ai_additional_matches": 0,
       "missing": [
-        {
-          "metric": "Voc",
-          "value": 0.99,
-          "unit": "V",
-          "count": 1
-        },
         {
           "metric": "Jsc_EQE",
           "value": 22.34,
           "unit": "mA/cm2",
-          "count": 1
-        },
-        {
-          "metric": "PCE",
-          "value": 16.65,
-          "unit": "%",
           "count": 1
         },
         {
@@ -511,94 +461,25 @@
     },
     {
       "publication": "D010",
-      "matches": 12,
-      "predicted": 21,
+      "matches": 17,
+      "predicted": 29,
       "expected": 17,
-      "missing": [
-        {
-          "metric": "Rs",
-          "value": 30.37,
-          "unit": "Ohm*cm2",
-          "count": 1
-        },
-        {
-          "metric": "Rsh",
-          "value": 130.8,
-          "unit": "Ohm*cm2",
-          "count": 1
-        },
-        {
-          "metric": "Rs",
-          "value": 17.58,
-          "unit": "Ohm*cm2",
-          "count": 1
-        },
-        {
-          "metric": "Rsh",
-          "value": 279.05,
-          "unit": "Ohm*cm2",
-          "count": 1
-        },
-        {
-          "metric": "PCE",
-          "value": 22.9,
-          "unit": "%",
-          "count": 1
-        }
-      ]
+      "ai_predictions": 9,
+      "ai_additional_matches": 0,
+      "missing": []
     },
     {
       "publication": "D012",
-      "matches": 9,
-      "predicted": 16,
+      "matches": 23,
+      "predicted": 35,
       "expected": 27,
+      "ai_predictions": 7,
+      "ai_additional_matches": 3,
       "missing": [
-        {
-          "metric": "Voc",
-          "value": 0.432,
-          "unit": "V",
-          "count": 1
-        },
-        {
-          "metric": "FF",
-          "value": 61.3,
-          "unit": "%",
-          "count": 1
-        },
-        {
-          "metric": "Rs",
-          "value": 23.37,
-          "unit": "Ohm*cm2",
-          "count": 1
-        },
-        {
-          "metric": "Rsh",
-          "value": 443.2,
-          "unit": "Ohm*cm2",
-          "count": 1
-        },
         {
           "metric": "Voc",
           "value": 0.433,
           "unit": "V",
-          "count": 1
-        },
-        {
-          "metric": "FF",
-          "value": 63.3,
-          "unit": "%",
-          "count": 1
-        },
-        {
-          "metric": "Rs",
-          "value": 21.44,
-          "unit": "Ohm*cm2",
-          "count": 1
-        },
-        {
-          "metric": "Rsh",
-          "value": 635.6,
-          "unit": "Ohm*cm2",
           "count": 1
         },
         {
@@ -608,216 +489,46 @@
           "count": 1
         },
         {
-          "metric": "FF",
-          "value": 64.1,
-          "unit": "%",
-          "count": 1
-        },
-        {
-          "metric": "Rs",
-          "value": 16.25,
-          "unit": "Ohm*cm2",
-          "count": 1
-        },
-        {
-          "metric": "Rsh",
-          "value": 774.4,
-          "unit": "Ohm*cm2",
-          "count": 1
-        },
-        {
-          "metric": "Voc",
-          "value": 0.456,
-          "unit": "V",
-          "count": 1
-        },
-        {
           "metric": "PCE",
           "value": 4.82,
           "unit": "%",
           "count": 2
-        },
-        {
-          "metric": "Rs",
-          "value": 14.27,
-          "unit": "Ohm*cm2",
-          "count": 1
-        },
-        {
-          "metric": "Rsh",
-          "value": 958.6,
-          "unit": "Ohm*cm2",
-          "count": 1
-        },
-        {
-          "metric": "PCE",
-          "value": 7.99,
-          "unit": "%",
-          "count": 1
         }
       ]
     },
     {
       "publication": "D013",
-      "matches": 4,
-      "predicted": 4,
+      "matches": 21,
+      "predicted": 41,
       "expected": 24,
+      "ai_predictions": 21,
+      "ai_additional_matches": 1,
       "missing": [
-        {
-          "metric": "Jsc",
-          "value": 31.59,
-          "unit": "mA/cm2",
-          "count": 1
-        },
-        {
-          "metric": "Voc",
-          "value": 0.592,
-          "unit": "V",
-          "count": 1
-        },
-        {
-          "metric": "FF",
-          "value": 64.89,
-          "unit": "%",
-          "count": 1
-        },
         {
           "metric": "PCE",
           "value": 12.13,
           "unit": "%",
-          "count": 3
-        },
-        {
-          "metric": "Jsc",
-          "value": 27.48,
-          "unit": "mA/cm2",
-          "count": 1
-        },
-        {
-          "metric": "Voc",
-          "value": 0.618,
-          "unit": "V",
-          "count": 1
-        },
-        {
-          "metric": "FF",
-          "value": 55.78,
-          "unit": "%",
-          "count": 1
-        },
-        {
-          "metric": "PCE",
-          "value": 9.47,
-          "unit": "%",
-          "count": 1
-        },
-        {
-          "metric": "Jsc",
-          "value": 22.12,
-          "unit": "mA/cm2",
-          "count": 1
-        },
-        {
-          "metric": "Voc",
-          "value": 0.65,
-          "unit": "V",
-          "count": 1
-        },
-        {
-          "metric": "FF",
-          "value": 45.06,
-          "unit": "%",
-          "count": 1
-        },
-        {
-          "metric": "PCE",
-          "value": 6.48,
-          "unit": "%",
-          "count": 1
-        },
-        {
-          "metric": "Jsc",
-          "value": 20.35,
-          "unit": "mA/cm2",
-          "count": 1
-        },
-        {
-          "metric": "Voc",
-          "value": 0.647,
-          "unit": "V",
-          "count": 1
-        },
-        {
-          "metric": "FF",
-          "value": 41.21,
-          "unit": "%",
-          "count": 1
-        },
-        {
-          "metric": "PCE",
-          "value": 5.43,
-          "unit": "%",
-          "count": 1
+          "count": 2
         },
         {
           "metric": "Rsh",
           "value": 47600.0,
           "unit": "Ohm*cm2",
           "count": 1
-        },
-        {
-          "metric": "PCE",
-          "value": 14.0,
-          "unit": "%",
-          "count": 1
         }
       ]
     },
     {
       "publication": "D014",
-      "matches": 7,
-      "predicted": 10,
+      "matches": 24,
+      "predicted": 32,
       "expected": 29,
+      "ai_predictions": 12,
+      "ai_additional_matches": 7,
       "missing": [
-        {
-          "metric": "Jsc",
-          "value": 23.4,
-          "unit": "mA/cm2",
-          "count": 2
-        },
-        {
-          "metric": "FF",
-          "value": 73.2,
-          "unit": "%",
-          "count": 1
-        },
-        {
-          "metric": "Rs",
-          "value": 2.4,
-          "unit": "Ohm*cm2",
-          "count": 1
-        },
         {
           "metric": "Rsh",
           "value": 1440.0,
-          "unit": "Ohm*cm2",
-          "count": 1
-        },
-        {
-          "metric": "Voc",
-          "value": 0.697,
-          "unit": "V",
-          "count": 1
-        },
-        {
-          "metric": "FF",
-          "value": 66.8,
-          "unit": "%",
-          "count": 1
-        },
-        {
-          "metric": "Rs",
-          "value": 3.5,
           "unit": "Ohm*cm2",
           "count": 1
         },
@@ -828,109 +539,27 @@
           "count": 1
         },
         {
-          "metric": "Jsc",
-          "value": 23.0,
-          "unit": "mA/cm2",
-          "count": 1
-        },
-        {
           "metric": "PCE",
           "value": 10.4,
           "unit": "%",
           "count": 2
         },
         {
-          "metric": "FF",
-          "value": 65.9,
-          "unit": "%",
-          "count": 1
-        },
-        {
-          "metric": "Rs",
-          "value": 3.6,
-          "unit": "Ohm*cm2",
-          "count": 1
-        },
-        {
           "metric": "Rsh",
           "value": 630.0,
           "unit": "Ohm*cm2",
-          "count": 1
-        },
-        {
-          "metric": "Voc",
-          "value": 0.701,
-          "unit": "V",
-          "count": 1
-        },
-        {
-          "metric": "Jsc",
-          "value": 22.9,
-          "unit": "mA/cm2",
-          "count": 1
-        },
-        {
-          "metric": "FF",
-          "value": 71.0,
-          "unit": "%",
-          "count": 1
-        },
-        {
-          "metric": "Jsc",
-          "value": 22.2,
-          "unit": "mA/cm2",
-          "count": 1
-        },
-        {
-          "metric": "FF",
-          "value": 67.0,
-          "unit": "%",
-          "count": 1
-        },
-        {
-          "metric": "PCE",
-          "value": 2.3,
-          "unit": "%",
-          "count": 1
-        },
-        {
-          "metric": "PCE",
-          "value": 3.0,
-          "unit": "%",
           "count": 1
         }
       ]
     },
     {
       "publication": "D015",
-      "matches": 20,
-      "predicted": 21,
+      "matches": 49,
+      "predicted": 55,
       "expected": 57,
+      "ai_predictions": 2,
+      "ai_additional_matches": 0,
       "missing": [
-        {
-          "metric": "Jsc",
-          "value": 22.2,
-          "unit": "mA/cm2",
-          "count": 2
-        },
-        {
-          "metric": "Jsc",
-          "value": 20.5,
-          "unit": "mA/cm2",
-          "count": 1
-        },
-        {
-          "metric": "Jsc",
-          "value": 21.8,
-          "unit": "mA/cm2",
-          "count": 3
-        },
-        {
-          "metric": "Jsc",
-          "value": 22.1,
-          "unit": "mA/cm2",
-          "count": 1
-        },
         {
           "metric": "PCE",
           "value": 14.4,
@@ -938,129 +567,9 @@
           "count": 1
         },
         {
-          "metric": "Jsc",
-          "value": 22.0,
-          "unit": "mA/cm2",
-          "count": 1
-        },
-        {
-          "metric": "Voc",
-          "value": 0.796,
-          "unit": "V",
-          "count": 2
-        },
-        {
-          "metric": "FF",
-          "value": 70.8,
-          "unit": "%",
-          "count": 1
-        },
-        {
           "metric": "PCE",
           "value": 12.5,
           "unit": "%",
-          "count": 2
-        },
-        {
-          "metric": "Rs",
-          "value": 3.6,
-          "unit": "Ohm*cm2",
-          "count": 1
-        },
-        {
-          "metric": "Rsh",
-          "value": 5428.2,
-          "unit": "Ohm*cm2",
-          "count": 1
-        },
-        {
-          "metric": "Jsc",
-          "value": 15.8,
-          "unit": "mA/cm2",
-          "count": 1
-        },
-        {
-          "metric": "FF",
-          "value": 60.9,
-          "unit": "%",
-          "count": 1
-        },
-        {
-          "metric": "PCE",
-          "value": 7.6,
-          "unit": "%",
-          "count": 1
-        },
-        {
-          "metric": "Rs",
-          "value": 5.0,
-          "unit": "Ohm*cm2",
-          "count": 1
-        },
-        {
-          "metric": "Rsh",
-          "value": 457.0,
-          "unit": "Ohm*cm2",
-          "count": 1
-        },
-        {
-          "metric": "Voc",
-          "value": 0.79,
-          "unit": "V",
-          "count": 1
-        },
-        {
-          "metric": "FF",
-          "value": 50.1,
-          "unit": "%",
-          "count": 1
-        },
-        {
-          "metric": "PCE",
-          "value": 8.6,
-          "unit": "%",
-          "count": 1
-        },
-        {
-          "metric": "Rs",
-          "value": 13.6,
-          "unit": "Ohm*cm2",
-          "count": 1
-        },
-        {
-          "metric": "Rsh",
-          "value": 3878.0,
-          "unit": "Ohm*cm2",
-          "count": 1
-        },
-        {
-          "metric": "Voc",
-          "value": 0.754,
-          "unit": "V",
-          "count": 1
-        },
-        {
-          "metric": "Jsc",
-          "value": 7.9,
-          "unit": "mA/cm2",
-          "count": 1
-        },
-        {
-          "metric": "FF",
-          "value": 51.4,
-          "unit": "%",
-          "count": 1
-        },
-        {
-          "metric": "Rs",
-          "value": 28.6,
-          "unit": "Ohm*cm2",
-          "count": 1
-        },
-        {
-          "metric": "Rsh",
-          "value": 747.0,
-          "unit": "Ohm*cm2",
           "count": 1
         },
         {
@@ -1103,28 +612,12 @@
     },
     {
       "publication": "D017",
-      "matches": 44,
-      "predicted": 55,
+      "matches": 47,
+      "predicted": 61,
       "expected": 49,
+      "ai_predictions": 6,
+      "ai_additional_matches": 3,
       "missing": [
-        {
-          "metric": "PCE",
-          "value": 18.7,
-          "unit": "%",
-          "count": 1
-        },
-        {
-          "metric": "PCE",
-          "value": 19.7,
-          "unit": "%",
-          "count": 1
-        },
-        {
-          "metric": "PCE",
-          "value": 19.3,
-          "unit": "%",
-          "count": 1
-        },
         {
           "metric": "PCE",
           "value": 23.35,
@@ -1141,114 +634,21 @@
     },
     {
       "publication": "D018",
-      "matches": 0,
-      "predicted": 0,
+      "matches": 8,
+      "predicted": 11,
       "expected": 8,
-      "missing": [
-        {
-          "metric": "PCE",
-          "value": 10.4,
-          "unit": "%",
-          "count": 1
-        },
-        {
-          "metric": "Jsc",
-          "value": 31.0,
-          "unit": "mA/cm2",
-          "count": 1
-        },
-        {
-          "metric": "Voc",
-          "value": 0.493,
-          "unit": "V",
-          "count": 1
-        },
-        {
-          "metric": "FF",
-          "value": 66.0,
-          "unit": "%",
-          "count": 1
-        },
-        {
-          "metric": "Jsc",
-          "value": 31.3,
-          "unit": "mA/cm2",
-          "count": 1
-        },
-        {
-          "metric": "Voc",
-          "value": 0.41,
-          "unit": "V",
-          "count": 1
-        },
-        {
-          "metric": "FF",
-          "value": 59.0,
-          "unit": "%",
-          "count": 1
-        },
-        {
-          "metric": "PCE",
-          "value": 7.8,
-          "unit": "%",
-          "count": 1
-        }
-      ]
+      "ai_predictions": 3,
+      "ai_additional_matches": 0,
+      "missing": []
     },
     {
       "publication": "D019",
-      "matches": 9,
-      "predicted": 10,
+      "matches": 46,
+      "predicted": 55,
       "expected": 52,
+      "ai_predictions": 2,
+      "ai_additional_matches": 1,
       "missing": [
-        {
-          "metric": "Jsc",
-          "value": 8.4189,
-          "unit": "mA/cm2",
-          "count": 1
-        },
-        {
-          "metric": "PCE",
-          "value": 0.465,
-          "unit": "%",
-          "count": 1
-        },
-        {
-          "metric": "Rs",
-          "value": 18.105,
-          "unit": "Ohm*cm2",
-          "count": 1
-        },
-        {
-          "metric": "Rsh",
-          "value": 26.703,
-          "unit": "Ohm*cm2",
-          "count": 1
-        },
-        {
-          "metric": "Jsc",
-          "value": 21.1832,
-          "unit": "mA/cm2",
-          "count": 1
-        },
-        {
-          "metric": "PCE",
-          "value": 3.358,
-          "unit": "%",
-          "count": 1
-        },
-        {
-          "metric": "Rs",
-          "value": 9.847,
-          "unit": "Ohm*cm2",
-          "count": 1
-        },
-        {
-          "metric": "Rsh",
-          "value": 51.383,
-          "unit": "Ohm*cm2",
-          "count": 1
-        },
         {
           "metric": "Voc",
           "value": 0.44999,
@@ -1259,7 +659,7 @@
           "metric": "Jsc",
           "value": 23.6606,
           "unit": "mA/cm2",
-          "count": 2
+          "count": 1
         },
         {
           "metric": "FF",
@@ -1268,158 +668,14 @@
           "count": 1
         },
         {
-          "metric": "PCE",
-          "value": 4.288,
-          "unit": "%",
-          "count": 2
-        },
-        {
           "metric": "Rs",
           "value": 8.488,
           "unit": "Ohm*cm2",
-          "count": 2
+          "count": 1
         },
         {
           "metric": "Rsh",
           "value": 70.319,
-          "unit": "Ohm*cm2",
-          "count": 2
-        },
-        {
-          "metric": "Voc",
-          "value": 0.4,
-          "unit": "V",
-          "count": 1
-        },
-        {
-          "metric": "Jsc",
-          "value": 22.167,
-          "unit": "mA/cm2",
-          "count": 1
-        },
-        {
-          "metric": "FF",
-          "value": 43.99,
-          "unit": "%",
-          "count": 1
-        },
-        {
-          "metric": "PCE",
-          "value": 3.886,
-          "unit": "%",
-          "count": 1
-        },
-        {
-          "metric": "Rs",
-          "value": 5.48,
-          "unit": "Ohm*cm2",
-          "count": 1
-        },
-        {
-          "metric": "Rsh",
-          "value": 67.59,
-          "unit": "Ohm*cm2",
-          "count": 1
-        },
-        {
-          "metric": "Voc",
-          "value": 0.43,
-          "unit": "V",
-          "count": 1
-        },
-        {
-          "metric": "Jsc",
-          "value": 27.43,
-          "unit": "mA/cm2",
-          "count": 1
-        },
-        {
-          "metric": "FF",
-          "value": 47.35,
-          "unit": "%",
-          "count": 1
-        },
-        {
-          "metric": "Rs",
-          "value": 5.89,
-          "unit": "Ohm*cm2",
-          "count": 1
-        },
-        {
-          "metric": "Rsh",
-          "value": 118.26,
-          "unit": "Ohm*cm2",
-          "count": 1
-        },
-        {
-          "metric": "Voc",
-          "value": 0.42,
-          "unit": "V",
-          "count": 1
-        },
-        {
-          "metric": "Jsc",
-          "value": 23.834,
-          "unit": "mA/cm2",
-          "count": 1
-        },
-        {
-          "metric": "FF",
-          "value": 44.47,
-          "unit": "%",
-          "count": 1
-        },
-        {
-          "metric": "PCE",
-          "value": 4.464,
-          "unit": "%",
-          "count": 1
-        },
-        {
-          "metric": "Rs",
-          "value": 6.04,
-          "unit": "Ohm*cm2",
-          "count": 1
-        },
-        {
-          "metric": "Rsh",
-          "value": 80.89,
-          "unit": "Ohm*cm2",
-          "count": 1
-        },
-        {
-          "metric": "Voc",
-          "value": 0.37,
-          "unit": "V",
-          "count": 1
-        },
-        {
-          "metric": "Jsc",
-          "value": 25.138,
-          "unit": "mA/cm2",
-          "count": 1
-        },
-        {
-          "metric": "FF",
-          "value": 47.11,
-          "unit": "%",
-          "count": 1
-        },
-        {
-          "metric": "PCE",
-          "value": 4.412,
-          "unit": "%",
-          "count": 1
-        },
-        {
-          "metric": "Rs",
-          "value": 5.69,
-          "unit": "Ohm*cm2",
-          "count": 1
-        },
-        {
-          "metric": "Rsh",
-          "value": 112.25,
           "unit": "Ohm*cm2",
           "count": 1
         },
@@ -1428,33 +684,17 @@
           "value": 26.05,
           "unit": "mA/cm2",
           "count": 1
-        },
-        {
-          "metric": "Jsc_EQE",
-          "value": 25.89,
-          "unit": "mA/cm2",
-          "count": 1
         }
       ]
     },
     {
       "publication": "D020",
-      "matches": 8,
-      "predicted": 11,
+      "matches": 12,
+      "predicted": 18,
       "expected": 22,
+      "ai_predictions": 5,
+      "ai_additional_matches": 2,
       "missing": [
-        {
-          "metric": "PCE",
-          "value": 0.65,
-          "unit": "%",
-          "count": 1
-        },
-        {
-          "metric": "Voc",
-          "value": 0.519,
-          "unit": "V",
-          "count": 1
-        },
         {
           "metric": "Jsc",
           "value": 5.78,
@@ -1465,18 +705,6 @@
           "metric": "FF",
           "value": 21.8,
           "unit": "%",
-          "count": 1
-        },
-        {
-          "metric": "PCE",
-          "value": 1.63,
-          "unit": "%",
-          "count": 1
-        },
-        {
-          "metric": "Voc",
-          "value": 0.47,
-          "unit": "V",
           "count": 1
         },
         {
@@ -1523,7 +751,7 @@
         },
         {
           "metric": "PCE",
-          "value": 10.0,
+          "value": 22.0,
           "unit": "%",
           "count": 1
         }
@@ -1531,538 +759,12 @@
     },
     {
       "publication": "D021",
-      "matches": 16,
-      "predicted": 16,
+      "matches": 113,
+      "predicted": 126,
       "expected": 122,
+      "ai_predictions": 18,
+      "ai_additional_matches": 9,
       "missing": [
-        {
-          "metric": "Voc",
-          "value": 0.324,
-          "unit": "V",
-          "count": 1
-        },
-        {
-          "metric": "Jsc",
-          "value": 31.2,
-          "unit": "mA/cm2",
-          "count": 1
-        },
-        {
-          "metric": "FF",
-          "value": 32.0,
-          "unit": "%",
-          "count": 1
-        },
-        {
-          "metric": "PCE",
-          "value": 3.24,
-          "unit": "%",
-          "count": 1
-        },
-        {
-          "metric": "Rs",
-          "value": 6.86,
-          "unit": "Ohm*cm2",
-          "count": 1
-        },
-        {
-          "metric": "Rsh",
-          "value": 342.7,
-          "unit": "Ohm*cm2",
-          "count": 1
-        },
-        {
-          "metric": "Voc",
-          "value": 0.296,
-          "unit": "V",
-          "count": 1
-        },
-        {
-          "metric": "Voc",
-          "value": 0.327,
-          "unit": "V",
-          "count": 1
-        },
-        {
-          "metric": "Jsc",
-          "value": 9.15,
-          "unit": "mA/cm2",
-          "count": 1
-        },
-        {
-          "metric": "Jsc",
-          "value": 20.95,
-          "unit": "mA/cm2",
-          "count": 1
-        },
-        {
-          "metric": "FF",
-          "value": 37.2,
-          "unit": "%",
-          "count": 1
-        },
-        {
-          "metric": "FF",
-          "value": 30.4,
-          "unit": "%",
-          "count": 1
-        },
-        {
-          "metric": "PCE",
-          "value": 0.9,
-          "unit": "%",
-          "count": 1
-        },
-        {
-          "metric": "Rs",
-          "value": 4.17,
-          "unit": "Ohm*cm2",
-          "count": 1
-        },
-        {
-          "metric": "Rsh",
-          "value": 149.2,
-          "unit": "Ohm*cm2",
-          "count": 1
-        },
-        {
-          "metric": "Voc",
-          "value": 0.343,
-          "unit": "V",
-          "count": 1
-        },
-        {
-          "metric": "Voc",
-          "value": 0.321,
-          "unit": "V",
-          "count": 1
-        },
-        {
-          "metric": "Jsc",
-          "value": 9.35,
-          "unit": "mA/cm2",
-          "count": 1
-        },
-        {
-          "metric": "Jsc",
-          "value": 22.4,
-          "unit": "mA/cm2",
-          "count": 1
-        },
-        {
-          "metric": "FF",
-          "value": 33.9,
-          "unit": "%",
-          "count": 1
-        },
-        {
-          "metric": "FF",
-          "value": 26.5,
-          "unit": "%",
-          "count": 1
-        },
-        {
-          "metric": "PCE",
-          "value": 0.93,
-          "unit": "%",
-          "count": 1
-        },
-        {
-          "metric": "PCE",
-          "value": 1.91,
-          "unit": "%",
-          "count": 1
-        },
-        {
-          "metric": "Rs",
-          "value": 18.34,
-          "unit": "Ohm*cm2",
-          "count": 1
-        },
-        {
-          "metric": "Rsh",
-          "value": 4566.6,
-          "unit": "Ohm*cm2",
-          "count": 1
-        },
-        {
-          "metric": "Voc",
-          "value": 0.373,
-          "unit": "V",
-          "count": 1
-        },
-        {
-          "metric": "Voc",
-          "value": 0.377,
-          "unit": "V",
-          "count": 1
-        },
-        {
-          "metric": "Jsc",
-          "value": 5.46,
-          "unit": "mA/cm2",
-          "count": 1
-        },
-        {
-          "metric": "Jsc",
-          "value": 6.7,
-          "unit": "mA/cm2",
-          "count": 1
-        },
-        {
-          "metric": "FF",
-          "value": 37.1,
-          "unit": "%",
-          "count": 1
-        },
-        {
-          "metric": "FF",
-          "value": 40.6,
-          "unit": "%",
-          "count": 2
-        },
-        {
-          "metric": "PCE",
-          "value": 0.76,
-          "unit": "%",
-          "count": 1
-        },
-        {
-          "metric": "PCE",
-          "value": 1.02,
-          "unit": "%",
-          "count": 1
-        },
-        {
-          "metric": "Rs",
-          "value": 9.05,
-          "unit": "Ohm*cm2",
-          "count": 1
-        },
-        {
-          "metric": "Rsh",
-          "value": 5754.4,
-          "unit": "Ohm*cm2",
-          "count": 1
-        },
-        {
-          "metric": "Voc",
-          "value": 0.342,
-          "unit": "V",
-          "count": 1
-        },
-        {
-          "metric": "Voc",
-          "value": 0.356,
-          "unit": "V",
-          "count": 1
-        },
-        {
-          "metric": "Jsc",
-          "value": 8.08,
-          "unit": "mA/cm2",
-          "count": 1
-        },
-        {
-          "metric": "Jsc",
-          "value": 9.32,
-          "unit": "mA/cm2",
-          "count": 1
-        },
-        {
-          "metric": "FF",
-          "value": 41.3,
-          "unit": "%",
-          "count": 1
-        },
-        {
-          "metric": "FF",
-          "value": 44.0,
-          "unit": "%",
-          "count": 1
-        },
-        {
-          "metric": "PCE",
-          "value": 1.15,
-          "unit": "%",
-          "count": 1
-        },
-        {
-          "metric": "PCE",
-          "value": 1.47,
-          "unit": "%",
-          "count": 1
-        },
-        {
-          "metric": "Rs",
-          "value": 3.6,
-          "unit": "Ohm*cm2",
-          "count": 1
-        },
-        {
-          "metric": "Rsh",
-          "value": 405.9,
-          "unit": "Ohm*cm2",
-          "count": 1
-        },
-        {
-          "metric": "Voc",
-          "value": 0.395,
-          "unit": "V",
-          "count": 1
-        },
-        {
-          "metric": "Voc",
-          "value": 0.381,
-          "unit": "V",
-          "count": 1
-        },
-        {
-          "metric": "Jsc",
-          "value": 3.67,
-          "unit": "mA/cm2",
-          "count": 1
-        },
-        {
-          "metric": "Jsc",
-          "value": 5.58,
-          "unit": "mA/cm2",
-          "count": 1
-        },
-        {
-          "metric": "FF",
-          "value": 35.3,
-          "unit": "%",
-          "count": 1
-        },
-        {
-          "metric": "FF",
-          "value": 34.0,
-          "unit": "%",
-          "count": 1
-        },
-        {
-          "metric": "PCE",
-          "value": 0.51,
-          "unit": "%",
-          "count": 1
-        },
-        {
-          "metric": "Rs",
-          "value": 4.45,
-          "unit": "Ohm*cm2",
-          "count": 1
-        },
-        {
-          "metric": "Rsh",
-          "value": 26833.2,
-          "unit": "Ohm*cm2",
-          "count": 1
-        },
-        {
-          "metric": "Voc",
-          "value": 0.385,
-          "unit": "V",
-          "count": 1
-        },
-        {
-          "metric": "Voc",
-          "value": 0.355,
-          "unit": "V",
-          "count": 1
-        },
-        {
-          "metric": "Jsc",
-          "value": 0.74,
-          "unit": "mA/cm2",
-          "count": 1
-        },
-        {
-          "metric": "Jsc",
-          "value": 1.25,
-          "unit": "mA/cm2",
-          "count": 1
-        },
-        {
-          "metric": "FF",
-          "value": 42.6,
-          "unit": "%",
-          "count": 1
-        },
-        {
-          "metric": "PCE",
-          "value": 0.12,
-          "unit": "%",
-          "count": 1
-        },
-        {
-          "metric": "PCE",
-          "value": 0.18,
-          "unit": "%",
-          "count": 1
-        },
-        {
-          "metric": "Rs",
-          "value": 3.75,
-          "unit": "Ohm*cm2",
-          "count": 1
-        },
-        {
-          "metric": "Rsh",
-          "value": 21298.0,
-          "unit": "Ohm*cm2",
-          "count": 1
-        },
-        {
-          "metric": "Voc",
-          "value": 0.359,
-          "unit": "V",
-          "count": 1
-        },
-        {
-          "metric": "Voc",
-          "value": 0.361,
-          "unit": "V",
-          "count": 1
-        },
-        {
-          "metric": "Jsc",
-          "value": 9.07,
-          "unit": "mA/cm2",
-          "count": 1
-        },
-        {
-          "metric": "Jsc",
-          "value": 9.05,
-          "unit": "mA/cm2",
-          "count": 1
-        },
-        {
-          "metric": "FF",
-          "value": 41.1,
-          "unit": "%",
-          "count": 1
-        },
-        {
-          "metric": "FF",
-          "value": 43.2,
-          "unit": "%",
-          "count": 1
-        },
-        {
-          "metric": "PCE",
-          "value": 1.35,
-          "unit": "%",
-          "count": 1
-        },
-        {
-          "metric": "Rs",
-          "value": 2.35,
-          "unit": "Ohm*cm2",
-          "count": 1
-        },
-        {
-          "metric": "Rsh",
-          "value": 3314.1,
-          "unit": "Ohm*cm2",
-          "count": 1
-        },
-        {
-          "metric": "Voc",
-          "value": 0.349,
-          "unit": "V",
-          "count": 1
-        },
-        {
-          "metric": "Jsc",
-          "value": 14.58,
-          "unit": "mA/cm2",
-          "count": 1
-        },
-        {
-          "metric": "FF",
-          "value": 44.5,
-          "unit": "%",
-          "count": 1
-        },
-        {
-          "metric": "PCE",
-          "value": 2.27,
-          "unit": "%",
-          "count": 1
-        },
-        {
-          "metric": "Rs",
-          "value": 4.59,
-          "unit": "Ohm*cm2",
-          "count": 1
-        },
-        {
-          "metric": "Rsh",
-          "value": 1633.4,
-          "unit": "Ohm*cm2",
-          "count": 1
-        },
-        {
-          "metric": "Voc",
-          "value": 0.347,
-          "unit": "V",
-          "count": 1
-        },
-        {
-          "metric": "Voc",
-          "value": 0.344,
-          "unit": "V",
-          "count": 1
-        },
-        {
-          "metric": "Jsc",
-          "value": 14.65,
-          "unit": "mA/cm2",
-          "count": 1
-        },
-        {
-          "metric": "Jsc",
-          "value": 26.6,
-          "unit": "mA/cm2",
-          "count": 1
-        },
-        {
-          "metric": "FF",
-          "value": 48.8,
-          "unit": "%",
-          "count": 1
-        },
-        {
-          "metric": "FF",
-          "value": 42.2,
-          "unit": "%",
-          "count": 1
-        },
-        {
-          "metric": "PCE",
-          "value": 2.45,
-          "unit": "%",
-          "count": 1
-        },
-        {
-          "metric": "Rs",
-          "value": 1.81,
-          "unit": "Ohm*cm2",
-          "count": 1
-        },
-        {
-          "metric": "Rsh",
-          "value": 460.2,
-          "unit": "Ohm*cm2",
-          "count": 1
-        },
-        {
-          "metric": "PCE",
-          "value": 5.25,
-          "unit": "%",
-          "count": 1
-        },
         {
           "metric": "FF",
           "value": 49.0,
@@ -2073,7 +775,7 @@
           "metric": "PCE",
           "value": 3.2,
           "unit": "%",
-          "count": 2
+          "count": 1
         },
         {
           "metric": "Voc",
@@ -2096,42 +798,6 @@
         {
           "metric": "PCE",
           "value": 1.28,
-          "unit": "%",
-          "count": 2
-        },
-        {
-          "metric": "PCE",
-          "value": 0.36,
-          "unit": "%",
-          "count": 1
-        },
-        {
-          "metric": "PCE",
-          "value": 47.1,
-          "unit": "%",
-          "count": 1
-        },
-        {
-          "metric": "PCE",
-          "value": 31.7,
-          "unit": "%",
-          "count": 1
-        },
-        {
-          "metric": "PCE",
-          "value": 10.57,
-          "unit": "%",
-          "count": 1
-        },
-        {
-          "metric": "PCE",
-          "value": 9.2,
-          "unit": "%",
-          "count": 1
-        },
-        {
-          "metric": "PCE",
-          "value": 10.12,
           "unit": "%",
           "count": 1
         },
@@ -2157,113 +823,12 @@
     },
     {
       "publication": "D022",
-      "matches": 9,
-      "predicted": 9,
+      "matches": 28,
+      "predicted": 39,
       "expected": 28,
-      "missing": [
-        {
-          "metric": "Voc",
-          "value": 0.29,
-          "unit": "V",
-          "count": 1
-        },
-        {
-          "metric": "Jsc",
-          "value": 1.85,
-          "unit": "mA/cm2",
-          "count": 2
-        },
-        {
-          "metric": "FF",
-          "value": 31.0,
-          "unit": "%",
-          "count": 1
-        },
-        {
-          "metric": "PCE",
-          "value": 0.21,
-          "unit": "%",
-          "count": 1
-        },
-        {
-          "metric": "Voc",
-          "value": 0.41,
-          "unit": "V",
-          "count": 1
-        },
-        {
-          "metric": "Jsc",
-          "value": 3.09,
-          "unit": "mA/cm2",
-          "count": 2
-        },
-        {
-          "metric": "FF",
-          "value": 41.4,
-          "unit": "%",
-          "count": 1
-        },
-        {
-          "metric": "PCE",
-          "value": 0.51,
-          "unit": "%",
-          "count": 1
-        },
-        {
-          "metric": "Voc",
-          "value": 0.33,
-          "unit": "V",
-          "count": 1
-        },
-        {
-          "metric": "Jsc",
-          "value": 1.86,
-          "unit": "mA/cm2",
-          "count": 1
-        },
-        {
-          "metric": "FF",
-          "value": 30.8,
-          "unit": "%",
-          "count": 1
-        },
-        {
-          "metric": "PCE",
-          "value": 0.22,
-          "unit": "%",
-          "count": 1
-        },
-        {
-          "metric": "Voc",
-          "value": 0.46,
-          "unit": "V",
-          "count": 1
-        },
-        {
-          "metric": "Jsc",
-          "value": 3.5,
-          "unit": "mA/cm2",
-          "count": 1
-        },
-        {
-          "metric": "FF",
-          "value": 33.4,
-          "unit": "%",
-          "count": 1
-        },
-        {
-          "metric": "PCE",
-          "value": 0.52,
-          "unit": "%",
-          "count": 1
-        },
-        {
-          "metric": "Jsc",
-          "value": 2.86,
-          "unit": "mA/cm2",
-          "count": 1
-        }
-      ]
+      "ai_predictions": 10,
+      "ai_additional_matches": 0,
+      "missing": []
     }
   ]
 }

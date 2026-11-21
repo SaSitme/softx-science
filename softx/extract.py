@@ -24,7 +24,7 @@ def prose_metrics(text):
     value_offsets = set()
     for metric_match in METRIC.finditer(text):
         connector = re.match(
-            r"\s*(?:\([^)]{1,20}\)\s*)?(?:(?:[=:~≈]|of\b|was\b|is\b|reached\b|at\b)\s*)?",
+            r"\s*\)?\s*(?:\((?!\s*[+−-]?(?:\d|[.,]\d))[^)]{1,20}\)\s*)?(?:(?:[=:~≈]|of\b|was\b|is\b|reached\b|at\b)\s*)?\(?\s*",
             text[metric_match.end():], re.I,
         )
         value_start = metric_match.end() + connector.end()
@@ -79,6 +79,140 @@ def metric_unit(metric, text):
                  if d.normalize(metric, 1, match.group())[0] is not None), None)
 
 
+def table_headers(line):
+    headers = {}
+    for cell in line.cells:
+        matches = list(METRIC.finditer(cell.text))
+        for index, match in enumerate(matches):
+            next_start = matches[index+1].start() if index+1<len(matches) else len(cell.text)
+            end = match.start()+len(cell.text[match.start():next_start].rstrip())
+            span = cell.part(match.start(),end)
+            headers[span.bbox[0]] = (line, span, match.lastgroup)
+        if not matches and re.fullmatch(r"Eff?\.?\s*(?:[\[(]\s*%\s*[\])])?", cell.text, re.I):
+            headers[cell.bbox[0]] = (line, cell, "PCE")
+    return headers
+
+
+def table_qualifiers(cells):
+    for cell in cells:
+        if SCAN.fullmatch(cell.text) or UNIT.fullmatch(cell.text.strip(" ()[]")):
+            yield cell
+        else:
+            for match in re.finditer(r"[\[(]([^\]\)]+)[\])]", cell.text):
+                if UNIT.fullmatch(match[1].strip()):
+                    yield cell.part(*match.span())
+
+
+def column_distance(cell, header):
+    return min(abs(cell.bbox[0]-header.bbox[0]),abs(sum(cell.bbox[::2])-sum(header.bbox[::2]))/2)
+
+
+def table_values(cells, columns):
+    anchors = [qualifier or header for _,header,_,_,qualifier in columns.values()]
+    for cell in cells:
+        words = list(re.finditer(r"\S+", cell.text))
+        if len(words) > 1 and all(re.fullmatch(d.NUM, word.group()) for word in words):
+            yield from (cell.part(*word.span()) for word in words)
+        elif len(words)>1 and re.fullmatch(d.NUM,words[-1].group()):
+            tail = cell.part(*words[-1].span())
+            if (all(abs(cell.bbox[0]-anchor.bbox[0])>12 for anchor in anchors)
+                    and any(column_distance(tail,anchor)<=11 for anchor in anchors)):
+                yield cell.part(0,len(cell.text[:words[-1].start()].rstrip()))
+                yield tail
+            else:
+                yield cell
+        else:
+            yield cell
+
+
+def prose_windows(lines):
+    """Short connected stretches printed in the same column."""
+    for index, first in enumerate(lines):
+        if len(first.cells) != 1 or len(first.text) < 12:
+            continue
+        group = [(0, first)]
+        text = first.text
+        last = first
+        for line in lines[index+1:index+3]:
+            if len(line.cells) != 1 or line.page != first.page:
+                break
+            left, bottom, _, _ = last.span.bbox
+            x, y, _, _ = line.span.bbox
+            if abs(x-left) > 16 or not 0 < bottom-y < 25:
+                break
+            group.append((len(text)+1, line))
+            text += " " + line.text
+            last = line
+        yield text, group
+
+
+def ordered_prose_values(text):
+    for group in re.finditer(r"(?P<labels>[^.!?;]{4,150})\b(?:were|are)\s+(?P<values>[^!?;]{1,185}?)\brespectively\b", text, re.I):
+        labels = []
+        for label in METRIC.finditer(group["labels"]):
+            if labels and labels[-1].lastgroup==label.lastgroup and re.fullmatch(
+                    r"\s*\(\s*", group["labels"][labels[-1].end():label.start()]):
+                labels[-1]=label
+            else:
+                labels.append(label)
+        if not 2 <= len(labels) <= 8:
+            continue
+        if "," not in group["labels"] and not re.search(r"\band\b",group["labels"],re.I):
+            continue
+        cursor = group.start("values")
+        records = []
+        for label in labels:
+            separator = re.match(r"[\s,]*(?:and\s+)?", text[cursor:], re.I)
+            value = VALUE.match(text, cursor+separator.end())
+            unit = UNIT.match(text, value.end()+len(text[value.end():])-len(text[value.end():].lstrip())) if value else None
+            if not unit or d.normalize(label.lastgroup, 1, unit.group())[0] is None:
+                break
+            records.append((label.lastgroup, value, unit))
+            cursor = unit.end()
+        if len(records) == len(labels) and not text[cursor:group.end("values")].strip(" ,"):
+            yield from records
+
+
+def locate_prose_span(group, start, end):
+    for offset,line in group:
+        if offset<=start and end<=offset+len(line.text):
+            return line,line.span.part(start-offset,end-offset)
+    return None
+
+
+def scientific_cell_value(cell):
+    """Read a flattened power of ten only when the exponent is superscript in the PDF."""
+    match = re.fullmatch(rf"({d.NUM})\s*×\s*(10)([+−-]?\d{{1,3}})",cell.text)
+    if not match:
+        return None
+    base_bottom = min(box[1] for box in cell.part(*match.span(2)).boxes)
+    exponent_bottom = min(box[1] for box in cell.part(*match.span(3)).boxes)
+    exponent = int(match[3].replace("−","-"))
+    if exponent_bottom <= base_bottom+1.2 or not -100<=exponent<=100:
+        return None
+    return number(match[1])*10**exponent
+
+
+def split_header_unit(header, metric, following):
+    centers = sum(header.bbox[::2])/2
+    for previous, line in zip(following,following[1:]):
+        if previous.page != line.page:
+            break
+        for first in previous.cells:
+            prefix = re.search(r"\(\s*(mA/|[ΩΩ])\s*$",first.text)
+            if not prefix or abs(sum(first.bbox[::2])/2-centers)>20:
+                continue
+            for last in line.cells:
+                suffix = re.fullmatch(r"(cm[²2])\)",last.text)
+                if (not suffix or abs(sum(last.bbox[::2])/2-centers)>20
+                        or not 0<first.bbox[1]-last.bbox[1]<18):
+                    continue
+                unit = prefix[1]+(" " if prefix[1] in "ΩΩ" else "")+suffix[1]
+                if d.normalize(metric,1,unit)[0] is not None:
+                    return unit,((previous,first.part(*prefix.span(1))),(line,last.part(*suffix.span(1))))
+    return None
+
+
 class Extraction:
     def __init__(self, connection, pub, version, lines):
         self.db, self.pub, self.version, self.lines = connection, pub, version, lines
@@ -117,10 +251,14 @@ class Extraction:
             corpus_reason=CASE WHEN corpus_manual=0 THEN ? ELSE corpus_reason END WHERE id=?""",
                         (title, doi, None if not author else json.dumps([x.strip() for x in re.split(r";|\band\b", author) if x.strip()]),
                          int(year[1]) if year else None, journal[1] if journal else None, fixture, corpus, reason, self.pub))
-        effective=one(self.db,"SELECT corpus_status FROM publication WHERE id=?",self.pub)
-        if effective["corpus_status"].startswith("excluded"):
-            return False
+        effective=one(self.db,"SELECT corpus_status, corpus_manual FROM publication WHERE id=?",self.pub)
         corpus=effective["corpus_status"]
+        eligible = not corpus.startswith("excluded") and (
+            d.has_photovoltaic_context(text, material_class) or (corpus == "included" and effective["corpus_manual"])
+        )
+        self.db.execute("UPDATE pdf_version SET pv_extraction_enabled=? WHERE id=?", (int(eligible), self.version))
+        if not eligible:
+            return False
         if material_class:
             self.material_id = key(self.pub, "material", material_class)
             raw = re.search(d.CLASSES[material_class], text, re.I).group()
@@ -257,8 +395,8 @@ class Extraction:
                measurement_type=kind, **evidence)
         return ident
 
-    def result(self, metric, match, line, span, unit, refs, device, scan, origin, cited=None, extra="", conditions=None):
-        value = number(match["n"]) if match else None
+    def result(self, metric, match, line, span, unit, refs, device, scan, origin, cited=None, extra="", conditions=None, row_aggregation=None, extraction_method=None, numeric_override=None):
+        value = numeric_override if numeric_override is not None else number(match["n"]) if match else None
         op = match["op"] if match else None
         spread = number(match["spread"]) if match and match["spread"] else None
         end = number(match["end"]) if match and match["end"] else None
@@ -266,10 +404,11 @@ class Extraction:
         local = self.conditions_for(line)
         local.update(conditions or {})
         measurement = self.measurement(device, scan, local, "stability" if metric == "T80" else "JV") if origin == "primary" and metric != "Eg" else None
-        agg = aggregation(extra + " " + line.text)
+        agg = row_aggregation or aggregation(extra + " " + line.text)
         norm, norm_unit = d.normalize(metric, value, unit) if op is None and end is None else (None, None)
         ambiguous = metric != "Eg" and origin == "primary" and not device
-        uncertain = ambiguous or (value is not None and norm is None) or (origin == "cited" and cited is None)
+        uncertain = (ambiguous or (value is not None and norm is None) or (origin == "cited" and cited is None)
+                     or extraction_method == "local_ai_pdf_quote")
         state = "missing" if value is None else "ambiguous" if uncertain else "numeric_zero" if value == 0 else "numeric"
         raw_record = dict(value=span.text, unit=unit, spread_value=spread, range_min=low, range_max=high,
                           inequality_op=op, aggregation=agg, scan_direction=scan)
@@ -281,14 +420,27 @@ class Extraction:
             raw_record["time_point"], raw_record["time_unit"] = point[1], point[2]
         time, time_unit = d.normalize("T80", number(point[1]), point[2]) if point else (None, None)
         result_id = key(self.version, line.page, metric, span.bbox)
+        from_table = any(kind == "table_cell" for _, kind in refs)
+        status = d.REVIEW if uncertain else d.AUTO
         insert(self.db, "measurement_result", id=result_id, publication_id=self.pub, pdf_version_id=self.version,
                material_id=self.material_id if origin == "primary" else None, device_id=device, measurement_id=measurement,
                metric_name=metric, metric_value=value, metric_unit=unit, raw_value=span.text, raw_unit=unit,
                raw_record=raw_record, normalized_value=norm, normalized_unit=norm_unit, aggregation=agg,
                value_state=state, spread_value=spread, range_min=low, range_max=high, inequality_op=op,
                n_devices=int(count[1]) if count else None, time_point=time, time_unit=time_unit,
-               result_origin=origin, cited_publication_id=cited, extraction_status=d.REVIEW if uncertain else d.AUTO,
-               extraction_method="geometry_table" if any(kind == "table_cell" for _, kind in refs) else "pdf_text")
+               result_origin=origin, cited_publication_id=cited, extraction_status=status,
+               extraction_method=extraction_method or ("geometry_table" if from_table else "pdf_text"))
+        if from_table and measurement:
+            # A table header can identify a device that an earlier text pass left unresolved.
+            self.db.execute(
+                """UPDATE measurement_result
+                   SET device_id=?, measurement_id=?, aggregation=?, value_state=?, extraction_status=?,
+                       extraction_method='geometry_table', candidate_device_ids='[]', candidate_measurement_ids='[]'
+                   WHERE id=? AND manual=0 AND device_id IS NULL AND measurement_id IS NULL
+                     AND result_origin='primary' AND extraction_method='pdf_text'
+                     AND raw_value=? AND raw_unit IS ?""",
+                (device, measurement, agg, state, status, result_id, span.text, unit),
+            )
         for ref, _ in refs:
             insert(self.db, "result_source", result_id=result_id, source_reference_id=ref)
         if measurement:
@@ -301,45 +453,171 @@ class Extraction:
                             (json.dumps(list(self.devices.values())), "[]", result_id))
         return result_id
 
+    def extra_prose(self):
+        for text, group in prose_windows(self.lines):
+            candidates = list(ordered_prose_values(text))
+            if len(group)>1:
+                boundary = group[1][0]
+                first_line = group[0][1]
+                local_offsets = {(metric, value.start("n")) for metric,value,_ in prose_metrics(first_line.text)}
+                for metric,value,descriptor_end in prose_metrics(text):
+                    if descriptor_end >= boundary or (metric,value.start("n")) in local_offsets:
+                        continue
+                    unit_start = value.end()+len(text[value.end():])-len(text[value.end():].lstrip())
+                    unit = UNIT.match(text,unit_start)
+                    if unit and d.normalize(metric,1,unit.group())[0] is not None:
+                        candidates.append((metric,value,unit))
+            for metric,value,unit in candidates:
+                self.add_prose_candidate(group, metric, value, unit, "pdf_prose_context")
+
+    def add_prose_candidate(self, group, metric, value, unit, method):
+        source = locate_prose_span(group,value.start("n") if not value["op"] else value.start(),value.end())
+        unit_source = locate_prose_span(group,*unit.span())
+        if not source or not unit_source:
+            return
+        line, span = source
+        if one(self.db, """SELECT 1 FROM source_reference s JOIN result_source l ON l.source_reference_id=s.id
+                          WHERE s.pdf_version_id=? AND s.source_page=? AND s.fragment_role='value' AND
+                            json_extract(s.bbox,'$[0]')<=? AND json_extract(s.bbox,'$[1]')<=?
+                            AND json_extract(s.bbox,'$[2]')>=? AND json_extract(s.bbox,'$[3]')>=? LIMIT 1""",
+               self.version,line.page,(span.bbox[0]+span.bbox[2])/2,(span.bbox[1]+span.bbox[3])/2,
+               (span.bbox[0]+span.bbox[2])/2,(span.bbox[1]+span.bbox[3])/2):
+            return
+        context = " ".join(part.text for _,part in group)
+        origin = "cited" if re.search(r"\bpreviously reported\b|\bet al\.",context,re.I) else "primary"
+        refs = [(self.ref(line,span,"value"),"text"),(self.ref(*unit_source,"unit"),"text")]
+        self.result(metric,value,line,span,unit.group(),refs,None,None,origin,
+                    self.cited_publication(context) if origin=="cited" else None,extraction_method=method)
+
+    def grouped_table_rows(self):
+        """Associate vertically centered sample labels with paired mean and record rows."""
+        paired_tables = set()
+        grouped = {}
+        table = None
+        paired = False
+        page = None
+        for index, line in enumerate(self.lines):
+            if line.page != page:
+                table, paired, page = None, False, line.page
+            caption = TABLE.match(line.text)
+            if caption:
+                table = caption[1]
+                declared = re.search(r"\b(?:average|mean)\b.*\b(?:record|champion|best)\b.*\bparentheses\b", line.text, re.I)
+                if declared:
+                    paired_tables.add(table)
+                paired = bool(declared or (table in paired_tables and re.search(r"\bcont(?:inued)?\b", line.text, re.I)))
+                continue
+            if re.match(r"^(?:figure|fig\.)\s*\d", line.text, re.I):
+                paired = False
+            if not paired or not 0 < index < len(self.lines)-1:
+                continue
+            mean, champion = self.lines[index-1], self.lines[index+1]
+            label = line.cells[0]
+            if mean.page != page or champion.page != page or not re.fullmatch(r"[A-Za-z][\w-]{0,20}", label.text):
+                continue
+            if len(mean.cells) < 2 or len(mean.cells) != len(champion.cells):
+                continue
+            if not (0 < mean.cells[0].bbox[1]-label.bbox[1] < 35 and 0 < label.bbox[1]-champion.cells[0].bbox[1] < 35):
+                continue
+            if label.bbox[2] >= min(mean.cells[0].bbox[0], champion.cells[0].bbox[0]):
+                continue
+            if not all(VALUE.fullmatch(cell.text) for cell in mean.cells):
+                continue
+            if not all(cell.text.startswith("(") and cell.text.endswith(")") and VALUE.fullmatch(cell.text[1:-1])
+                       for cell in champion.cells):
+                continue
+            if not all(abs(sum(a.bbox[::2])-sum(b.bbox[::2]))<32 for a,b in zip(mean.cells,champion.cells)):
+                continue
+            grouped[id(mean)] = (line, label, "mean")
+            grouped[id(line)] = (line, label, "unknown")
+            grouped[id(champion)] = (line, label, "champion")
+        return grouped
+
     def parse(self):
         table, heading, headers, active_page = None, "", {}, None
         subheaders = {}
+        grouped = self.grouped_table_rows()
+        transposed_labels, table_left = [], None
         ambiguous = []
-        for line in self.lines:
+        header_units = {}
+        for index,line in enumerate(self.lines):
             if active_page != line.page:
                 table, heading, headers, subheaders = None, "", {}, {}
+                transposed_labels, table_left = [], None
+                header_units = {}
                 active_page = line.page
             cap = TABLE.match(line.text)
             if cap:
                 table, heading, headers, subheaders = cap[1], line.text, {}, {}
+                transposed_labels, table_left = [], line.cells[0].bbox[0]
+                header_units = {}
                 continue
-            metrics = [(cell, METRIC.search(cell.text)) for cell in line.cells]
-            if table and not headers and not any(match for _,match in metrics) and len(line.cells)==1:
-                heading+=" "+line.text
-                continue
-            if len(line.cells) >= 2 and any(match for _, match in metrics):
-                candidate = {cell.bbox[0]: (line, cell, match.lastgroup) for cell, match in metrics if match}
-                if len(candidate) >= 2 or table:
-                    headers.update(candidate)
-                    subheaders={}
+            if table_left is not None and headers:
+                right = max(span.bbox[2] for _,span,_ in headers.values())
+                if all(cell.bbox[0]>right+9 or cell.bbox[2]<table_left-9 for cell in line.cells):
                     continue
-            if headers and len(line.cells)>=2:
-                # A lower header row can hold unit cells or explicit scan-direction subcolumns.
-                qualifiers=[cell for cell in line.cells
-                            if SCAN.fullmatch(cell.text) or UNIT.fullmatch(cell.text.strip(" ()[]"))]
-                if len(qualifiers)>=2 and not any(VALUE.match(cell.text) for cell in line.cells):
+            if table and not headers and len(line.cells)>=3:
+                label = line.cells[0]
+                metric = METRIC.match(label.text)
+                if (transposed_labels and len(line.cells)-1==len(transposed_labels)
+                        and all(VALUE.fullmatch(cell.text) for cell in line.cells[1:])
+                        and all(abs(head.bbox[0]-cell.bbox[0])<=12 for (_,head),cell in zip(transposed_labels,line.cells[1:]))):
+                    unit = metric_unit(metric.lastgroup,label.text) if metric else None
+                    if unit:
+                        source = self.ref(line,label.part(*unit.span()),"unit","table_header",table)
+                        for (head_line,head), cell in zip(transposed_labels,line.cells[1:]):
+                            origin = "cited" if re.search(r"\bliterature\b",heading,re.I) else "primary"
+                            device = self.device(head.text) if origin=="primary" else None
+                            refs=[(self.ref(line,cell,"value","table_cell",table),"table_cell"),
+                                  (source,"table_header"),
+                                  (self.ref(head_line,head,"sample_label","table_header",table),"table_header")]
+                            self.result(metric.lastgroup,VALUE.fullmatch(cell.text),line,cell,unit.group(),
+                                        refs,device,None,origin,extra=heading)
+                    continue
+                if not table_headers(line) and all(len(cell.text)<30 and not VALUE.fullmatch(cell.text) for cell in line.cells):
+                    # The corner cell describes the sample column in some layouts.
+                    stub = re.fullmatch(r"(?:sample|device|cell)(?:\s+(?:name|id|label))?", label.text, re.I)
+                    transposed_labels = [(line,cell) for cell in line.cells[1 if stub else 0:]]
+                    continue
+            candidate = table_headers(line) if len(line.cells) >= 2 else {}
+            if table and not headers:
+                first = line.cells[0]
+                if table_left is not None and first.bbox[0]>table_left+155 and not candidate:
+                    continue
+                if not candidate and (len(line.cells)==1 or (
+                        abs(first.bbox[0]-table_left)<12 and len(first.text)>33)):
+                    heading += " "+first.text
+                    continue
+            if candidate and (len(candidate)>=2 or table) and not any(VALUE.match(cell.text) for cell in line.cells):
+                if index>0 and self.lines[index-1].page==line.page:
+                    for cell in line.cells:
+                        if cell.text.lower()=="factor" and any(
+                                prefix.text.lower()=="fill" and abs(sum(prefix.bbox[::2])-sum(cell.bbox[::2]))<20
+                                and 0<prefix.bbox[1]-cell.bbox[1]<18 for prefix in self.lines[index-1].cells):
+                            candidate[cell.bbox[0]]=(line,cell,"FF")
+                headers.update(candidate)
+                for x,(_,cell,metric) in candidate.items():
+                    split=split_header_unit(cell,metric,self.lines[index:index+3])
+                    if split:
+                        header_units[x]=split
+                subheaders={}
+                continue
+            if headers and not any(VALUE.match(cell.text) for cell in line.cells):
+                qualifiers=list(table_qualifiers(line.cells))
+                if len(qualifiers)>=2:
                     for cell in qualifiers:
                         center=(cell.bbox[0]+cell.bbox[2])/2
-                        (header_line,header_cell,metric)=min(headers.values(),
+                        header_line,header_cell,metric=min(headers.values(),
                             key=lambda item:abs(sum(item[1].bbox[::2])/2-center))
-                        subheaders[cell.bbox[0]]=(header_line,header_cell,metric,line,cell)
+                        if SCAN.fullmatch(cell.text) or metric_unit(metric,cell.text):
+                            subheaders[cell.bbox[0]]=(header_line,header_cell,metric,line,cell)
                     continue
             if headers and len(line.cells)<=2 and all(len(cell.text)<25 for cell in line.cells) and not any(VALUE.match(cell.text) for cell in line.cells) and not re.search(r"[.!?]",line.text):
                 continue
             if headers and len(line.cells) >= 2:
                 scan = SCAN.search(line.text)
                 scan = scan[1].lower() if scan else None
-                label = line.cells[0]
+                label_line, label, row_aggregation = grouped.get(id(line), (line, line.cells[0], None))
                 origin = "cited" if re.search(r"literature|reported|previous|reference", heading, re.I) or DOI.search(label.text) else "primary"
                 cited = None
                 if origin=="cited":
@@ -348,20 +626,32 @@ class Extraction:
                 if not device and origin=="primary" and table and len(label.text)<46 and not VALUE.fullmatch(label.text) and not SCAN.fullmatch(label.text) and not re.search(r"[.!?]",label.text):
                     device=self.device(label.text,label.text)
                 used = False
-                columns=subheaders or {x:(header_line,header_cell,metric,None,None)
-                                       for x,(header_line,header_cell,metric) in headers.items()}
-                for x, (header_line, header_cell, metric, qualifier_line, qualifier) in columns.items():
-                    cell = min(line.cells, key=lambda item: abs(item.bbox[0]-x))
-                    if abs(cell.bbox[0]-x) > 32:
+                columns=dict(subheaders)
+                for x,(header_line,header_cell,metric) in headers.items():
+                    if not subheaders or (x in header_units and not any(head is header_cell for _,head,*_ in subheaders.values())):
+                        columns[x]=(header_line,header_cell,metric,None,None)
+                cells=list(table_values(line.cells,columns)) if len(headers)>=2 else line.cells
+                mapped_cells = {}
+                for x,(_,header_cell,_,_,qualifier) in columns.items():
+                    anchor = qualifier or header_cell
+                    cell = min(cells,key=lambda span:column_distance(span,anchor))
+                    distance = column_distance(cell,anchor)
+                    previous = mapped_cells.get(id(cell))
+                    if distance<=32 and (previous is None or distance<previous[1]):
+                        mapped_cells[id(cell)]=(x,distance)
+                for cell in cells:
+                    mapping = mapped_cells.get(id(cell))
+                    if mapping is None:
                         continue
-                    match = VALUE.match(cell.text)
+                    header_line, header_cell, metric, qualifier_line, qualifier = columns[mapping[0]]
+                    match = VALUE.match(cell.text, 1 if row_aggregation == "champion" and cell.text.startswith("(") else 0)
                     if not match and cell.text.strip() not in ("—", "–", "-", "N/A", "NA"):
                         continue
                     used = True
                     unit_match = None
                     refs = [(self.ref(line, cell, "value", "table_cell", table), "table_cell")]
                     if label is not cell:
-                        refs.append((self.ref(line, label, "sample_label", "table_cell", table), "table_cell"))
+                        refs.append((self.ref(label_line, label, "sample_label", "table_cell", table), "table_cell"))
                     for unit_line, unit_span, kind in ((line, cell, "table_cell"),
                             (qualifier_line, qualifier, "table_header"), (header_line, header_cell, "table_header")):
                         if unit_span is None:
@@ -372,6 +662,11 @@ class Extraction:
                             refs.append((self.ref(unit_line, fragment, "unit", kind, table), kind))
                             break
                     unit = unit_match.group() if unit_match else None
+                    split = header_units.get(header_cell.bbox[0])
+                    if not unit and split:
+                        unit,pieces=split
+                        refs.extend((self.ref(piece_line,fragment,"unit","table_header",table),"table_header")
+                                    for piece_line,fragment in pieces)
                     inherited_scan=SCAN.search(qualifier.text) if qualifier else None
                     metric_scan=scan or (inherited_scan[1].lower() if inherited_scan else None)
                     if inherited_scan:
@@ -391,7 +686,8 @@ class Extraction:
                                     local_conditions.update(self.conditions_for(foot))
                                     if not unit and foot_unit:
                                         unit=foot_unit.group()
-                    result_id = self.result(metric, match, line, cell, unit, refs, device, metric_scan, origin, cited, heading+" "+header_cell.text,local_conditions)
+                    result_id = self.result(metric, match, line, cell, unit, refs, device, metric_scan, origin, cited, heading+" "+header_cell.text,local_conditions,row_aggregation,
+                                            numeric_override=scientific_cell_value(cell))
                     if origin == "primary" and device is None:
                         ambiguous.append(result_id)
                 if used:
@@ -399,6 +695,7 @@ class Extraction:
             if FOOTNOTE.match(line.text):
                 continue
             table, heading, headers, subheaders = None, "", {}, {}
+            transposed_labels, table_left = [], None
             span = line.span
             device_match = DEVICE.search(line.text)
             explicit_device = self.devices.get(device_match[1]) if device_match else None
@@ -429,6 +726,7 @@ class Extraction:
                                         self.cited_publication(line.text) if origin=="cited" else None)
                 if metric != "Eg" and not explicit_device and origin == "primary":
                     ambiguous.append(result_id)
+        self.extra_prose()
         for result_id in ambiguous:
             self.db.execute("UPDATE measurement_result SET candidate_measurement_ids=? WHERE id=? AND manual=0",
                             (json.dumps(list(self.measurements)), result_id))

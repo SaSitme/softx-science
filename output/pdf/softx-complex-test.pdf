@@ -1,0 +1,143 @@
+%PDF-1.3
+%‚„œ”
+1 0 obj
+<<
+/Producer (pypdf)
+/Title (Chloride treatment in CdTe solar cells)
+/Author (SoftX synthetic corpus)
+>>
+endobj
+2 0 obj
+<<
+/Type /Pages
+/Count 2
+/Kids [ 4 0 R 6 0 R ]
+>>
+endobj
+3 0 obj
+<<
+/Type /Catalog
+/Pages 2 0 R
+>>
+endobj
+4 0 obj
+<<
+/Type /Page
+/Resources <<
+/Font <<
+/F1 <<
+/Type /Font
+/Subtype /Type1
+/BaseFont /Helvetica
+>>
+>>
+>>
+/MediaBox [ 0.0 0.0 500 650 ]
+/Parent 2 0 R
+/Contents 5 0 R
+>>
+endobj
+5 0 obj
+<<
+/Length 1790
+>>
+stream
+0.23 0.14 0.55 rg 0 642 500 8 re f
+BT /F1 9 Tf 34 616 Td (SYNTHETIC TEST DOCUMENT / SOFTX) Tj ET
+0.10 0.13 0.22 rg
+BT /F1 20 Tf 34 581 Td (Chloride treatment in CdTe solar cells) Tj ET
+BT /F1 13 Tf 34 546 Td (1. Batch comparison) Tj ET
+0.80 0.82 0.87 RG 34 522 m 466 522 l S
+BT /F1 9 Tf 34 35 Td (Illustrative data prepared for PDF extraction tests.) Tj ET
+BT /F1 9 Tf 447 35 Td (1) Tj ET
+BT /F1 11 Tf 34 494 Td (Experimental single-junction CdTe solar cells were fabricated.) Tj ET
+BT /F1 11 Tf 34 477 Td (Two independently processed samples were compared under AM1.5G.) Tj ET
+BT /F1 11 Tf 34 449 Td (Table 1. Photovoltaic values for each champion device.) Tj ET
+0.93 0.92 0.98 rg 32 400 436 28 re f 0.10 0.13 0.22 rg
+BT /F1 11 Tf 36 409 Td (Sample) Tj ET
+BT /F1 11 Tf 201 409 Td (Reference-A) Tj ET
+BT /F1 11 Tf 353 409 Td (Treated-B) Tj ET
+BT /F1 11 Tf 36 380 Td (Voc \(mV\)) Tj ET
+BT /F1 11 Tf 201 380 Td (801) Tj ET
+BT /F1 11 Tf 353 380 Td (910) Tj ET
+0.88 0.89 0.92 RG 33 371 m 467 371 l S
+BT /F1 11 Tf 36 351 Td (Jsc \(mA/cm2\)) Tj ET
+BT /F1 11 Tf 201 351 Td (23.1) Tj ET
+BT /F1 11 Tf 353 351 Td (25.0) Tj ET
+0.88 0.89 0.92 RG 33 342 m 467 342 l S
+BT /F1 11 Tf 36 322 Td (FF \(%\)) Tj ET
+BT /F1 11 Tf 201 322 Td (64.0) Tj ET
+BT /F1 11 Tf 353 322 Td (72.0) Tj ET
+0.88 0.89 0.92 RG 33 313 m 467 313 l S
+BT /F1 11 Tf 36 293 Td (PCE \(%\)) Tj ET
+BT /F1 11 Tf 201 293 Td (11.8) Tj ET
+BT /F1 11 Tf 353 293 Td (16.4) Tj ET
+0.88 0.89 0.92 RG 33 284 m 467 284 l S
+BT /F1 11 Tf 34 245 Td (The tabulated values refer to reverse scans.) Tj ET
+BT /F1 11 Tf 34 228 Td (The irradiance magnitude was not specified in the report.) Tj ET
+BT /F1 11 Tf 34 189 Td (Relative humidity was 63% during the measurements.) Tj ET
+BT /F1 11 Tf 34 172 Td (A contact angle decreased by 18% after treatment.) Tj ET
+
+endstream
+endobj
+6 0 obj
+<<
+/Type /Page
+/Resources <<
+/Font <<
+/F1 <<
+/Type /Font
+/Subtype /Type1
+/BaseFont /Helvetica
+>>
+>>
+>>
+/MediaBox [ 0.0 0.0 500 650 ]
+/Parent 2 0 R
+/Contents 7 0 R
+>>
+endobj
+7 0 obj
+<<
+/Length 1161
+>>
+stream
+0.23 0.14 0.55 rg 0 642 500 8 re f
+BT /F1 9 Tf 34 616 Td (SYNTHETIC TEST DOCUMENT / SOFTX) Tj ET
+0.10 0.13 0.22 rg
+BT /F1 20 Tf 34 581 Td (Chloride treatment in CdTe solar cells) Tj ET
+BT /F1 13 Tf 34 546 Td (2. Follow-up measurements) Tj ET
+0.80 0.82 0.87 RG 34 522 m 466 522 l S
+BT /F1 9 Tf 34 35 Td (Illustrative data prepared for PDF extraction tests.) Tj ET
+BT /F1 9 Tf 447 35 Td (2) Tj ET
+BT /F1 11 Tf 34 493 Td (Device B, measured under AM1.5G on the forward scan, had a) Tj ET
+BT /F1 11 Tf 34 476 Td (power conversion efficiency of 15.9%.) Tj ET
+BT /F1 11 Tf 34 428 Td (For this scan, the open-circuit voltage, fill factor, and short-circuit) Tj ET
+BT /F1 11 Tf 34 411 Td (current density were 905 mV, 71.0%, and 24.75 mA/cm2, respectively.) Tj ET
+BT /F1 11 Tf 34 362 Td (In a repeat reverse scan, a current density of 24.9 mA/cm2) Tj ET
+BT /F1 11 Tf 34 345 Td (was recorded at short circuit.) Tj ET
+BT /F1 11 Tf 34 297 Td (The relative humidity rose to 67% during the follow-up.) Tj ET
+BT /F1 11 Tf 34 280 Td (After 10 h, the samples were disconnected for inspection.) Tj ET
+BT /F1 11 Tf 34 232 Td (No certification or active area was provided.) Tj ET
+
+endstream
+endobj
+xref
+0 8
+0000000000 65535 f 
+0000000015 00000 n 
+0000000135 00000 n 
+0000000200 00000 n 
+0000000249 00000 n 
+0000000430 00000 n 
+0000002272 00000 n 
+0000002453 00000 n 
+trailer
+<<
+/Size 8
+/Root 3 0 R
+/Info 1 0 R
+>>
+startxref
+3666
+%%EOF

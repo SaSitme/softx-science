@@ -31,6 +31,7 @@ for table in TABLES:
 enums={
   "publication.corpus_status":["included","excluded_tandem","excluded_theoretical","needs_review"],
   "pdf_version.processing_status":["queued","processing","completed","partial","failed"],
+  "pdf_version.pv_extraction_enabled":[0,1],
   "device.device_role":["control","target","record"],
   "device.architecture":["n-i-p","p-i-n","substrate","superstrate"],
   "measurement.scan_direction":["forward","reverse"],

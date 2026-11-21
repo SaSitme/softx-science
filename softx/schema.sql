@@ -6,7 +6,8 @@ CREATE TABLE IF NOT EXISTS publication (
 CREATE TABLE IF NOT EXISTS pdf_version (
  id TEXT PRIMARY KEY, publication_id TEXT NOT NULL REFERENCES publication(id), sha256 TEXT NOT NULL UNIQUE, filename TEXT NOT NULL,
  pages JSON NOT NULL DEFAULT '[]', processing_status TEXT NOT NULL CHECK(processing_status IN ('queued','processing','completed','partial','failed')),
- error_message TEXT, failed_pages JSON NOT NULL DEFAULT '[]', created_at TEXT DEFAULT CURRENT_TIMESTAMP
+ error_message TEXT, failed_pages JSON NOT NULL DEFAULT '[]', created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+ pv_extraction_enabled INTEGER CHECK(pv_extraction_enabled IN (0,1))
 );
 CREATE TABLE IF NOT EXISTS material (
  id TEXT PRIMARY KEY, publication_id TEXT NOT NULL REFERENCES publication(id), material_name_raw TEXT, formula_normalized TEXT,

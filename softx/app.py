@@ -17,6 +17,7 @@ from .extract import DOI, Extraction, bibliographic_doi
 from .export import exporter
 from .graph_api import graph
 from .graphs import automatic
+from .local_ai import suggestions
 from .pdf import draw, page_file, prepare, read_lines
 from .science import recheck, science
 from .store import DATA, db, edit, encode, initialize, insert, key, one, rows
@@ -51,6 +52,7 @@ def process(version):
             except (ValueError, subprocess.SubprocessError, ET.ParseError, OSError) as exc:
                 failures.append({"page": page["page"], "reason": str(exc)[:240],
                                  "value_state": "unparseable", "fields": list(d.METRICS)})
+        ai_candidates = suggestions(lines)
         with db() as connection:
             connection.execute("BEGIN IMMEDIATE")
             pub=entry["publication_id"]
@@ -72,6 +74,8 @@ def process(version):
             extraction = Extraction(connection, pub, version, lines)
             if extraction.discover(metadata):
                 extraction.parse()
+                for group,metric,value,unit in ai_candidates:
+                    extraction.add_prose_candidate(group,metric,value,unit,"local_ai_pdf_quote")
                 for page in pages:
                     if page["page"] not in good:
                         continue
@@ -165,7 +169,7 @@ def library():
         publications = rows(connection, """SELECT p.*, f.id AS version_id, f.processing_status, f.filename, f.pages, f.error_message,
             f.failed_pages, f.created_at,
             (SELECT group_concat(DISTINCT material_class) FROM material m WHERE m.publication_id=p.id) AS material_class,
-            (SELECT COUNT(*) FROM measurement_result r WHERE r.pdf_version_id=f.id) AS result_count,
+            (SELECT COUNT(*) FROM active_pv_result r WHERE r.pdf_version_id=f.id) AS result_count,
             (SELECT COUNT(*) FROM plot_dataset g WHERE g.pdf_version_id=f.id) AS plot_count
             FROM publication p JOIN pdf_version f ON f.publication_id=p.id ORDER BY f.created_at DESC, f.filename""")
         result_list = results(connection)
@@ -187,9 +191,9 @@ d.device_label,d.architecture,d.device_type,
              WHERE rs.result_id=r.id) AS source_text,
             EXISTS(SELECT 1 FROM issue_result ir JOIN validation_issue i ON i.id=ir.issue_id WHERE ir.result_id=r.id
               AND i.resolution_status='open' AND i.severity IN ('error','warning')) AS has_issues
-            FROM measurement_result r JOIN publication p ON p.id=r.publication_id
+            FROM active_pv_result r JOIN publication p ON p.id=r.publication_id
             LEFT JOIN device d ON d.id=r.device_id LEFT JOIN material m ON m.id=COALESCE(d.material_id,r.material_id)
-            LEFT JOIN measurement q ON q.id=r.measurement_id {condition} ORDER BY r.rowid""", *args)
+            LEFT JOIN measurement q ON q.id=r.measurement_id {condition} ORDER BY r.record_order""", *args)
 
 
 @app.get("/api/data/<name>")
@@ -227,7 +231,7 @@ def detail(version):
                        layers=rows(connection,"SELECT l.* FROM device_layer l JOIN device d ON d.id=l.device_id WHERE d.publication_id=?",pub),
                        results=results(connection, version),
                        sources=rows(connection,"SELECT * FROM source_reference WHERE pdf_version_id=?",version),
-                       links=rows(connection,"SELECT l.* FROM result_source l JOIN measurement_result r ON r.id=l.result_id WHERE r.pdf_version_id=?",version),
+                       links=rows(connection,"SELECT l.* FROM result_source l JOIN active_pv_result r ON r.id=l.result_id WHERE r.pdf_version_id=?",version),
                        plots=rows(connection,"SELECT * FROM plot_dataset WHERE pdf_version_id=?",version),
                        audit=rows(connection,"SELECT a.* FROM audit_log a WHERE a.entity_id IN"
                            " (SELECT id FROM measurement_result WHERE pdf_version_id=?) OR a.entity_id=? ORDER BY a.id DESC",version,pub))

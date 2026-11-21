@@ -196,7 +196,7 @@ def checks(connection, publication, corpus_status):
         return
     rs=rows(connection,"""SELECT r.*,m.scan_direction,m.light_intensity,m.light_intensity_unit,m.intensity_source_id,
         m.spectrum,m.temperature,m.batch_label,m.condition_label,m.stability_protocol,m.stress_conditions
-        FROM measurement_result r LEFT JOIN measurement m ON m.id=r.measurement_id
+        FROM active_pv_result r LEFT JOIN measurement m ON m.id=r.measurement_id
         WHERE r.publication_id=? AND r.result_origin='primary'""",publication)
     references={}
     for ref in rows(connection,"""SELECT l.result_id,s.source_page,s.bbox,s.source_type,s.source_table
