@@ -1,0 +1,86 @@
+%PDF-1.3
+%‚„œ”
+1 0 obj
+<<
+/Producer (pypdf)
+/Title (Perovskite solar cell test)
+/Author (SoftX synthetic corpus)
+>>
+endobj
+2 0 obj
+<<
+/Type /Pages
+/Count 1
+/Kids [ 4 0 R ]
+>>
+endobj
+3 0 obj
+<<
+/Type /Catalog
+/Pages 2 0 R
+>>
+endobj
+4 0 obj
+<<
+/Type /Page
+/Resources <<
+/Font <<
+/F1 <<
+/Type /Font
+/Subtype /Type1
+/BaseFont /Helvetica
+>>
+>>
+>>
+/MediaBox [ 0.0 0.0 420 300 ]
+/Parent 2 0 R
+/Contents 5 0 R
+>>
+endobj
+5 0 obj
+<<
+/Length 1031
+>>
+stream
+0.23 0.14 0.55 rg 0 292 420 8 re f
+BT /F1 9 Tf 28 266 Td (SYNTHETIC TEST DOCUMENT / SOFTX) Tj ET
+0.10 0.13 0.22 rg
+BT /F1 19 Tf 28 235 Td (Perovskite solar cell test) Tj ET
+BT /F1 10 Tf 28 202 Td (An experimental single-junction perovskite device was fabricated.) Tj ET
+BT /F1 10 Tf 28 184 Td (All JV scans measured under AM1.5G at 100 mW/cm2.) Tj ET
+BT /F1 11 Tf 28 156 Td (Table 1. Photovoltaic results.) Tj ET
+0.94 0.93 0.98 rg 24 112 372 25 re f 0.10 0.13 0.22 rg
+BT /F1 9 Tf 28 120 Td (Sample) Tj ET
+BT /F1 9 Tf 91 120 Td (Scan) Tj ET
+BT /F1 9 Tf 155 120 Td (PCE \(%\)) Tj ET
+BT /F1 9 Tf 215 120 Td (Voc \(mV\)) Tj ET
+BT /F1 9 Tf 278 120 Td (Jsc \(mA/cm2\)) Tj ET
+BT /F1 9 Tf 361 120 Td (FF \(%\)) Tj ET
+BT /F1 9 Tf 28 92 Td (A) Tj ET
+BT /F1 9 Tf 91 92 Td (reverse) Tj ET
+BT /F1 9 Tf 155 92 Td (15.0) Tj ET
+BT /F1 9 Tf 215 92 Td (1000) Tj ET
+BT /F1 9 Tf 278 92 Td (20.0) Tj ET
+BT /F1 9 Tf 361 92 Td (75.0) Tj ET
+0.78 0.79 0.84 RG 24 76 m 396 76 l S
+BT /F1 9 Tf 28 51 Td (Illustrative values for testing PDF extraction.) Tj ET
+
+endstream
+endobj
+xref
+0 6
+0000000000 65535 f 
+0000000015 00000 n 
+0000000123 00000 n 
+0000000182 00000 n 
+0000000231 00000 n 
+0000000412 00000 n 
+trailer
+<<
+/Size 6
+/Root 3 0 R
+/Info 1 0 R
+>>
+startxref
+1495
+%%EOF

@@ -1,0 +1,309 @@
+{
+  "sample": {
+    "synthetic": true,
+    "classification_files": {
+      "01-fabricated.pdf": "included",
+      "02-rotated.pdf": "included",
+      "03-tandem.pdf": "excluded_tandem",
+      "04-theoretical.pdf": "excluded_theoretical"
+    },
+    "extraction_files": [
+      "01-fabricated.pdf",
+      "02-rotated.pdf"
+    ],
+    "curve_file": "01-fabricated.pdf",
+    "curve_expected_points": 11,
+    "damaged_files_excluded_from_classification": 1
+  },
+  "base": {
+    "precision": {
+      "numerator": 21,
+      "denominator": 21,
+      "value": 1.0
+    },
+    "recall": {
+      "numerator": 21,
+      "denominator": 21,
+      "value": 1.0
+    }
+  },
+  "extended_result_metrics": {
+    "precision": {
+      "numerator": 2,
+      "denominator": 2,
+      "value": 1.0
+    },
+    "recall": {
+      "numerator": 2,
+      "denominator": 2,
+      "value": 1.0
+    }
+  },
+  "all_extended_fields": {
+    "precision": {
+      "numerator": 70,
+      "denominator": 70,
+      "value": 1.0
+    },
+    "recall": {
+      "numerator": 70,
+      "denominator": 70,
+      "value": 1.0
+    }
+  },
+  "by_metric": {
+    "Eg": {
+      "precision": {
+        "numerator": 1,
+        "denominator": 1,
+        "value": 1.0
+      },
+      "recall": {
+        "numerator": 1,
+        "denominator": 1,
+        "value": 1.0
+      }
+    },
+    "FF": {
+      "precision": {
+        "numerator": 5,
+        "denominator": 5,
+        "value": 1.0
+      },
+      "recall": {
+        "numerator": 5,
+        "denominator": 5,
+        "value": 1.0
+      }
+    },
+    "HI": {
+      "precision": {
+        "numerator": 0,
+        "denominator": 0,
+        "value": null
+      },
+      "recall": {
+        "numerator": 0,
+        "denominator": 0,
+        "value": null
+      }
+    },
+    "Jsc": {
+      "precision": {
+        "numerator": 5,
+        "denominator": 5,
+        "value": 1.0
+      },
+      "recall": {
+        "numerator": 5,
+        "denominator": 5,
+        "value": 1.0
+      }
+    },
+    "Jsc_EQE": {
+      "precision": {
+        "numerator": 1,
+        "denominator": 1,
+        "value": 1.0
+      },
+      "recall": {
+        "numerator": 1,
+        "denominator": 1,
+        "value": 1.0
+      }
+    },
+    "PCE": {
+      "precision": {
+        "numerator": 6,
+        "denominator": 6,
+        "value": 1.0
+      },
+      "recall": {
+        "numerator": 6,
+        "denominator": 6,
+        "value": 1.0
+      }
+    },
+    "Rs": {
+      "precision": {
+        "numerator": 0,
+        "denominator": 0,
+        "value": null
+      },
+      "recall": {
+        "numerator": 0,
+        "denominator": 0,
+        "value": null
+      }
+    },
+    "Rsh": {
+      "precision": {
+        "numerator": 0,
+        "denominator": 0,
+        "value": null
+      },
+      "recall": {
+        "numerator": 0,
+        "denominator": 0,
+        "value": null
+      }
+    },
+    "T80": {
+      "precision": {
+        "numerator": 0,
+        "denominator": 0,
+        "value": null
+      },
+      "recall": {
+        "numerator": 0,
+        "denominator": 0,
+        "value": null
+      }
+    },
+    "Voc": {
+      "precision": {
+        "numerator": 5,
+        "denominator": 5,
+        "value": 1.0
+      },
+      "recall": {
+        "numerator": 5,
+        "denominator": 5,
+        "value": 1.0
+      }
+    }
+  },
+  "expanded_fields_by_entity": {
+    "material": {
+      "precision": {
+        "numerator": 9,
+        "denominator": 9,
+        "value": 1.0
+      },
+      "recall": {
+        "numerator": 9,
+        "denominator": 9,
+        "value": 1.0
+      }
+    },
+    "device": {
+      "precision": {
+        "numerator": 18,
+        "denominator": 18,
+        "value": 1.0
+      },
+      "recall": {
+        "numerator": 18,
+        "denominator": 18,
+        "value": 1.0
+      }
+    },
+    "device_layer": {
+      "precision": {
+        "numerator": 24,
+        "denominator": 24,
+        "value": 1.0
+      },
+      "recall": {
+        "numerator": 24,
+        "denominator": 24,
+        "value": 1.0
+      }
+    },
+    "measurement": {
+      "precision": {
+        "numerator": 17,
+        "denominator": 17,
+        "value": 1.0
+      },
+      "recall": {
+        "numerator": 17,
+        "denominator": 17,
+        "value": 1.0
+      }
+    }
+  },
+  "annotated_expanded_field_counts": {
+    "material_name_raw": 2,
+    "material_class": 2,
+    "formula_normalized": 2,
+    "bandgap_value": 1,
+    "bandgap_unit": 1,
+    "bandgap_method": 1,
+    "device_role": 3,
+    "device_type": 3,
+    "architecture": 3,
+    "active_area": 3,
+    "area_unit": 3,
+    "area_definition": 3,
+    "layer_order": 4,
+    "layer_function": 4,
+    "layer_material": 4,
+    "layer_thickness": 4,
+    "thickness_unit": 4,
+    "deposition_method": 4,
+    "measurement_type": 4,
+    "spectrum": 3,
+    "light_intensity": 3,
+    "light_intensity_unit": 3,
+    "scan_direction": 4
+  },
+  "corpus_accuracy": {
+    "numerator": 4,
+    "denominator": 4,
+    "value": 1.0
+  },
+  "device_link_accuracy": {
+    "numerator": 17,
+    "denominator": 17,
+    "value": 1.0
+  },
+  "measurement_link_accuracy": {
+    "numerator": 17,
+    "denominator": 17,
+    "value": 1.0
+  },
+  "pdf_fragment_accuracy": {
+    "numerator": 23,
+    "denominator": 23,
+    "value": 1.0
+  },
+  "needs_review_rate": {
+    "numerator": 1,
+    "denominator": 23,
+    "value": 0.043478260869565216
+  },
+  "digitization_jv": {
+    "points": {
+      "numerator": 11,
+      "denominator": 11,
+      "value": 1.0
+    },
+    "x": {
+      "unit": "V",
+      "mae": {
+        "numerator": 0.0,
+        "denominator": 11,
+        "value": 0.0
+      },
+      "rmse": {
+        "numerator": 0.0,
+        "denominator": 11,
+        "value": 0.0
+      }
+    },
+    "y": {
+      "unit": "mA/cm²",
+      "mae": {
+        "numerator": 0.002333333333341514,
+        "denominator": 11,
+        "value": 0.00021212121212195583
+      },
+      "rmse": {
+        "numerator": 8.775510204114442e-07,
+        "denominator": 11,
+        "value": 0.00028244887235028834
+      }
+    }
+  }
+}

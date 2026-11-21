@@ -1,0 +1,68 @@
+%PDF-1.3
+%‚„œ”
+1 0 obj
+<<
+/Producer (pypdf)
+/Title (Perovskite tandem solar cells)
+/Author (SoftX synthetic corpus)
+/CreationDate (D\07220260101)
+>>
+endobj
+2 0 obj
+<<
+/Type /Pages
+/Count 1
+/Kids [ 4 0 R ]
+>>
+endobj
+3 0 obj
+<<
+/Type /Catalog
+/Pages 2 0 R
+>>
+endobj
+4 0 obj
+<<
+/Type /Page
+/Resources <<
+/Font <<
+/F1 <<
+/Type /Font
+/Subtype /Type1
+/BaseFont /Helvetica
+>>
+>>
+>>
+/MediaBox [ 0.0 0.0 620 790 ]
+/Parent 2 0 R
+/Contents 5 0 R
+>>
+endobj
+5 0 obj
+<<
+/Length 212
+>>
+stream
+BT /F1 10 Tf 50 738 Td (SYNTHETIC TEST DOCUMENT / SOFTX) Tj ET
+BT /F1 16 Tf 50 705 Td (Perovskite tandem solar cells) Tj ET
+BT /F1 11 Tf 50 657 Td (Experimental tandem devices were fabricated. PCE = 24 %.) Tj ET
+
+endstream
+endobj
+xref
+0 6
+0000000000 65535 f 
+0000000015 00000 n 
+0000000156 00000 n 
+0000000215 00000 n 
+0000000264 00000 n 
+0000000445 00000 n 
+trailer
+<<
+/Size 6
+/Root 3 0 R
+/Info 1 0 R
+>>
+startxref
+708
+%%EOF

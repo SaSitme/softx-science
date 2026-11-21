@@ -1,0 +1,594 @@
+{
+  "synthetic": true,
+  "classifications": {
+    "01-fabricated.pdf": "included",
+    "02-rotated.pdf": "included",
+    "03-tandem.pdf": "excluded_tandem",
+    "04-theoretical.pdf": "excluded_theoretical"
+  },
+  "expected_metrics": [
+    {
+      "file": "01-fabricated.pdf",
+      "metric": "PCE",
+      "value": 18,
+      "device": "A",
+      "scan": "forward",
+      "unit": "%",
+      "origin": "primary",
+      "aggregation": "unknown",
+      "page": 1,
+      "bbox": [
+        227,
+        450,
+        264,
+        468
+      ]
+    },
+    {
+      "file": "01-fabricated.pdf",
+      "metric": "Voc",
+      "value": 1.2,
+      "device": "A",
+      "scan": "forward",
+      "unit": "V",
+      "origin": "primary",
+      "aggregation": "unknown",
+      "page": 1,
+      "bbox": [
+        310,
+        450,
+        347,
+        468
+      ]
+    },
+    {
+      "file": "01-fabricated.pdf",
+      "metric": "Jsc",
+      "value": 20,
+      "device": "A",
+      "scan": "forward",
+      "unit": "mA/cm²",
+      "origin": "primary",
+      "aggregation": "unknown",
+      "page": 1,
+      "bbox": [
+        398,
+        450,
+        435,
+        468
+      ]
+    },
+    {
+      "file": "01-fabricated.pdf",
+      "metric": "FF",
+      "value": 75,
+      "device": "A",
+      "scan": "forward",
+      "unit": "%",
+      "origin": "primary",
+      "aggregation": "unknown",
+      "page": 1,
+      "bbox": [
+        505,
+        450,
+        542,
+        468
+      ]
+    },
+    {
+      "file": "01-fabricated.pdf",
+      "metric": "PCE",
+      "value": 17,
+      "device": "A",
+      "scan": "reverse",
+      "unit": "%",
+      "origin": "primary",
+      "aggregation": "unknown",
+      "page": 1,
+      "bbox": [
+        227,
+        429,
+        264,
+        447
+      ]
+    },
+    {
+      "file": "01-fabricated.pdf",
+      "metric": "Voc",
+      "value": 1.2,
+      "device": "A",
+      "scan": "reverse",
+      "unit": "V",
+      "origin": "primary",
+      "aggregation": "unknown",
+      "page": 1,
+      "bbox": [
+        310,
+        429,
+        347,
+        447
+      ]
+    },
+    {
+      "file": "01-fabricated.pdf",
+      "metric": "Jsc",
+      "value": 20,
+      "device": "A",
+      "scan": "reverse",
+      "unit": "mA/cm²",
+      "origin": "primary",
+      "aggregation": "unknown",
+      "page": 1,
+      "bbox": [
+        398,
+        429,
+        435,
+        447
+      ]
+    },
+    {
+      "file": "01-fabricated.pdf",
+      "metric": "FF",
+      "value": 75,
+      "device": "A",
+      "scan": "reverse",
+      "unit": "%",
+      "origin": "primary",
+      "aggregation": "unknown",
+      "page": 1,
+      "bbox": [
+        505,
+        429,
+        542,
+        447
+      ]
+    },
+    {
+      "file": "01-fabricated.pdf",
+      "metric": "PCE",
+      "value": 14,
+      "device": "B",
+      "scan": "reverse",
+      "unit": "%",
+      "origin": "primary",
+      "aggregation": "unknown",
+      "page": 1,
+      "bbox": [
+        227,
+        408,
+        264,
+        426
+      ]
+    },
+    {
+      "file": "01-fabricated.pdf",
+      "metric": "Voc",
+      "value": 1,
+      "device": "B",
+      "scan": "reverse",
+      "unit": "V",
+      "origin": "primary",
+      "aggregation": "unknown",
+      "page": 1,
+      "bbox": [
+        310,
+        408,
+        347,
+        426
+      ]
+    },
+    {
+      "file": "01-fabricated.pdf",
+      "metric": "Jsc",
+      "value": 20,
+      "device": "B",
+      "scan": "reverse",
+      "unit": "mA/cm²",
+      "origin": "primary",
+      "aggregation": "unknown",
+      "page": 1,
+      "bbox": [
+        398,
+        408,
+        435,
+        426
+      ]
+    },
+    {
+      "file": "01-fabricated.pdf",
+      "metric": "FF",
+      "value": 70,
+      "device": "B",
+      "scan": "reverse",
+      "unit": "%",
+      "origin": "primary",
+      "aggregation": "unknown",
+      "page": 1,
+      "bbox": [
+        505,
+        408,
+        542,
+        426
+      ]
+    },
+    {
+      "file": "01-fabricated.pdf",
+      "metric": "PCE",
+      "value": 10,
+      "device": null,
+      "scan": "reverse",
+      "unit": "%",
+      "origin": "cited",
+      "aggregation": "unknown",
+      "page": 1,
+      "bbox": [
+        227,
+        307,
+        264,
+        325
+      ]
+    },
+    {
+      "file": "01-fabricated.pdf",
+      "metric": "Voc",
+      "value": 0.8,
+      "device": null,
+      "scan": "reverse",
+      "unit": "V",
+      "origin": "cited",
+      "aggregation": "unknown",
+      "page": 1,
+      "bbox": [
+        310,
+        307,
+        347,
+        325
+      ]
+    },
+    {
+      "file": "01-fabricated.pdf",
+      "metric": "Jsc",
+      "value": 20,
+      "device": null,
+      "scan": "reverse",
+      "unit": "mA/cm²",
+      "origin": "cited",
+      "aggregation": "unknown",
+      "page": 1,
+      "bbox": [
+        398,
+        307,
+        435,
+        325
+      ]
+    },
+    {
+      "file": "01-fabricated.pdf",
+      "metric": "FF",
+      "value": 62.5,
+      "device": null,
+      "scan": "reverse",
+      "unit": "%",
+      "origin": "cited",
+      "aggregation": "unknown",
+      "page": 1,
+      "bbox": [
+        505,
+        307,
+        542,
+        325
+      ]
+    },
+    {
+      "file": "02-rotated.pdf",
+      "metric": "PCE",
+      "value": 12,
+      "device": "C",
+      "scan": "reverse",
+      "unit": "%",
+      "origin": "primary",
+      "aggregation": "unknown",
+      "page": 1,
+      "bbox": [
+        170,
+        604,
+        545,
+        625
+      ]
+    },
+    {
+      "file": "02-rotated.pdf",
+      "metric": "Voc",
+      "value": 0.8,
+      "device": "C",
+      "scan": "reverse",
+      "unit": "V",
+      "origin": "primary",
+      "aggregation": "unknown",
+      "page": 1,
+      "bbox": [
+        170,
+        604,
+        545,
+        625
+      ]
+    },
+    {
+      "file": "02-rotated.pdf",
+      "metric": "Jsc",
+      "value": 20,
+      "device": "C",
+      "scan": "reverse",
+      "unit": "mA/cm²",
+      "origin": "primary",
+      "aggregation": "unknown",
+      "page": 1,
+      "bbox": [
+        170,
+        604,
+        545,
+        625
+      ]
+    },
+    {
+      "file": "02-rotated.pdf",
+      "metric": "FF",
+      "value": 75,
+      "device": "C",
+      "scan": "reverse",
+      "unit": "%",
+      "origin": "primary",
+      "aggregation": "unknown",
+      "page": 1,
+      "bbox": [
+        170,
+        604,
+        545,
+        625
+      ]
+    },
+    {
+      "file": "01-fabricated.pdf",
+      "metric": "PCE",
+      "value": 16,
+      "device": null,
+      "scan": null,
+      "unit": "%",
+      "origin": "primary",
+      "aggregation": "unknown",
+      "page": 1,
+      "bbox": [
+        50,
+        365,
+        140,
+        386
+      ]
+    }
+  ],
+  "extended": [
+    {
+      "file": "01-fabricated.pdf",
+      "metric": "Jsc_EQE",
+      "value": 17,
+      "unit": "mA/cm²",
+      "device": "A",
+      "scan": "reverse",
+      "page": 1,
+      "bbox": [
+        190,
+        383,
+        290,
+        404
+      ],
+      "origin": "primary",
+      "aggregation": "unknown"
+    },
+    {
+      "file": "01-fabricated.pdf",
+      "metric": "Eg",
+      "value": 1.1,
+      "unit": "eV",
+      "device": null,
+      "scan": null,
+      "page": 1,
+      "bbox": [
+        50,
+        535,
+        122,
+        554
+      ],
+      "origin": "primary",
+      "aggregation": "unknown"
+    }
+  ],
+  "JV": {
+    "file": "01-fabricated.pdf",
+    "page": 1,
+    "figure": "1",
+    "panel": "a",
+    "bbox": [
+      115,
+      83,
+      495,
+      251
+    ],
+    "x_unit": "V",
+    "y_unit": "mA/cm²",
+    "points": [
+      [
+        0.0,
+        20.0
+      ],
+      [
+        0.1,
+        19.998
+      ],
+      [
+        0.2,
+        19.968
+      ],
+      [
+        0.3,
+        19.838
+      ],
+      [
+        0.4,
+        19.488
+      ],
+      [
+        0.5,
+        18.75
+      ],
+      [
+        0.6,
+        17.408
+      ],
+      [
+        0.7,
+        15.198
+      ],
+      [
+        0.8,
+        11.807999999999998
+      ],
+      [
+        0.9,
+        6.878
+      ],
+      [
+        1.0,
+        0.0
+      ]
+    ]
+  },
+  "entity_fields": {
+    "material": [
+      {
+        "file": "01-fabricated.pdf",
+        "key": "Перовскиты",
+        "material_name_raw": "Perovskite",
+        "formula_normalized": "MAPbI3",
+        "material_class": "Перовскиты",
+        "bandgap_value": 1.1,
+        "bandgap_unit": "eV",
+        "bandgap_method": "Tauc plot"
+      },
+      {
+        "file": "02-rotated.pdf",
+        "key": "CdTe",
+        "material_name_raw": "CdTe",
+        "formula_normalized": "CdTe",
+        "material_class": "CdTe"
+      }
+    ],
+    "device": [
+      {
+        "file": "01-fabricated.pdf",
+        "key": "A",
+        "device_role": "control",
+        "device_type": "single-junction thin-film",
+        "architecture": "n-i-p",
+        "active_area": 0.1,
+        "area_unit": "cm²",
+        "area_definition": "active"
+      },
+      {
+        "file": "01-fabricated.pdf",
+        "key": "B",
+        "device_role": "target",
+        "device_type": "single-junction thin-film",
+        "architecture": "p-i-n",
+        "active_area": 0.1,
+        "area_unit": "cm²",
+        "area_definition": "active"
+      },
+      {
+        "file": "02-rotated.pdf",
+        "key": "C",
+        "device_role": "target",
+        "device_type": "single-junction thin-film",
+        "architecture": "superstrate",
+        "active_area": 0.2,
+        "area_unit": "cm²",
+        "area_definition": "active"
+      }
+    ],
+    "device_layer": [
+      {
+        "file": "01-fabricated.pdf",
+        "key": "A/1",
+        "layer_order": 1,
+        "layer_function": "ETL",
+        "layer_material": "SnO2",
+        "layer_thickness": 35,
+        "thickness_unit": "nm",
+        "deposition_method": "spin coating"
+      },
+      {
+        "file": "01-fabricated.pdf",
+        "key": "A/2",
+        "layer_order": 2,
+        "layer_function": "absorber",
+        "layer_material": "MAPbI3",
+        "layer_thickness": 480,
+        "thickness_unit": "nm",
+        "deposition_method": "spin coating"
+      },
+      {
+        "file": "01-fabricated.pdf",
+        "key": "B/1",
+        "layer_order": 1,
+        "layer_function": "HTL",
+        "layer_material": "NiOx",
+        "layer_thickness": 30,
+        "thickness_unit": "nm",
+        "deposition_method": "sputtering"
+      },
+      {
+        "file": "01-fabricated.pdf",
+        "key": "B/2",
+        "layer_order": 2,
+        "layer_function": "absorber",
+        "layer_material": "MAPbI3",
+        "layer_thickness": 500,
+        "thickness_unit": "nm",
+        "deposition_method": "spin coating"
+      }
+    ],
+    "measurement": [
+      {
+        "file": "01-fabricated.pdf",
+        "key": "A/forward",
+        "scan_direction": "forward",
+        "measurement_type": "JV",
+        "spectrum": "AM1.5G",
+        "light_intensity": 100,
+        "light_intensity_unit": "mW/cm²"
+      },
+      {
+        "file": "01-fabricated.pdf",
+        "key": "A/reverse",
+        "scan_direction": "reverse",
+        "measurement_type": "JV",
+        "spectrum": "AM1.5G",
+        "light_intensity": 100,
+        "light_intensity_unit": "mW/cm²"
+      },
+      {
+        "file": "01-fabricated.pdf",
+        "key": "B/reverse",
+        "scan_direction": "reverse",
+        "measurement_type": "JV",
+        "spectrum": "AM1.5G",
+        "light_intensity": 100,
+        "light_intensity_unit": "mW/cm²"
+      },
+      {
+        "file": "02-rotated.pdf",
+        "key": "C/reverse",
+        "scan_direction": "reverse",
+        "measurement_type": "JV"
+      }
+    ]
+  }
+}

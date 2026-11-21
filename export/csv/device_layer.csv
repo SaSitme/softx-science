@@ -1,0 +1,5 @@
+﻿id,device_id,layer_order,layer_function,layer_material,material_id,layer_thickness,thickness_unit,deposition_method,annealing_temperature,annealing_time,atmosphere
+545c9a5aa36f3b4524cb5886,8be5fa66374e31ae700de41d,1,ETL,SnO2,,35.0,nm,spin coating,,,
+b9d81491ce107a8ad79047be,10e6c1ccd4ec1f827b083a5c,1,HTL,NiOx,,30.0,nm,sputtering,,,
+d06b08fb622c8d8cdebc5919,10e6c1ccd4ec1f827b083a5c,2,absorber,MAPbI3,,500.0,nm,spin coating,,,
+d1a972d09003d5aadd50c67e,8be5fa66374e31ae700de41d,2,absorber,MAPbI3,,480.0,nm,spin coating,,,

@@ -1,0 +1,9 @@
+﻿id,publication_id,material_id,device_label,device_role,device_type,architecture,substrate_type,active_area,area_unit,area_definition,encapsulation
+10e6c1ccd4ec1f827b083a5c,7efcf4f4ced817d227c5a676,eff3dfc209055578928d4f08,B,target,single-junction thin-film,p-i-n,,0.1,cm²,active,
+12fe35bd8bfc0a61356737bf,0696a6d15d3464d9d683fa20,57c0c5fdad39d24a8fb569f7,D,target,single-junction thin-film,superstrate,,0.12,cm²,active,
+352dcbdce5c75e0de4dfcb1e,46ed2bd82a9f0b7a1052c475,72954dbe8d6fca2552fe1bbb,D,target,single-junction thin-film,superstrate,,0.12,cm²,active,
+729b258cb4c0b48a64ffe480,a3a3fc44477031df7a55c75d,9cfb784ee6c31e7f6e78e8a5,D,target,single-junction thin-film,superstrate,,0.12,cm²,active,
+7cf0373b8bd3db91f345d932,4c86ea859fb1a3006868426f,66a26dfcf9aa34f72b6f9384,C,target,single-junction thin-film,superstrate,,0.2,cm²,active,
+7f0e94b5ffb8bc9280293e40,27f665e054a4f0727b4a27e0,9b77f982704428ed78bc0bbd,D,target,single-junction thin-film,superstrate,,0.12,cm²,active,
+8be5fa66374e31ae700de41d,7efcf4f4ced817d227c5a676,eff3dfc209055578928d4f08,A,control,single-junction thin-film,n-i-p,,0.1,cm²,active,
+bbf08624113a9de88a65e36d,658e181369eab5e26d217642,02b58163a08e32065146f668,D,target,single-junction thin-film,superstrate,,0.12,cm²,active,

@@ -1,0 +1,12 @@
+﻿id,title,year,doi,authors,journal,corpus_status,corpus_reason,corpus_manual,is_fixture
+0696a6d15d3464d9d683fa20,Graph test scatter,,,"[""SoftX synthetic corpus""]",,included,Обнаружены изготовление тонкоплёночного прибора и фотоэлектрические данные,0,1
+27f665e054a4f0727b4a27e0,Graph test thermal,,,"[""SoftX synthetic corpus""]",,included,Обнаружены изготовление тонкоплёночного прибора и фотоэлектрические данные,0,1
+46ed2bd82a9f0b7a1052c475,Graph test stability,,,"[""SoftX synthetic corpus""]",,needs_review,Недостаточно явных признаков изготовленного однопереходного тонкоплёночного прибора,0,1
+4c86ea859fb1a3006868426f,Experimental CdTe thin-film cells,,,"[""SoftX synthetic corpus""]",,included,Обнаружены изготовление тонкоплёночного прибора и фотоэлектрические данные,0,1
+658e181369eab5e26d217642,Graph test eqe,,,"[""SoftX synthetic corpus""]",,needs_review,Недостаточно явных признаков изготовленного однопереходного тонкоплёночного прибора,0,1
+7b02133b3318c11b8d302dde,10.5555/sx,,10.5555/sx,,,needs_review,Библиографическая ссылка,0,0
+7efcf4f4ced817d227c5a676,Perovskite thin films under AM1.5G,,,"[""SoftX synthetic corpus""]",,included,Обнаружены изготовление тонкоплёночного прибора и фотоэлектрические данные,0,1
+a3a3fc44477031df7a55c75d,Graph test pce,,,"[""SoftX synthetic corpus""]",,included,Обнаружены изготовление тонкоплёночного прибора и фотоэлектрические данные,0,1
+a5738ee9b7ac1cedb6c3af4a,Perovskite tandem solar cells,,,"[""SoftX synthetic corpus""]",,excluded_tandem,Тандемный или многопереходный прибор указан в начале публикации,0,1
+fcaf7da10d12ce5a5c4ac257,Theoretical study of CIGS,,,"[""SoftX synthetic corpus""]",,excluded_theoretical,Публикация явно указывает на расчётный характер работы,0,1
+ffec2d38430d60e2c16f1ada,05-corrupted,,,,,needs_review,,0,1

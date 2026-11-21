@@ -1,0 +1,94 @@
+%PDF-1.3
+%‚„œ”
+1 0 obj
+<<
+/Producer (pypdf)
+/Title (Graph test eqe)
+/Author (SoftX synthetic corpus)
+/CreationDate (D\07220260101)
+>>
+endobj
+2 0 obj
+<<
+/Type /Pages
+/Count 1
+/Kids [ 4 0 R ]
+>>
+endobj
+3 0 obj
+<<
+/Type /Catalog
+/Pages 2 0 R
+>>
+endobj
+4 0 obj
+<<
+/Type /Page
+/Resources <<
+/Font <<
+/F1 <<
+/Type /Font
+/Subtype /Type1
+/BaseFont /Helvetica
+>>
+>>
+>>
+/MediaBox [ 0.0 0.0 620 790 ]
+/Parent 2 0 R
+/Contents 5 0 R
+>>
+endobj
+5 0 obj
+<<
+/Length 1232
+>>
+stream
+BT /F1 10 Tf 50 738 Td (SYNTHETIC TEST DOCUMENT / SOFTX) Tj ET
+BT /F1 16 Tf 50 705 Td (Graph test eqe) Tj ET
+BT /F1 11 Tf 50 671 Td (Experimental single-junction CdTe devices were fabricated.) Tj ET
+BT /F1 11 Tf 50 647 Td (Device D \(target\), superstrate, active area 0.12 cm2.) Tj ET
+BT /F1 11 Tf 50 476 Td (Figure 2\(b\). EQE spectrum for D.) Tj ET
+BT /F1 11 Tf 50 447 Td (EQE \(%\)) Tj ET
+0.15 0.19 0.25 RG 1 w 125 210 m 125 418 l 505 418 l 505 210 l h S
+125.0 210 m 125.0 205 l S
+BT /F1 9 Tf 118.0 187 Td (300) Tj ET
+220.0 210 m 220.0 205 l S
+BT /F1 9 Tf 213.0 187 Td (450) Tj ET
+315.0 210 m 315.0 205 l S
+BT /F1 9 Tf 308.0 187 Td (600) Tj ET
+410.0 210 m 410.0 205 l S
+BT /F1 9 Tf 403.0 187 Td (750) Tj ET
+505.0 210 m 505.0 205 l S
+BT /F1 9 Tf 498.0 187 Td (900) Tj ET
+125 210.0 m 120 210.0 l S
+BT /F1 9 Tf 93 208.0 Td (0) Tj ET
+125 262.0 m 120 262.0 l S
+BT /F1 9 Tf 93 260.0 Td (25) Tj ET
+125 314.0 m 120 314.0 l S
+BT /F1 9 Tf 93 312.0 Td (50) Tj ET
+125 366.0 m 120 366.0 l S
+BT /F1 9 Tf 93 364.0 Td (75) Tj ET
+125 418.0 m 120 418.0 l S
+BT /F1 9 Tf 93 416.0 Td (100) Tj ET
+BT /F1 11 Tf 260 156 Td (Wavelength \(nm\)) Tj ET
+.12 .34 .81 RG 1.5 w 125.00 210.00 m 220.00 376.40 l 315.00 390.96 l 410.00 355.60 l 505.00 210.00 l S
+
+endstream
+endobj
+xref
+0 6
+0000000000 65535 f 
+0000000015 00000 n 
+0000000141 00000 n 
+0000000200 00000 n 
+0000000249 00000 n 
+0000000430 00000 n 
+trailer
+<<
+/Size 6
+/Root 3 0 R
+/Info 1 0 R
+>>
+startxref
+1714
+%%EOF

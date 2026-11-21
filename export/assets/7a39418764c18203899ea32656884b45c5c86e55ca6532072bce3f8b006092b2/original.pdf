@@ -1,0 +1,143 @@
+%PDF-1.3
+%‚„œ”
+1 0 obj
+<<
+/Producer (pypdf)
+/Title (Perovskite thin films under AM1\0565G)
+/Author (SoftX synthetic corpus)
+/CreationDate (D\07220260101)
+>>
+endobj
+2 0 obj
+<<
+/Type /Pages
+/Count 1
+/Kids [ 4 0 R ]
+>>
+endobj
+3 0 obj
+<<
+/Type /Catalog
+/Pages 2 0 R
+>>
+endobj
+4 0 obj
+<<
+/Type /Page
+/Resources <<
+/Font <<
+/F1 <<
+/Type /Font
+/Subtype /Type1
+/BaseFont /Helvetica
+>>
+>>
+>>
+/MediaBox [ 0.0 0.0 620 790 ]
+/Parent 2 0 R
+/Contents 5 0 R
+>>
+endobj
+5 0 obj
+<<
+/Length 3589
+>>
+stream
+BT /F1 10 Tf 50 738 Td (SYNTHETIC TEST DOCUMENT / SOFTX) Tj ET
+BT /F1 16 Tf 50 705 Td (Perovskite thin films under AM1.5G) Tj ET
+BT /F1 11 Tf 50 674 Td (Experimental single-junction perovskite devices were fabricated.) Tj ET
+BT /F1 11 Tf 50 655 Td (Device A \(control\), n-i-p, active area 0.10 cm2.) Tj ET
+BT /F1 11 Tf 50 636 Td (Device B \(target\), p-i-n, active area 0.10 cm2.) Tj ET
+BT /F1 11 Tf 50 617 Td (Layer 1: A / ETL / SnO2 / 35 nm / spin coating.) Tj ET
+BT /F1 11 Tf 50 598 Td (Layer 2: A / absorber / MAPbI3 / 480 nm / spin coating.) Tj ET
+BT /F1 11 Tf 50 579 Td (Layer 1: B / HTL / NiOx / 30 nm / sputtering.) Tj ET
+BT /F1 11 Tf 50 560 Td (Layer 2: B / absorber / MAPbI3 / 500 nm / spin coating.) Tj ET
+BT /F1 11 Tf 50 541 Td (Eg = 1.10 eV. Bandgap method: Tauc plot.) Tj ET
+BT /F1 11 Tf 50 522 Td (All JV scans measured under AM1.5G at 100 mW/cm2.) Tj ET
+BT /F1 12 Tf 50 497 Td (Table 1. Photovoltaic results for fabricated devices.) Tj ET
+BT /F1 11 Tf 50 476 Td (Sample) Tj ET
+BT /F1 11 Tf 145 476 Td (Scan) Tj ET
+BT /F1 11 Tf 227 476 Td (PCE \(%\)) Tj ET
+BT /F1 11 Tf 310 476 Td (Voc \(mV\)) Tj ET
+BT /F1 11 Tf 398 476 Td (Jsc \(mA/cm2\)) Tj ET
+BT /F1 11 Tf 505 476 Td (FF \(%\)) Tj ET
+BT /F1 11 Tf 50 455 Td (A) Tj ET
+BT /F1 11 Tf 145 455 Td (forward) Tj ET
+BT /F1 11 Tf 227 455 Td (18.00) Tj ET
+BT /F1 11 Tf 310 455 Td (1200) Tj ET
+BT /F1 11 Tf 398 455 Td (20.00) Tj ET
+BT /F1 11 Tf 505 455 Td (75.00) Tj ET
+BT /F1 11 Tf 50 434 Td (A) Tj ET
+BT /F1 11 Tf 145 434 Td (reverse) Tj ET
+BT /F1 11 Tf 227 434 Td (17.00) Tj ET
+BT /F1 11 Tf 310 434 Td (1200) Tj ET
+BT /F1 11 Tf 398 434 Td (20.00) Tj ET
+BT /F1 11 Tf 505 434 Td (75.00) Tj ET
+BT /F1 11 Tf 50 413 Td (B) Tj ET
+BT /F1 11 Tf 145 413 Td (reverse) Tj ET
+BT /F1 11 Tf 227 413 Td (14.00) Tj ET
+BT /F1 11 Tf 310 413 Td (1000) Tj ET
+BT /F1 11 Tf 398 413 Td (20.00) Tj ET
+BT /F1 11 Tf 505 413 Td (70.00) Tj ET
+BT /F1 11 Tf 50 390 Td (Device A reverse scan: Jsc_EQE = 17.00 mA/cm2.) Tj ET
+BT /F1 11 Tf 50 371 Td (PCE = 16.00 %.) Tj ET
+BT /F1 12 Tf 50 349 Td (Table 2. Comparison with literature.) Tj ET
+BT /F1 11 Tf 50 330 Td (Reference) Tj ET
+BT /F1 11 Tf 145 330 Td (Scan) Tj ET
+BT /F1 11 Tf 227 330 Td (PCE \(%\)) Tj ET
+BT /F1 11 Tf 310 330 Td (Voc \(mV\)) Tj ET
+BT /F1 11 Tf 398 330 Td (Jsc \(mA/cm2\)) Tj ET
+BT /F1 11 Tf 505 330 Td (FF \(%\)) Tj ET
+BT /F1 11 Tf 50 312 Td (10.5555/sx) Tj ET
+BT /F1 11 Tf 145 312 Td (reverse) Tj ET
+BT /F1 11 Tf 227 312 Td (10.00) Tj ET
+BT /F1 11 Tf 310 312 Td (800) Tj ET
+BT /F1 11 Tf 398 312 Td (20.00) Tj ET
+BT /F1 11 Tf 505 312 Td (62.50) Tj ET
+BT /F1 11 Tf 50 292 Td (Figure 1\(a\). JV curve for B, reverse scan.) Tj ET
+0.15 0.19 0.25 RG 1 w 115 83 m 115 251 l 495 251 l 495 83 l h S
+115 83 m 115 79 l S
+BT /F1 9 Tf 109 66 Td (0.0) Tj ET
+191 83 m 191 79 l S
+BT /F1 9 Tf 185 66 Td (0.2) Tj ET
+267 83 m 267 79 l S
+BT /F1 9 Tf 261 66 Td (0.4) Tj ET
+343 83 m 343 79 l S
+BT /F1 9 Tf 337 66 Td (0.6) Tj ET
+419 83 m 419 79 l S
+BT /F1 9 Tf 413 66 Td (0.8) Tj ET
+495 83 m 495 79 l S
+BT /F1 9 Tf 489 66 Td (1.0) Tj ET
+115 83 m 110 83 l S
+BT /F1 9 Tf 88 80 Td (0) Tj ET
+115 125 m 110 125 l S
+BT /F1 9 Tf 88 122 Td (5) Tj ET
+115 167 m 110 167 l S
+BT /F1 9 Tf 88 164 Td (10) Tj ET
+115 209 m 110 209 l S
+BT /F1 9 Tf 88 206 Td (15) Tj ET
+115 251 m 110 251 l S
+BT /F1 9 Tf 88 248 Td (20) Tj ET
+BT /F1 10 Tf 265 46 Td (Voltage \(V\)) Tj ET
+BT /F1 10 Tf 50 266 Td (Current density \(mA/cm2\)) Tj ET
+0.04 0.58 0.48 RG 1.5 w 115.00 251.00 m 153.00 250.98 l 191.00 250.73 l 229.00 249.64 l 267.00 246.70 l 305.00 240.50 l 343.00 229.23 l 381.00 210.66 l 419.00 182.19 l 457.00 140.78 l 495.00 83.00 l S
+
+endstream
+endobj
+xref
+0 6
+0000000000 65535 f 
+0000000015 00000 n 
+0000000164 00000 n 
+0000000223 00000 n 
+0000000272 00000 n 
+0000000453 00000 n 
+trailer
+<<
+/Size 6
+/Root 3 0 R
+/Info 1 0 R
+>>
+startxref
+4094
+%%EOF

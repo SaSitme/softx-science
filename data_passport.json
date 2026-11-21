@@ -1,0 +1,1392 @@
+{
+  "schema_version": 1,
+  "database": "SQLite",
+  "documentation": "DATA_PASSPORT.md",
+  "entities": {
+    "publication": {
+      "primary_key": [
+        "id"
+      ],
+      "columns": {
+        "id": {
+          "type": "TEXT",
+          "nullable": false,
+          "default_sql": null
+        },
+        "title": {
+          "type": "TEXT",
+          "nullable": false,
+          "default_sql": null
+        },
+        "year": {
+          "type": "INTEGER",
+          "nullable": true,
+          "default_sql": null
+        },
+        "doi": {
+          "type": "TEXT",
+          "nullable": true,
+          "default_sql": null
+        },
+        "authors": {
+          "type": "JSON",
+          "nullable": true,
+          "default_sql": null
+        },
+        "journal": {
+          "type": "TEXT",
+          "nullable": true,
+          "default_sql": null
+        },
+        "corpus_status": {
+          "type": "TEXT",
+          "nullable": false,
+          "default_sql": "'needs_review'",
+          "enum": [
+            "included",
+            "excluded_tandem",
+            "excluded_theoretical",
+            "needs_review"
+          ]
+        },
+        "corpus_reason": {
+          "type": "TEXT",
+          "nullable": true,
+          "default_sql": null
+        },
+        "corpus_manual": {
+          "type": "INTEGER",
+          "nullable": false,
+          "default_sql": "0"
+        },
+        "is_fixture": {
+          "type": "INTEGER",
+          "nullable": false,
+          "default_sql": "0"
+        }
+      }
+    },
+    "pdf_version": {
+      "primary_key": [
+        "id"
+      ],
+      "columns": {
+        "id": {
+          "type": "TEXT",
+          "nullable": false,
+          "default_sql": null
+        },
+        "publication_id": {
+          "type": "TEXT",
+          "nullable": false,
+          "default_sql": null,
+          "references": {
+            "table": "publication",
+            "column": "id"
+          }
+        },
+        "sha256": {
+          "type": "TEXT",
+          "nullable": false,
+          "default_sql": null
+        },
+        "filename": {
+          "type": "TEXT",
+          "nullable": false,
+          "default_sql": null
+        },
+        "pages": {
+          "type": "JSON",
+          "nullable": false,
+          "default_sql": "'[]'"
+        },
+        "processing_status": {
+          "type": "TEXT",
+          "nullable": false,
+          "default_sql": null,
+          "enum": [
+            "queued",
+            "processing",
+            "completed",
+            "partial",
+            "failed"
+          ]
+        },
+        "error_message": {
+          "type": "TEXT",
+          "nullable": true,
+          "default_sql": null
+        },
+        "failed_pages": {
+          "type": "JSON",
+          "nullable": false,
+          "default_sql": "'[]'"
+        },
+        "created_at": {
+          "type": "TEXT",
+          "nullable": true,
+          "default_sql": "CURRENT_TIMESTAMP"
+        }
+      }
+    },
+    "material": {
+      "primary_key": [
+        "id"
+      ],
+      "columns": {
+        "id": {
+          "type": "TEXT",
+          "nullable": false,
+          "default_sql": null
+        },
+        "publication_id": {
+          "type": "TEXT",
+          "nullable": false,
+          "default_sql": null,
+          "references": {
+            "table": "publication",
+            "column": "id"
+          }
+        },
+        "material_name_raw": {
+          "type": "TEXT",
+          "nullable": true,
+          "default_sql": null
+        },
+        "formula_normalized": {
+          "type": "TEXT",
+          "nullable": true,
+          "default_sql": null
+        },
+        "material_class": {
+          "type": "TEXT",
+          "nullable": true,
+          "default_sql": null
+        },
+        "dimensionality": {
+          "type": "TEXT",
+          "nullable": true,
+          "default_sql": null
+        },
+        "additives": {
+          "type": "JSON",
+          "nullable": true,
+          "default_sql": null
+        },
+        "bandgap_value": {
+          "type": "REAL",
+          "nullable": true,
+          "default_sql": null,
+          "normalized_dimension": "eV"
+        },
+        "bandgap_unit": {
+          "type": "TEXT",
+          "nullable": true,
+          "default_sql": null
+        },
+        "bandgap_method": {
+          "type": "TEXT",
+          "nullable": true,
+          "default_sql": null
+        }
+      }
+    },
+    "device": {
+      "primary_key": [
+        "id"
+      ],
+      "columns": {
+        "id": {
+          "type": "TEXT",
+          "nullable": false,
+          "default_sql": null
+        },
+        "publication_id": {
+          "type": "TEXT",
+          "nullable": false,
+          "default_sql": null,
+          "references": {
+            "table": "publication",
+            "column": "id"
+          }
+        },
+        "material_id": {
+          "type": "TEXT",
+          "nullable": true,
+          "default_sql": null,
+          "references": {
+            "table": "material",
+            "column": "id"
+          }
+        },
+        "device_label": {
+          "type": "TEXT",
+          "nullable": false,
+          "default_sql": null
+        },
+        "device_role": {
+          "type": "TEXT",
+          "nullable": true,
+          "default_sql": null,
+          "enum": [
+            "control",
+            "target",
+            "record"
+          ]
+        },
+        "device_type": {
+          "type": "TEXT",
+          "nullable": true,
+          "default_sql": null
+        },
+        "architecture": {
+          "type": "TEXT",
+          "nullable": true,
+          "default_sql": null,
+          "enum": [
+            "n-i-p",
+            "p-i-n",
+            "substrate",
+            "superstrate"
+          ]
+        },
+        "substrate_type": {
+          "type": "TEXT",
+          "nullable": true,
+          "default_sql": null
+        },
+        "active_area": {
+          "type": "REAL",
+          "nullable": true,
+          "default_sql": null,
+          "normalized_dimension": "cm²"
+        },
+        "area_unit": {
+          "type": "TEXT",
+          "nullable": true,
+          "default_sql": null
+        },
+        "area_definition": {
+          "type": "TEXT",
+          "nullable": true,
+          "default_sql": null
+        },
+        "encapsulation": {
+          "type": "TEXT",
+          "nullable": true,
+          "default_sql": null
+        }
+      }
+    },
+    "device_layer": {
+      "primary_key": [
+        "id"
+      ],
+      "columns": {
+        "id": {
+          "type": "TEXT",
+          "nullable": false,
+          "default_sql": null
+        },
+        "device_id": {
+          "type": "TEXT",
+          "nullable": false,
+          "default_sql": null,
+          "references": {
+            "table": "device",
+            "column": "id"
+          }
+        },
+        "layer_order": {
+          "type": "INTEGER",
+          "nullable": true,
+          "default_sql": null
+        },
+        "layer_function": {
+          "type": "TEXT",
+          "nullable": true,
+          "default_sql": null
+        },
+        "layer_material": {
+          "type": "TEXT",
+          "nullable": true,
+          "default_sql": null
+        },
+        "material_id": {
+          "type": "TEXT",
+          "nullable": true,
+          "default_sql": null,
+          "references": {
+            "table": "material",
+            "column": "id"
+          }
+        },
+        "layer_thickness": {
+          "type": "REAL",
+          "nullable": true,
+          "default_sql": null,
+          "normalized_dimension": "nm"
+        },
+        "thickness_unit": {
+          "type": "TEXT",
+          "nullable": true,
+          "default_sql": null
+        },
+        "deposition_method": {
+          "type": "TEXT",
+          "nullable": true,
+          "default_sql": null
+        },
+        "annealing_temperature": {
+          "type": "TEXT",
+          "nullable": true,
+          "default_sql": null
+        },
+        "annealing_time": {
+          "type": "TEXT",
+          "nullable": true,
+          "default_sql": null
+        },
+        "atmosphere": {
+          "type": "TEXT",
+          "nullable": true,
+          "default_sql": null
+        }
+      }
+    },
+    "measurement": {
+      "primary_key": [
+        "id"
+      ],
+      "columns": {
+        "id": {
+          "type": "TEXT",
+          "nullable": false,
+          "default_sql": null
+        },
+        "device_id": {
+          "type": "TEXT",
+          "nullable": false,
+          "default_sql": null,
+          "references": {
+            "table": "device",
+            "column": "id"
+          }
+        },
+        "measurement_type": {
+          "type": "TEXT",
+          "nullable": true,
+          "default_sql": null
+        },
+        "spectrum": {
+          "type": "TEXT",
+          "nullable": true,
+          "default_sql": null
+        },
+        "light_intensity": {
+          "type": "REAL",
+          "nullable": true,
+          "default_sql": null,
+          "normalized_dimension": "mW/cm²"
+        },
+        "light_intensity_unit": {
+          "type": "TEXT",
+          "nullable": true,
+          "default_sql": null
+        },
+        "intensity_source_id": {
+          "type": "TEXT",
+          "nullable": true,
+          "default_sql": null,
+          "references": {
+            "table": "source_reference",
+            "column": "id"
+          }
+        },
+        "scan_direction": {
+          "type": "TEXT",
+          "nullable": true,
+          "default_sql": null,
+          "enum": [
+            "forward",
+            "reverse"
+          ]
+        },
+        "scan_rate": {
+          "type": "TEXT",
+          "nullable": true,
+          "default_sql": null
+        },
+        "mask_used": {
+          "type": "INTEGER",
+          "nullable": true,
+          "default_sql": null
+        },
+        "certified": {
+          "type": "INTEGER",
+          "nullable": true,
+          "default_sql": null
+        },
+        "temperature": {
+          "type": "TEXT",
+          "nullable": true,
+          "default_sql": null
+        },
+        "stability_protocol": {
+          "type": "TEXT",
+          "nullable": true,
+          "default_sql": null
+        },
+        "stress_conditions": {
+          "type": "TEXT",
+          "nullable": true,
+          "default_sql": null
+        },
+        "batch_label": {
+          "type": "TEXT",
+          "nullable": true,
+          "default_sql": null
+        },
+        "condition_label": {
+          "type": "TEXT",
+          "nullable": true,
+          "default_sql": null
+        }
+      }
+    },
+    "measurement_result": {
+      "primary_key": [
+        "id"
+      ],
+      "columns": {
+        "id": {
+          "type": "TEXT",
+          "nullable": false,
+          "default_sql": null
+        },
+        "publication_id": {
+          "type": "TEXT",
+          "nullable": false,
+          "default_sql": null,
+          "references": {
+            "table": "publication",
+            "column": "id"
+          }
+        },
+        "pdf_version_id": {
+          "type": "TEXT",
+          "nullable": false,
+          "default_sql": null,
+          "references": {
+            "table": "pdf_version",
+            "column": "id"
+          }
+        },
+        "device_id": {
+          "type": "TEXT",
+          "nullable": true,
+          "default_sql": null,
+          "references": {
+            "table": "device",
+            "column": "id"
+          }
+        },
+        "measurement_id": {
+          "type": "TEXT",
+          "nullable": true,
+          "default_sql": null,
+          "references": {
+            "table": "measurement",
+            "column": "id"
+          }
+        },
+        "material_id": {
+          "type": "TEXT",
+          "nullable": true,
+          "default_sql": null,
+          "references": {
+            "table": "material",
+            "column": "id"
+          }
+        },
+        "candidate_device_ids": {
+          "type": "JSON",
+          "nullable": false,
+          "default_sql": "'[]'"
+        },
+        "candidate_measurement_ids": {
+          "type": "JSON",
+          "nullable": false,
+          "default_sql": "'[]'"
+        },
+        "metric_name": {
+          "type": "TEXT",
+          "nullable": false,
+          "default_sql": null
+        },
+        "metric_value": {
+          "type": "REAL",
+          "nullable": true,
+          "default_sql": null
+        },
+        "metric_unit": {
+          "type": "TEXT",
+          "nullable": true,
+          "default_sql": null
+        },
+        "aggregation": {
+          "type": "TEXT",
+          "nullable": false,
+          "default_sql": "'unknown'",
+          "enum": [
+            "champion",
+            "mean",
+            "median",
+            "single",
+            "unknown"
+          ]
+        },
+        "spread_value": {
+          "type": "REAL",
+          "nullable": true,
+          "default_sql": null
+        },
+        "n_devices": {
+          "type": "INTEGER",
+          "nullable": true,
+          "default_sql": null
+        },
+        "time_point": {
+          "type": "REAL",
+          "nullable": true,
+          "default_sql": null,
+          "normalized_dimension": "h"
+        },
+        "time_unit": {
+          "type": "TEXT",
+          "nullable": true,
+          "default_sql": null
+        },
+        "range_min": {
+          "type": "REAL",
+          "nullable": true,
+          "default_sql": null
+        },
+        "range_max": {
+          "type": "REAL",
+          "nullable": true,
+          "default_sql": null
+        },
+        "inequality_op": {
+          "type": "TEXT",
+          "nullable": true,
+          "default_sql": null
+        },
+        "value_state": {
+          "type": "TEXT",
+          "nullable": false,
+          "default_sql": null,
+          "enum": [
+            "numeric",
+            "numeric_zero",
+            "missing",
+            "ambiguous",
+            "unparseable"
+          ]
+        },
+        "raw_value": {
+          "type": "TEXT",
+          "nullable": true,
+          "default_sql": null
+        },
+        "raw_unit": {
+          "type": "TEXT",
+          "nullable": true,
+          "default_sql": null
+        },
+        "raw_record": {
+          "type": "JSON",
+          "nullable": false,
+          "default_sql": null
+        },
+        "normalized_value": {
+          "type": "REAL",
+          "nullable": true,
+          "default_sql": null
+        },
+        "normalized_unit": {
+          "type": "TEXT",
+          "nullable": true,
+          "default_sql": null
+        },
+        "result_origin": {
+          "type": "TEXT",
+          "nullable": false,
+          "default_sql": "'primary'",
+          "enum": [
+            "primary",
+            "cited"
+          ]
+        },
+        "cited_publication_id": {
+          "type": "TEXT",
+          "nullable": true,
+          "default_sql": null,
+          "references": {
+            "table": "publication",
+            "column": "id"
+          }
+        },
+        "acquisition_method": {
+          "type": "TEXT",
+          "nullable": false,
+          "default_sql": "'published_numeric'",
+          "enum": [
+            "published_numeric",
+            "digitized_plot",
+            "calculated",
+            "assumption"
+          ]
+        },
+        "extraction_method": {
+          "type": "TEXT",
+          "nullable": true,
+          "default_sql": null
+        },
+        "confidence": {
+          "type": "REAL",
+          "nullable": true,
+          "default_sql": null
+        },
+        "formula": {
+          "type": "TEXT",
+          "nullable": true,
+          "default_sql": null
+        },
+        "input_result_ids": {
+          "type": "JSON",
+          "nullable": true,
+          "default_sql": null
+        },
+        "calculation_inputs": {
+          "type": "JSON",
+          "nullable": true,
+          "default_sql": null
+        },
+        "assumption_basis": {
+          "type": "TEXT",
+          "nullable": true,
+          "default_sql": null
+        },
+        "extraction_status": {
+          "type": "TEXT",
+          "nullable": false,
+          "default_sql": null,
+          "enum": [
+            "Извлечено автоматически",
+            "Подтверждено пользователем",
+            "Требует проверки"
+          ]
+        },
+        "manual": {
+          "type": "INTEGER",
+          "nullable": false,
+          "default_sql": "0"
+        }
+      }
+    },
+    "source_reference": {
+      "primary_key": [
+        "id"
+      ],
+      "columns": {
+        "id": {
+          "type": "TEXT",
+          "nullable": false,
+          "default_sql": null
+        },
+        "publication_id": {
+          "type": "TEXT",
+          "nullable": false,
+          "default_sql": null,
+          "references": {
+            "table": "publication",
+            "column": "id"
+          }
+        },
+        "pdf_version_id": {
+          "type": "TEXT",
+          "nullable": false,
+          "default_sql": null,
+          "references": {
+            "table": "pdf_version",
+            "column": "id"
+          }
+        },
+        "source_page": {
+          "type": "INTEGER",
+          "nullable": false,
+          "default_sql": null
+        },
+        "source_section": {
+          "type": "TEXT",
+          "nullable": true,
+          "default_sql": null
+        },
+        "source_table": {
+          "type": "TEXT",
+          "nullable": true,
+          "default_sql": null
+        },
+        "source_figure": {
+          "type": "TEXT",
+          "nullable": true,
+          "default_sql": null
+        },
+        "source_fragment": {
+          "type": "TEXT",
+          "nullable": true,
+          "default_sql": null
+        },
+        "bbox": {
+          "type": "JSON",
+          "nullable": false,
+          "default_sql": null
+        },
+        "source_type": {
+          "type": "TEXT",
+          "nullable": false,
+          "default_sql": null,
+          "enum": [
+            "text",
+            "table_cell",
+            "table_header",
+            "footnote",
+            "figure",
+            "caption"
+          ]
+        },
+        "fragment_role": {
+          "type": "TEXT",
+          "nullable": false,
+          "default_sql": null,
+          "enum": [
+            "value",
+            "unit",
+            "sample_label",
+            "condition"
+          ]
+        }
+      }
+    },
+    "result_source": {
+      "primary_key": [
+        "result_id",
+        "source_reference_id"
+      ],
+      "columns": {
+        "result_id": {
+          "type": "TEXT",
+          "nullable": false,
+          "default_sql": null,
+          "references": {
+            "table": "measurement_result",
+            "column": "id"
+          }
+        },
+        "source_reference_id": {
+          "type": "TEXT",
+          "nullable": false,
+          "default_sql": null,
+          "references": {
+            "table": "source_reference",
+            "column": "id"
+          }
+        }
+      }
+    },
+    "plot_dataset": {
+      "primary_key": [
+        "id"
+      ],
+      "columns": {
+        "id": {
+          "type": "TEXT",
+          "nullable": false,
+          "default_sql": null
+        },
+        "publication_id": {
+          "type": "TEXT",
+          "nullable": false,
+          "default_sql": null,
+          "references": {
+            "table": "publication",
+            "column": "id"
+          }
+        },
+        "pdf_version_id": {
+          "type": "TEXT",
+          "nullable": false,
+          "default_sql": null,
+          "references": {
+            "table": "pdf_version",
+            "column": "id"
+          }
+        },
+        "source_page": {
+          "type": "INTEGER",
+          "nullable": false,
+          "default_sql": null
+        },
+        "source_figure": {
+          "type": "TEXT",
+          "nullable": true,
+          "default_sql": null
+        },
+        "panel_id": {
+          "type": "TEXT",
+          "nullable": true,
+          "default_sql": null
+        },
+        "plot_type": {
+          "type": "TEXT",
+          "nullable": false,
+          "default_sql": null,
+          "enum": [
+            "JV",
+            "EQE",
+            "PCE_vs_param",
+            "thermal",
+            "stability",
+            "scatter"
+          ]
+        },
+        "plot_bbox": {
+          "type": "JSON",
+          "nullable": false,
+          "default_sql": null
+        },
+        "caption_text": {
+          "type": "TEXT",
+          "nullable": true,
+          "default_sql": null
+        },
+        "legend_text": {
+          "type": "TEXT",
+          "nullable": true,
+          "default_sql": null
+        },
+        "crop_image": {
+          "type": "TEXT",
+          "nullable": true,
+          "default_sql": null
+        },
+        "axes": {
+          "type": "JSON",
+          "nullable": false,
+          "default_sql": null
+        },
+        "points": {
+          "type": "JSON",
+          "nullable": false,
+          "default_sql": null
+        },
+        "digitization_method": {
+          "type": "TEXT",
+          "nullable": true,
+          "default_sql": null
+        },
+        "stroke_width_pdf": {
+          "type": "REAL",
+          "nullable": true,
+          "default_sql": null
+        },
+        "uncertainty": {
+          "type": "JSON",
+          "nullable": true,
+          "default_sql": null
+        },
+        "uncertainty_method": {
+          "type": "TEXT",
+          "nullable": false,
+          "default_sql": null
+        },
+        "is_approximate": {
+          "type": "INTEGER",
+          "nullable": false,
+          "default_sql": "1"
+        },
+        "acquisition_method": {
+          "type": "TEXT",
+          "nullable": false,
+          "default_sql": "'digitized_plot'"
+        },
+        "device_id": {
+          "type": "TEXT",
+          "nullable": true,
+          "default_sql": null,
+          "references": {
+            "table": "device",
+            "column": "id"
+          }
+        },
+        "measurement_id": {
+          "type": "TEXT",
+          "nullable": true,
+          "default_sql": null,
+          "references": {
+            "table": "measurement",
+            "column": "id"
+          }
+        },
+        "series_label": {
+          "type": "TEXT",
+          "nullable": true,
+          "default_sql": null
+        },
+        "manual": {
+          "type": "INTEGER",
+          "nullable": false,
+          "default_sql": "0"
+        }
+      }
+    },
+    "plot_source": {
+      "primary_key": [
+        "plot_id",
+        "source_reference_id"
+      ],
+      "columns": {
+        "plot_id": {
+          "type": "TEXT",
+          "nullable": false,
+          "default_sql": null,
+          "references": {
+            "table": "plot_dataset",
+            "column": "id"
+          }
+        },
+        "source_reference_id": {
+          "type": "TEXT",
+          "nullable": false,
+          "default_sql": null,
+          "references": {
+            "table": "source_reference",
+            "column": "id"
+          }
+        }
+      }
+    },
+    "validation_issue": {
+      "primary_key": [
+        "id"
+      ],
+      "columns": {
+        "id": {
+          "type": "TEXT",
+          "nullable": false,
+          "default_sql": null
+        },
+        "publication_id": {
+          "type": "TEXT",
+          "nullable": false,
+          "default_sql": null,
+          "references": {
+            "table": "publication",
+            "column": "id"
+          }
+        },
+        "rule_code": {
+          "type": "TEXT",
+          "nullable": false,
+          "default_sql": null
+        },
+        "severity": {
+          "type": "TEXT",
+          "nullable": false,
+          "default_sql": null,
+          "enum": [
+            "error",
+            "warning",
+            "info",
+            "not_applicable"
+          ]
+        },
+        "compared_values": {
+          "type": "JSON",
+          "nullable": false,
+          "default_sql": null
+        },
+        "threshold": {
+          "type": "JSON",
+          "nullable": true,
+          "default_sql": null
+        },
+        "description": {
+          "type": "TEXT",
+          "nullable": false,
+          "default_sql": null
+        },
+        "hypothesis": {
+          "type": "TEXT",
+          "nullable": true,
+          "default_sql": null
+        },
+        "resolution_status": {
+          "type": "TEXT",
+          "nullable": false,
+          "default_sql": null,
+          "enum": [
+            "open",
+            "passed",
+            "resolved",
+            "not_applicable",
+            "superseded"
+          ]
+        },
+        "updated_at": {
+          "type": "TEXT",
+          "nullable": true,
+          "default_sql": "CURRENT_TIMESTAMP"
+        }
+      }
+    },
+    "issue_result": {
+      "primary_key": [
+        "issue_id",
+        "result_id"
+      ],
+      "columns": {
+        "issue_id": {
+          "type": "TEXT",
+          "nullable": false,
+          "default_sql": null,
+          "references": {
+            "table": "validation_issue",
+            "column": "id"
+          }
+        },
+        "result_id": {
+          "type": "TEXT",
+          "nullable": false,
+          "default_sql": null,
+          "references": {
+            "table": "measurement_result",
+            "column": "id"
+          }
+        }
+      }
+    },
+    "issue_source": {
+      "primary_key": [
+        "issue_id",
+        "source_reference_id"
+      ],
+      "columns": {
+        "issue_id": {
+          "type": "TEXT",
+          "nullable": false,
+          "default_sql": null,
+          "references": {
+            "table": "validation_issue",
+            "column": "id"
+          }
+        },
+        "source_reference_id": {
+          "type": "TEXT",
+          "nullable": false,
+          "default_sql": null,
+          "references": {
+            "table": "source_reference",
+            "column": "id"
+          }
+        }
+      }
+    },
+    "audit_log": {
+      "primary_key": [
+        "id"
+      ],
+      "columns": {
+        "id": {
+          "type": "INTEGER",
+          "nullable": false,
+          "default_sql": null
+        },
+        "entity_type": {
+          "type": "TEXT",
+          "nullable": false,
+          "default_sql": null
+        },
+        "entity_id": {
+          "type": "TEXT",
+          "nullable": false,
+          "default_sql": null
+        },
+        "field_name": {
+          "type": "TEXT",
+          "nullable": false,
+          "default_sql": null
+        },
+        "old_value": {
+          "type": "JSON",
+          "nullable": true,
+          "default_sql": null
+        },
+        "new_value": {
+          "type": "JSON",
+          "nullable": true,
+          "default_sql": null
+        },
+        "author": {
+          "type": "TEXT",
+          "nullable": false,
+          "default_sql": null
+        },
+        "timestamp": {
+          "type": "TEXT",
+          "nullable": false,
+          "default_sql": "CURRENT_TIMESTAMP"
+        }
+      }
+    },
+    "result_plot": {
+      "primary_key": [
+        "result_id",
+        "plot_id"
+      ],
+      "columns": {
+        "result_id": {
+          "type": "TEXT",
+          "nullable": false,
+          "default_sql": null,
+          "references": {
+            "table": "measurement_result",
+            "column": "id"
+          }
+        },
+        "plot_id": {
+          "type": "TEXT",
+          "nullable": false,
+          "default_sql": null,
+          "references": {
+            "table": "plot_dataset",
+            "column": "id"
+          }
+        }
+      }
+    }
+  },
+  "metric_registry": {
+    "PCE": "PCE|power conversion efficiency|η",
+    "Voc": "V[ _]*[oₒ][c꜀]|open[- ]circuit voltage",
+    "Jsc_EQE": "J[ _]*[sₛ][c꜀][ _-]*EQE|EQE[- ]integrated J[ _]*[sₛ][c꜀]",
+    "Jsc": "J[ _]*[sₛ][c꜀]|short[- ]circuit current density",
+    "FF": "FF|fill factor",
+    "Rs": "R[ _]?s|series resistance",
+    "Rsh": "R[ _]?sh|shunt resistance",
+    "HI": "HI|hysteresis index",
+    "T80": "T[ _]?80",
+    "Eg": "E[ _]?g|band gap|bandgap"
+  },
+  "normalization": {
+    "PCE": {
+      "target": "%",
+      "factor_by_unit": {
+        "%": 1,
+        "1": 100
+      }
+    },
+    "FF": {
+      "target": "%",
+      "factor_by_unit": {
+        "%": 1,
+        "1": 100
+      }
+    },
+    "HI": {
+      "target": "%",
+      "factor_by_unit": {
+        "%": 1,
+        "1": 100
+      }
+    },
+    "Voc": {
+      "target": "V",
+      "factor_by_unit": {
+        "V": 1,
+        "mV": 0.001
+      }
+    },
+    "Jsc": {
+      "target": "mA/cm²",
+      "factor_by_unit": {
+        "mA/cm²": 1,
+        "A/m²": 0.1,
+        "A/cm²": 1000
+      }
+    },
+    "Jsc_EQE": {
+      "target": "mA/cm²",
+      "factor_by_unit": {
+        "mA/cm²": 1,
+        "A/m²": 0.1,
+        "A/cm²": 1000
+      }
+    },
+    "Eg": {
+      "target": "eV",
+      "factor_by_unit": {
+        "eV": 1,
+        "meV": 0.001
+      }
+    },
+    "T80": {
+      "target": "h",
+      "factor_by_unit": {
+        "h": 1,
+        "min": 0.016666666666666666,
+        "s": 0.0002777777777777778,
+        "days": 24
+      }
+    },
+    "thickness": {
+      "target": "nm",
+      "factor_by_unit": {
+        "nm": 1,
+        "µm": 1000,
+        "Å": 0.1
+      }
+    },
+    "area": {
+      "target": "cm²",
+      "factor_by_unit": {
+        "cm²": 1,
+        "mm²": 0.01,
+        "m²": 10000
+      }
+    },
+    "Pin": {
+      "target": "mW/cm²",
+      "factor_by_unit": {
+        "mW/cm²": 1,
+        "W/m²": 0.1,
+        "W/cm²": 1000
+      }
+    },
+    "Rs": {
+      "target": null,
+      "accepted_distinct_units": [
+        "Ω·cm²",
+        "Ω"
+      ]
+    },
+    "Rsh": {
+      "target": null,
+      "accepted_distinct_units": [
+        "Ω·cm²",
+        "Ω"
+      ]
+    }
+  },
+  "canonical_pdf": {
+    "bbox_order": [
+      "x_min",
+      "y_min",
+      "x_max",
+      "y_max"
+    ],
+    "space": "unrotated_pdf_user_space",
+    "page_number_origin": 1,
+    "y_direction": "up",
+    "page_box": "crop_intersect_media"
+  },
+  "invariants": {
+    "immutable_result_fields": [
+      "raw_value",
+      "raw_unit",
+      "raw_record"
+    ],
+    "idempotence_key": "pdf_version.sha256",
+    "plot_is_approximate": true,
+    "condition_defaults": null
+  },
+  "rules": {
+    "PCE_CONSISTENCY": {
+      "name": "Согласованность КПД",
+      "relative_threshold": 0.03,
+      "denominator": "abs(PCE_calc)",
+      "operator": ">"
+    },
+    "VOC_BANDGAP": {
+      "name": "Напряжение холостого хода и ширина запрещённой зоны",
+      "Voc": {
+        "max_exclusive": "Eg/q"
+      }
+    },
+    "PHYSICAL_RANGE": {
+      "name": "Физические границы",
+      "PCE": {
+        "min": 0,
+        "max": 100
+      },
+      "FF": {
+        "min_exclusive": 0,
+        "max": 100
+      },
+      "Jsc": {
+        "max_abs": "Pin/Eg"
+      }
+    },
+    "SHOCKLEY_QUEISSER": {
+      "name": "Предел однопереходного элемента",
+      "model": "AM1.5G detailed balance",
+      "T_reference_K": 298.15
+    },
+    "EQE_JSC": {
+      "name": "Плотность тока по EQE и ВАХ",
+      "relative_threshold": 0.05,
+      "denominator": "abs(Jsc_JV)",
+      "operator": ">"
+    },
+    "BATCH_CHAMPION": {
+      "name": "Лучший прибор и среднее по партии",
+      "min_difference": 0,
+      "max_difference": "spread_if_available"
+    },
+    "SCAN_ISOLATION": {
+      "name": "Раздельность направлений развёртки",
+      "operator": "equal"
+    },
+    "CROSS_SOURCE": {
+      "name": "Сверка источников",
+      "max_difference": "sum_of_half_rounding_steps_and_digitization_uncertainties"
+    }
+  },
+  "comparison": {
+    "area_relative_tolerance": 0.05,
+    "spectrum": "AM1.5G",
+    "pin": {
+      "value": 100,
+      "unit": "mW/cm²"
+    },
+    "criteria": [
+      "same_material_class",
+      "same_device_type",
+      "same_metric_and_unit",
+      "same_area_definition",
+      "explicit_aggregation",
+      "explicit_scan_direction",
+      "primary",
+      "included"
+    ],
+    "separate_views": [
+      "certified",
+      "stability"
+    ],
+    "stability_extra": [
+      "stability_protocol",
+      "stress_conditions"
+    ]
+  }
+}

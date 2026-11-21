@@ -1,0 +1,5 @@
+﻿id,device_id,measurement_type,spectrum,light_intensity,light_intensity_unit,intensity_source_id,scan_direction,scan_rate,mask_used,certified,temperature,stability_protocol,stress_conditions,batch_label,condition_label
+01a98cd178d195c20ba5421a,8be5fa66374e31ae700de41d,JV,AM1.5G,100.0,mW/cm²,ca41d3dab9254c28d7cfb300,reverse,,,,,,,,
+09ebbeb5c4ede622e24626d0,7cf0373b8bd3db91f345d932,JV,,,,,reverse,,,,,,,,
+541317f484de71705c94f74b,8be5fa66374e31ae700de41d,JV,AM1.5G,100.0,mW/cm²,ca41d3dab9254c28d7cfb300,forward,,,,,,,,
+614b30918ba19d8222501b3b,10e6c1ccd4ec1f827b083a5c,JV,AM1.5G,100.0,mW/cm²,ca41d3dab9254c28d7cfb300,reverse,,,,,,,,

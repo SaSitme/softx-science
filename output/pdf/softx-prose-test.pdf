@@ -1,0 +1,77 @@
+%PDF-1.3
+%‚„œ”
+1 0 obj
+<<
+/Producer (pypdf)
+/Title (Solvent treatment of perovskite cells)
+/Author (SoftX synthetic corpus)
+>>
+endobj
+2 0 obj
+<<
+/Type /Pages
+/Count 1
+/Kids [ 4 0 R ]
+>>
+endobj
+3 0 obj
+<<
+/Type /Catalog
+/Pages 2 0 R
+>>
+endobj
+4 0 obj
+<<
+/Type /Page
+/Resources <<
+/Font <<
+/F1 <<
+/Type /Font
+/Subtype /Type1
+/BaseFont /Helvetica
+>>
+>>
+>>
+/MediaBox [ 0.0 0.0 460 380 ]
+/Parent 2 0 R
+/Contents 5 0 R
+>>
+endobj
+5 0 obj
+<<
+/Length 934
+>>
+stream
+0.23 0.14 0.55 rg 0 372 460 8 re f
+BT /F1 9 Tf 32 340 Td (SYNTHETIC TEST DOCUMENT / SOFTX) Tj ET
+0.10 0.13 0.22 rg
+BT /F1 19 Tf 32 308 Td (Solvent treatment of perovskite cells) Tj ET
+BT /F1 11 Tf 32 266 Td (An experimental single-junction perovskite device was fabricated.) Tj ET
+BT /F1 11 Tf 32 248 Td (The reference sample was compared with a solvent-treated film.) Tj ET
+BT /F1 11 Tf 32 209 Td (Device B, measured under AM1.5G on the reverse scan, showed a) Tj ET
+BT /F1 11 Tf 32 191 Td (power conversion efficiency of 16.2%.) Tj ET
+BT /F1 11 Tf 32 155 Td (The open-circuit voltage was 1080 mV for the treated device.) Tj ET
+BT /F1 11 Tf 32 137 Td (Its fill factor reached 75%, including contact losses.) Tj ET
+BT /F1 11 Tf 32 101 Td (A current density of 20.0 mA/cm2 was recorded at short circuit.) Tj ET
+0.78 0.79 0.84 RG 32 72 m 428 72 l S
+BT /F1 9 Tf 32 48 Td (Synthetic example prepared to test extraction from prose.) Tj ET
+
+endstream
+endobj
+xref
+0 6
+0000000000 65535 f 
+0000000015 00000 n 
+0000000134 00000 n 
+0000000193 00000 n 
+0000000242 00000 n 
+0000000423 00000 n 
+trailer
+<<
+/Size 6
+/Root 3 0 R
+/Info 1 0 R
+>>
+startxref
+1408
+%%EOF

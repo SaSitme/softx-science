@@ -1,0 +1,6630 @@
+{
+  "publication": [
+    {
+      "id": "0696a6d15d3464d9d683fa20",
+      "title": "Graph test scatter",
+      "year": null,
+      "doi": null,
+      "authors": [
+        "SoftX synthetic corpus"
+      ],
+      "journal": null,
+      "corpus_status": "included",
+      "corpus_reason": "Обнаружены изготовление тонкоплёночного прибора и фотоэлектрические данные",
+      "corpus_manual": 0,
+      "is_fixture": 1
+    },
+    {
+      "id": "27f665e054a4f0727b4a27e0",
+      "title": "Graph test thermal",
+      "year": null,
+      "doi": null,
+      "authors": [
+        "SoftX synthetic corpus"
+      ],
+      "journal": null,
+      "corpus_status": "included",
+      "corpus_reason": "Обнаружены изготовление тонкоплёночного прибора и фотоэлектрические данные",
+      "corpus_manual": 0,
+      "is_fixture": 1
+    },
+    {
+      "id": "46ed2bd82a9f0b7a1052c475",
+      "title": "Graph test stability",
+      "year": null,
+      "doi": null,
+      "authors": [
+        "SoftX synthetic corpus"
+      ],
+      "journal": null,
+      "corpus_status": "needs_review",
+      "corpus_reason": "Недостаточно явных признаков изготовленного однопереходного тонкоплёночного прибора",
+      "corpus_manual": 0,
+      "is_fixture": 1
+    },
+    {
+      "id": "4c86ea859fb1a3006868426f",
+      "title": "Experimental CdTe thin-film cells",
+      "year": null,
+      "doi": null,
+      "authors": [
+        "SoftX synthetic corpus"
+      ],
+      "journal": null,
+      "corpus_status": "included",
+      "corpus_reason": "Обнаружены изготовление тонкоплёночного прибора и фотоэлектрические данные",
+      "corpus_manual": 0,
+      "is_fixture": 1
+    },
+    {
+      "id": "658e181369eab5e26d217642",
+      "title": "Graph test eqe",
+      "year": null,
+      "doi": null,
+      "authors": [
+        "SoftX synthetic corpus"
+      ],
+      "journal": null,
+      "corpus_status": "needs_review",
+      "corpus_reason": "Недостаточно явных признаков изготовленного однопереходного тонкоплёночного прибора",
+      "corpus_manual": 0,
+      "is_fixture": 1
+    },
+    {
+      "id": "7b02133b3318c11b8d302dde",
+      "title": "10.5555/sx",
+      "year": null,
+      "doi": "10.5555/sx",
+      "authors": null,
+      "journal": null,
+      "corpus_status": "needs_review",
+      "corpus_reason": "Библиографическая ссылка",
+      "corpus_manual": 0,
+      "is_fixture": 0
+    },
+    {
+      "id": "7efcf4f4ced817d227c5a676",
+      "title": "Perovskite thin films under AM1.5G",
+      "year": null,
+      "doi": null,
+      "authors": [
+        "SoftX synthetic corpus"
+      ],
+      "journal": null,
+      "corpus_status": "included",
+      "corpus_reason": "Обнаружены изготовление тонкоплёночного прибора и фотоэлектрические данные",
+      "corpus_manual": 0,
+      "is_fixture": 1
+    },
+    {
+      "id": "a3a3fc44477031df7a55c75d",
+      "title": "Graph test pce",
+      "year": null,
+      "doi": null,
+      "authors": [
+        "SoftX synthetic corpus"
+      ],
+      "journal": null,
+      "corpus_status": "included",
+      "corpus_reason": "Обнаружены изготовление тонкоплёночного прибора и фотоэлектрические данные",
+      "corpus_manual": 0,
+      "is_fixture": 1
+    },
+    {
+      "id": "a5738ee9b7ac1cedb6c3af4a",
+      "title": "Perovskite tandem solar cells",
+      "year": null,
+      "doi": null,
+      "authors": [
+        "SoftX synthetic corpus"
+      ],
+      "journal": null,
+      "corpus_status": "excluded_tandem",
+      "corpus_reason": "Тандемный или многопереходный прибор указан в начале публикации",
+      "corpus_manual": 0,
+      "is_fixture": 1
+    },
+    {
+      "id": "fcaf7da10d12ce5a5c4ac257",
+      "title": "Theoretical study of CIGS",
+      "year": null,
+      "doi": null,
+      "authors": [
+        "SoftX synthetic corpus"
+      ],
+      "journal": null,
+      "corpus_status": "excluded_theoretical",
+      "corpus_reason": "Публикация явно указывает на расчётный характер работы",
+      "corpus_manual": 0,
+      "is_fixture": 1
+    },
+    {
+      "id": "ffec2d38430d60e2c16f1ada",
+      "title": "05-corrupted",
+      "year": null,
+      "doi": null,
+      "authors": null,
+      "journal": null,
+      "corpus_status": "needs_review",
+      "corpus_reason": null,
+      "corpus_manual": 0,
+      "is_fixture": 1
+    }
+  ],
+  "pdf_version": [
+    {
+      "id": "30a5901ac2c24849dafbbacabfd8b5b0651e4620a27d76f945c1cf22a9cc6524",
+      "publication_id": "fcaf7da10d12ce5a5c4ac257",
+      "sha256": "30a5901ac2c24849dafbbacabfd8b5b0651e4620a27d76f945c1cf22a9cc6524",
+      "filename": "04-theoretical.pdf",
+      "pages": [
+        {
+          "page": 1,
+          "crop_box": [
+            0.0,
+            0.0,
+            620.0,
+            790.0
+          ],
+          "media_box": [
+            0.0,
+            0.0,
+            620.0,
+            790.0
+          ],
+          "rotation": 0,
+          "user_unit": 1.0,
+          "width": 620.0,
+          "height": 790.0
+        }
+      ],
+      "processing_status": "completed",
+      "error_message": null,
+      "failed_pages": [],
+      "created_at": "2026-11-20 22:44:03"
+    },
+    {
+      "id": "363a594ec686a15c19f6843630055bdb0c70ba3832fed18b7b54b7ca124d3409",
+      "publication_id": "658e181369eab5e26d217642",
+      "sha256": "363a594ec686a15c19f6843630055bdb0c70ba3832fed18b7b54b7ca124d3409",
+      "filename": "eqe.pdf",
+      "pages": [
+        {
+          "page": 1,
+          "crop_box": [
+            0.0,
+            0.0,
+            620.0,
+            790.0
+          ],
+          "media_box": [
+            0.0,
+            0.0,
+            620.0,
+            790.0
+          ],
+          "rotation": 0,
+          "user_unit": 1.0,
+          "width": 620.0,
+          "height": 790.0
+        }
+      ],
+      "processing_status": "completed",
+      "error_message": null,
+      "failed_pages": [],
+      "created_at": "2026-11-20 22:44:03"
+    },
+    {
+      "id": "3e282cb718f16322503adcbfb4c0b35994f4cd3f4cc2c306a85642cb222730d2",
+      "publication_id": "4c86ea859fb1a3006868426f",
+      "sha256": "3e282cb718f16322503adcbfb4c0b35994f4cd3f4cc2c306a85642cb222730d2",
+      "filename": "02-rotated.pdf",
+      "pages": [
+        {
+          "page": 1,
+          "crop_box": [
+            18.0,
+            20.0,
+            602.0,
+            767.0
+          ],
+          "media_box": [
+            0.0,
+            0.0,
+            620.0,
+            790.0
+          ],
+          "rotation": 90,
+          "user_unit": 1.0,
+          "width": 584.0,
+          "height": 747.0
+        }
+      ],
+      "processing_status": "completed",
+      "error_message": null,
+      "failed_pages": [],
+      "created_at": "2026-11-20 22:44:03"
+    },
+    {
+      "id": "67daa423539cd2fdc8b0dbf58e8bd8a6b3012f2079281c7cfd55e5f41a7dc8c1",
+      "publication_id": "0696a6d15d3464d9d683fa20",
+      "sha256": "67daa423539cd2fdc8b0dbf58e8bd8a6b3012f2079281c7cfd55e5f41a7dc8c1",
+      "filename": "scatter.pdf",
+      "pages": [
+        {
+          "page": 1,
+          "crop_box": [
+            0.0,
+            0.0,
+            620.0,
+            790.0
+          ],
+          "media_box": [
+            0.0,
+            0.0,
+            620.0,
+            790.0
+          ],
+          "rotation": 0,
+          "user_unit": 1.0,
+          "width": 620.0,
+          "height": 790.0
+        }
+      ],
+      "processing_status": "completed",
+      "error_message": null,
+      "failed_pages": [],
+      "created_at": "2026-11-20 22:44:03"
+    },
+    {
+      "id": "71d888d3e4e7b92094892ca75938fcbf5951bdd0a1406b9ebf04aa5fd3665260",
+      "publication_id": "ffec2d38430d60e2c16f1ada",
+      "sha256": "71d888d3e4e7b92094892ca75938fcbf5951bdd0a1406b9ebf04aa5fd3665260",
+      "filename": "05-corrupted.pdf",
+      "pages": [],
+      "processing_status": "failed",
+      "error_message": "Не удалось открыть PDF. Файл повреждён или неполон. Stream has ended unexpectedly",
+      "failed_pages": [],
+      "created_at": "2026-11-20 22:44:03"
+    },
+    {
+      "id": "7a39418764c18203899ea32656884b45c5c86e55ca6532072bce3f8b006092b2",
+      "publication_id": "7efcf4f4ced817d227c5a676",
+      "sha256": "7a39418764c18203899ea32656884b45c5c86e55ca6532072bce3f8b006092b2",
+      "filename": "01-fabricated.pdf",
+      "pages": [
+        {
+          "page": 1,
+          "crop_box": [
+            0.0,
+            0.0,
+            620.0,
+            790.0
+          ],
+          "media_box": [
+            0.0,
+            0.0,
+            620.0,
+            790.0
+          ],
+          "rotation": 0,
+          "user_unit": 1.0,
+          "width": 620.0,
+          "height": 790.0
+        }
+      ],
+      "processing_status": "completed",
+      "error_message": null,
+      "failed_pages": [],
+      "created_at": "2026-11-20 22:44:03"
+    },
+    {
+      "id": "8acbecc944da6540afad8c6c77cfcb6313c3ae9611942560242e41930223fd76",
+      "publication_id": "a3a3fc44477031df7a55c75d",
+      "sha256": "8acbecc944da6540afad8c6c77cfcb6313c3ae9611942560242e41930223fd76",
+      "filename": "pce.pdf",
+      "pages": [
+        {
+          "page": 1,
+          "crop_box": [
+            0.0,
+            0.0,
+            620.0,
+            790.0
+          ],
+          "media_box": [
+            0.0,
+            0.0,
+            620.0,
+            790.0
+          ],
+          "rotation": 0,
+          "user_unit": 1.0,
+          "width": 620.0,
+          "height": 790.0
+        }
+      ],
+      "processing_status": "completed",
+      "error_message": null,
+      "failed_pages": [],
+      "created_at": "2026-11-20 22:44:03"
+    },
+    {
+      "id": "b2257a20852675e9c9765328acea4a1853a2413fedd1117118b787d49c03bfd8",
+      "publication_id": "46ed2bd82a9f0b7a1052c475",
+      "sha256": "b2257a20852675e9c9765328acea4a1853a2413fedd1117118b787d49c03bfd8",
+      "filename": "stability.pdf",
+      "pages": [
+        {
+          "page": 1,
+          "crop_box": [
+            0.0,
+            0.0,
+            620.0,
+            790.0
+          ],
+          "media_box": [
+            0.0,
+            0.0,
+            620.0,
+            790.0
+          ],
+          "rotation": 0,
+          "user_unit": 1.0,
+          "width": 620.0,
+          "height": 790.0
+        }
+      ],
+      "processing_status": "completed",
+      "error_message": null,
+      "failed_pages": [],
+      "created_at": "2026-11-20 22:44:03"
+    },
+    {
+      "id": "d69acc53176d29fc2321fe3a42426c8fa5b7d43090ccfabf5299c866c552efb6",
+      "publication_id": "a5738ee9b7ac1cedb6c3af4a",
+      "sha256": "d69acc53176d29fc2321fe3a42426c8fa5b7d43090ccfabf5299c866c552efb6",
+      "filename": "03-tandem.pdf",
+      "pages": [
+        {
+          "page": 1,
+          "crop_box": [
+            0.0,
+            0.0,
+            620.0,
+            790.0
+          ],
+          "media_box": [
+            0.0,
+            0.0,
+            620.0,
+            790.0
+          ],
+          "rotation": 0,
+          "user_unit": 1.0,
+          "width": 620.0,
+          "height": 790.0
+        }
+      ],
+      "processing_status": "completed",
+      "error_message": null,
+      "failed_pages": [],
+      "created_at": "2026-11-20 22:44:03"
+    },
+    {
+      "id": "fc353f07267721eae73f2a02686fd6e5034fb519245b4745463eb050b6a62bb3",
+      "publication_id": "27f665e054a4f0727b4a27e0",
+      "sha256": "fc353f07267721eae73f2a02686fd6e5034fb519245b4745463eb050b6a62bb3",
+      "filename": "thermal.pdf",
+      "pages": [
+        {
+          "page": 1,
+          "crop_box": [
+            0.0,
+            0.0,
+            620.0,
+            790.0
+          ],
+          "media_box": [
+            0.0,
+            0.0,
+            620.0,
+            790.0
+          ],
+          "rotation": 0,
+          "user_unit": 1.0,
+          "width": 620.0,
+          "height": 790.0
+        }
+      ],
+      "processing_status": "completed",
+      "error_message": null,
+      "failed_pages": [],
+      "created_at": "2026-11-20 22:44:03"
+    }
+  ],
+  "material": [
+    {
+      "id": "02b58163a08e32065146f668",
+      "publication_id": "658e181369eab5e26d217642",
+      "material_name_raw": "CdTe",
+      "formula_normalized": "CdTe",
+      "material_class": "CdTe",
+      "dimensionality": null,
+      "additives": null,
+      "bandgap_value": null,
+      "bandgap_unit": null,
+      "bandgap_method": null
+    },
+    {
+      "id": "57c0c5fdad39d24a8fb569f7",
+      "publication_id": "0696a6d15d3464d9d683fa20",
+      "material_name_raw": "CdTe",
+      "formula_normalized": "CdTe",
+      "material_class": "CdTe",
+      "dimensionality": null,
+      "additives": null,
+      "bandgap_value": null,
+      "bandgap_unit": null,
+      "bandgap_method": null
+    },
+    {
+      "id": "66a26dfcf9aa34f72b6f9384",
+      "publication_id": "4c86ea859fb1a3006868426f",
+      "material_name_raw": "CdTe",
+      "formula_normalized": "CdTe",
+      "material_class": "CdTe",
+      "dimensionality": null,
+      "additives": null,
+      "bandgap_value": null,
+      "bandgap_unit": null,
+      "bandgap_method": null
+    },
+    {
+      "id": "72954dbe8d6fca2552fe1bbb",
+      "publication_id": "46ed2bd82a9f0b7a1052c475",
+      "material_name_raw": "CdTe",
+      "formula_normalized": "CdTe",
+      "material_class": "CdTe",
+      "dimensionality": null,
+      "additives": null,
+      "bandgap_value": null,
+      "bandgap_unit": null,
+      "bandgap_method": null
+    },
+    {
+      "id": "9b77f982704428ed78bc0bbd",
+      "publication_id": "27f665e054a4f0727b4a27e0",
+      "material_name_raw": "CdTe",
+      "formula_normalized": "CdTe",
+      "material_class": "CdTe",
+      "dimensionality": null,
+      "additives": null,
+      "bandgap_value": null,
+      "bandgap_unit": null,
+      "bandgap_method": null
+    },
+    {
+      "id": "9cfb784ee6c31e7f6e78e8a5",
+      "publication_id": "a3a3fc44477031df7a55c75d",
+      "material_name_raw": "CdTe",
+      "formula_normalized": "CdTe",
+      "material_class": "CdTe",
+      "dimensionality": null,
+      "additives": null,
+      "bandgap_value": null,
+      "bandgap_unit": null,
+      "bandgap_method": null
+    },
+    {
+      "id": "eff3dfc209055578928d4f08",
+      "publication_id": "7efcf4f4ced817d227c5a676",
+      "material_name_raw": "Perovskite",
+      "formula_normalized": "MAPbI3",
+      "material_class": "Перовскиты",
+      "dimensionality": null,
+      "additives": null,
+      "bandgap_value": 1.1,
+      "bandgap_unit": "eV",
+      "bandgap_method": "Tauc plot"
+    }
+  ],
+  "device": [
+    {
+      "id": "10e6c1ccd4ec1f827b083a5c",
+      "publication_id": "7efcf4f4ced817d227c5a676",
+      "material_id": "eff3dfc209055578928d4f08",
+      "device_label": "B",
+      "device_role": "target",
+      "device_type": "single-junction thin-film",
+      "architecture": "p-i-n",
+      "substrate_type": null,
+      "active_area": 0.1,
+      "area_unit": "cm²",
+      "area_definition": "active",
+      "encapsulation": null
+    },
+    {
+      "id": "12fe35bd8bfc0a61356737bf",
+      "publication_id": "0696a6d15d3464d9d683fa20",
+      "material_id": "57c0c5fdad39d24a8fb569f7",
+      "device_label": "D",
+      "device_role": "target",
+      "device_type": "single-junction thin-film",
+      "architecture": "superstrate",
+      "substrate_type": null,
+      "active_area": 0.12,
+      "area_unit": "cm²",
+      "area_definition": "active",
+      "encapsulation": null
+    },
+    {
+      "id": "352dcbdce5c75e0de4dfcb1e",
+      "publication_id": "46ed2bd82a9f0b7a1052c475",
+      "material_id": "72954dbe8d6fca2552fe1bbb",
+      "device_label": "D",
+      "device_role": "target",
+      "device_type": "single-junction thin-film",
+      "architecture": "superstrate",
+      "substrate_type": null,
+      "active_area": 0.12,
+      "area_unit": "cm²",
+      "area_definition": "active",
+      "encapsulation": null
+    },
+    {
+      "id": "729b258cb4c0b48a64ffe480",
+      "publication_id": "a3a3fc44477031df7a55c75d",
+      "material_id": "9cfb784ee6c31e7f6e78e8a5",
+      "device_label": "D",
+      "device_role": "target",
+      "device_type": "single-junction thin-film",
+      "architecture": "superstrate",
+      "substrate_type": null,
+      "active_area": 0.12,
+      "area_unit": "cm²",
+      "area_definition": "active",
+      "encapsulation": null
+    },
+    {
+      "id": "7cf0373b8bd3db91f345d932",
+      "publication_id": "4c86ea859fb1a3006868426f",
+      "material_id": "66a26dfcf9aa34f72b6f9384",
+      "device_label": "C",
+      "device_role": "target",
+      "device_type": "single-junction thin-film",
+      "architecture": "superstrate",
+      "substrate_type": null,
+      "active_area": 0.2,
+      "area_unit": "cm²",
+      "area_definition": "active",
+      "encapsulation": null
+    },
+    {
+      "id": "7f0e94b5ffb8bc9280293e40",
+      "publication_id": "27f665e054a4f0727b4a27e0",
+      "material_id": "9b77f982704428ed78bc0bbd",
+      "device_label": "D",
+      "device_role": "target",
+      "device_type": "single-junction thin-film",
+      "architecture": "superstrate",
+      "substrate_type": null,
+      "active_area": 0.12,
+      "area_unit": "cm²",
+      "area_definition": "active",
+      "encapsulation": null
+    },
+    {
+      "id": "8be5fa66374e31ae700de41d",
+      "publication_id": "7efcf4f4ced817d227c5a676",
+      "material_id": "eff3dfc209055578928d4f08",
+      "device_label": "A",
+      "device_role": "control",
+      "device_type": "single-junction thin-film",
+      "architecture": "n-i-p",
+      "substrate_type": null,
+      "active_area": 0.1,
+      "area_unit": "cm²",
+      "area_definition": "active",
+      "encapsulation": null
+    },
+    {
+      "id": "bbf08624113a9de88a65e36d",
+      "publication_id": "658e181369eab5e26d217642",
+      "material_id": "02b58163a08e32065146f668",
+      "device_label": "D",
+      "device_role": "target",
+      "device_type": "single-junction thin-film",
+      "architecture": "superstrate",
+      "substrate_type": null,
+      "active_area": 0.12,
+      "area_unit": "cm²",
+      "area_definition": "active",
+      "encapsulation": null
+    }
+  ],
+  "device_layer": [
+    {
+      "id": "545c9a5aa36f3b4524cb5886",
+      "device_id": "8be5fa66374e31ae700de41d",
+      "layer_order": 1,
+      "layer_function": "ETL",
+      "layer_material": "SnO2",
+      "material_id": null,
+      "layer_thickness": 35.0,
+      "thickness_unit": "nm",
+      "deposition_method": "spin coating",
+      "annealing_temperature": null,
+      "annealing_time": null,
+      "atmosphere": null
+    },
+    {
+      "id": "b9d81491ce107a8ad79047be",
+      "device_id": "10e6c1ccd4ec1f827b083a5c",
+      "layer_order": 1,
+      "layer_function": "HTL",
+      "layer_material": "NiOx",
+      "material_id": null,
+      "layer_thickness": 30.0,
+      "thickness_unit": "nm",
+      "deposition_method": "sputtering",
+      "annealing_temperature": null,
+      "annealing_time": null,
+      "atmosphere": null
+    },
+    {
+      "id": "d06b08fb622c8d8cdebc5919",
+      "device_id": "10e6c1ccd4ec1f827b083a5c",
+      "layer_order": 2,
+      "layer_function": "absorber",
+      "layer_material": "MAPbI3",
+      "material_id": null,
+      "layer_thickness": 500.0,
+      "thickness_unit": "nm",
+      "deposition_method": "spin coating",
+      "annealing_temperature": null,
+      "annealing_time": null,
+      "atmosphere": null
+    },
+    {
+      "id": "d1a972d09003d5aadd50c67e",
+      "device_id": "8be5fa66374e31ae700de41d",
+      "layer_order": 2,
+      "layer_function": "absorber",
+      "layer_material": "MAPbI3",
+      "material_id": null,
+      "layer_thickness": 480.0,
+      "thickness_unit": "nm",
+      "deposition_method": "spin coating",
+      "annealing_temperature": null,
+      "annealing_time": null,
+      "atmosphere": null
+    }
+  ],
+  "measurement": [
+    {
+      "id": "01a98cd178d195c20ba5421a",
+      "device_id": "8be5fa66374e31ae700de41d",
+      "measurement_type": "JV",
+      "spectrum": "AM1.5G",
+      "light_intensity": 100.0,
+      "light_intensity_unit": "mW/cm²",
+      "intensity_source_id": "ca41d3dab9254c28d7cfb300",
+      "scan_direction": "reverse",
+      "scan_rate": null,
+      "mask_used": null,
+      "certified": null,
+      "temperature": null,
+      "stability_protocol": null,
+      "stress_conditions": null,
+      "batch_label": null,
+      "condition_label": null
+    },
+    {
+      "id": "09ebbeb5c4ede622e24626d0",
+      "device_id": "7cf0373b8bd3db91f345d932",
+      "measurement_type": "JV",
+      "spectrum": null,
+      "light_intensity": null,
+      "light_intensity_unit": null,
+      "intensity_source_id": null,
+      "scan_direction": "reverse",
+      "scan_rate": null,
+      "mask_used": null,
+      "certified": null,
+      "temperature": null,
+      "stability_protocol": null,
+      "stress_conditions": null,
+      "batch_label": null,
+      "condition_label": null
+    },
+    {
+      "id": "541317f484de71705c94f74b",
+      "device_id": "8be5fa66374e31ae700de41d",
+      "measurement_type": "JV",
+      "spectrum": "AM1.5G",
+      "light_intensity": 100.0,
+      "light_intensity_unit": "mW/cm²",
+      "intensity_source_id": "ca41d3dab9254c28d7cfb300",
+      "scan_direction": "forward",
+      "scan_rate": null,
+      "mask_used": null,
+      "certified": null,
+      "temperature": null,
+      "stability_protocol": null,
+      "stress_conditions": null,
+      "batch_label": null,
+      "condition_label": null
+    },
+    {
+      "id": "614b30918ba19d8222501b3b",
+      "device_id": "10e6c1ccd4ec1f827b083a5c",
+      "measurement_type": "JV",
+      "spectrum": "AM1.5G",
+      "light_intensity": 100.0,
+      "light_intensity_unit": "mW/cm²",
+      "intensity_source_id": "ca41d3dab9254c28d7cfb300",
+      "scan_direction": "reverse",
+      "scan_rate": null,
+      "mask_used": null,
+      "certified": null,
+      "temperature": null,
+      "stability_protocol": null,
+      "stress_conditions": null,
+      "batch_label": null,
+      "condition_label": null
+    }
+  ],
+  "measurement_result": [
+    {
+      "id": "01d905aa07cd3be402570a39",
+      "publication_id": "7efcf4f4ced817d227c5a676",
+      "pdf_version_id": "7a39418764c18203899ea32656884b45c5c86e55ca6532072bce3f8b006092b2",
+      "device_id": "8be5fa66374e31ae700de41d",
+      "measurement_id": "01a98cd178d195c20ba5421a",
+      "material_id": "eff3dfc209055578928d4f08",
+      "candidate_device_ids": [],
+      "candidate_measurement_ids": [],
+      "metric_name": "Jsc",
+      "metric_value": 20.0,
+      "metric_unit": "mA/cm2",
+      "aggregation": "unknown",
+      "spread_value": null,
+      "n_devices": null,
+      "time_point": null,
+      "time_unit": null,
+      "range_min": null,
+      "range_max": null,
+      "inequality_op": null,
+      "value_state": "numeric",
+      "raw_value": "20.00",
+      "raw_unit": "mA/cm2",
+      "raw_record": {
+        "value": "20.00",
+        "unit": "mA/cm2",
+        "spread_value": null,
+        "range_min": null,
+        "range_max": null,
+        "inequality_op": null,
+        "aggregation": "unknown",
+        "scan_direction": "reverse"
+      },
+      "normalized_value": 20.0,
+      "normalized_unit": "mA/cm²",
+      "result_origin": "primary",
+      "cited_publication_id": null,
+      "acquisition_method": "published_numeric",
+      "extraction_method": "geometry_table",
+      "confidence": null,
+      "formula": null,
+      "input_result_ids": null,
+      "calculation_inputs": null,
+      "assumption_basis": null,
+      "extraction_status": "Извлечено автоматически",
+      "manual": 0
+    },
+    {
+      "id": "04a5bb71bcba2038a9f7ba98",
+      "publication_id": "7efcf4f4ced817d227c5a676",
+      "pdf_version_id": "7a39418764c18203899ea32656884b45c5c86e55ca6532072bce3f8b006092b2",
+      "device_id": "8be5fa66374e31ae700de41d",
+      "measurement_id": "541317f484de71705c94f74b",
+      "material_id": "eff3dfc209055578928d4f08",
+      "candidate_device_ids": [],
+      "candidate_measurement_ids": [],
+      "metric_name": "Voc",
+      "metric_value": 1200.0,
+      "metric_unit": "mV",
+      "aggregation": "unknown",
+      "spread_value": null,
+      "n_devices": null,
+      "time_point": null,
+      "time_unit": null,
+      "range_min": null,
+      "range_max": null,
+      "inequality_op": null,
+      "value_state": "numeric",
+      "raw_value": "1200",
+      "raw_unit": "mV",
+      "raw_record": {
+        "value": "1200",
+        "unit": "mV",
+        "spread_value": null,
+        "range_min": null,
+        "range_max": null,
+        "inequality_op": null,
+        "aggregation": "unknown",
+        "scan_direction": "forward"
+      },
+      "normalized_value": 1.2,
+      "normalized_unit": "V",
+      "result_origin": "primary",
+      "cited_publication_id": null,
+      "acquisition_method": "published_numeric",
+      "extraction_method": "geometry_table",
+      "confidence": null,
+      "formula": null,
+      "input_result_ids": null,
+      "calculation_inputs": null,
+      "assumption_basis": null,
+      "extraction_status": "Извлечено автоматически",
+      "manual": 0
+    },
+    {
+      "id": "0da7aa6d943ae60e72925a01",
+      "publication_id": "4c86ea859fb1a3006868426f",
+      "pdf_version_id": "3e282cb718f16322503adcbfb4c0b35994f4cd3f4cc2c306a85642cb222730d2",
+      "device_id": "7cf0373b8bd3db91f345d932",
+      "measurement_id": "09ebbeb5c4ede622e24626d0",
+      "material_id": "66a26dfcf9aa34f72b6f9384",
+      "candidate_device_ids": [],
+      "candidate_measurement_ids": [],
+      "metric_name": "Voc",
+      "metric_value": 800.0,
+      "metric_unit": "mV",
+      "aggregation": "unknown",
+      "spread_value": null,
+      "n_devices": null,
+      "time_point": null,
+      "time_unit": null,
+      "range_min": null,
+      "range_max": null,
+      "inequality_op": null,
+      "value_state": "numeric",
+      "raw_value": "800",
+      "raw_unit": "mV",
+      "raw_record": {
+        "value": "800",
+        "unit": "mV",
+        "spread_value": null,
+        "range_min": null,
+        "range_max": null,
+        "inequality_op": null,
+        "aggregation": "unknown",
+        "scan_direction": "reverse"
+      },
+      "normalized_value": 0.8,
+      "normalized_unit": "V",
+      "result_origin": "primary",
+      "cited_publication_id": null,
+      "acquisition_method": "published_numeric",
+      "extraction_method": "pdf_text",
+      "confidence": null,
+      "formula": null,
+      "input_result_ids": null,
+      "calculation_inputs": null,
+      "assumption_basis": null,
+      "extraction_status": "Извлечено автоматически",
+      "manual": 0
+    },
+    {
+      "id": "116f3904df857a385a1fb7ed",
+      "publication_id": "7efcf4f4ced817d227c5a676",
+      "pdf_version_id": "7a39418764c18203899ea32656884b45c5c86e55ca6532072bce3f8b006092b2",
+      "device_id": null,
+      "measurement_id": null,
+      "material_id": "eff3dfc209055578928d4f08",
+      "candidate_device_ids": [],
+      "candidate_measurement_ids": [],
+      "metric_name": "Eg",
+      "metric_value": 1.1,
+      "metric_unit": "eV",
+      "aggregation": "unknown",
+      "spread_value": null,
+      "n_devices": null,
+      "time_point": null,
+      "time_unit": null,
+      "range_min": null,
+      "range_max": null,
+      "inequality_op": null,
+      "value_state": "numeric",
+      "raw_value": "1.10",
+      "raw_unit": "eV",
+      "raw_record": {
+        "value": "1.10",
+        "unit": "eV",
+        "spread_value": null,
+        "range_min": null,
+        "range_max": null,
+        "inequality_op": null,
+        "aggregation": "unknown",
+        "scan_direction": null
+      },
+      "normalized_value": 1.1,
+      "normalized_unit": "eV",
+      "result_origin": "primary",
+      "cited_publication_id": null,
+      "acquisition_method": "published_numeric",
+      "extraction_method": "pdf_text",
+      "confidence": null,
+      "formula": null,
+      "input_result_ids": null,
+      "calculation_inputs": null,
+      "assumption_basis": null,
+      "extraction_status": "Извлечено автоматически",
+      "manual": 0
+    },
+    {
+      "id": "20beaf8a6d8b7b217c6b74d0",
+      "publication_id": "7efcf4f4ced817d227c5a676",
+      "pdf_version_id": "7a39418764c18203899ea32656884b45c5c86e55ca6532072bce3f8b006092b2",
+      "device_id": null,
+      "measurement_id": null,
+      "material_id": null,
+      "candidate_device_ids": [],
+      "candidate_measurement_ids": [],
+      "metric_name": "Jsc",
+      "metric_value": 20.0,
+      "metric_unit": "mA/cm2",
+      "aggregation": "unknown",
+      "spread_value": null,
+      "n_devices": null,
+      "time_point": null,
+      "time_unit": null,
+      "range_min": null,
+      "range_max": null,
+      "inequality_op": null,
+      "value_state": "numeric",
+      "raw_value": "20.00",
+      "raw_unit": "mA/cm2",
+      "raw_record": {
+        "value": "20.00",
+        "unit": "mA/cm2",
+        "spread_value": null,
+        "range_min": null,
+        "range_max": null,
+        "inequality_op": null,
+        "aggregation": "unknown",
+        "scan_direction": "reverse"
+      },
+      "normalized_value": 20.0,
+      "normalized_unit": "mA/cm²",
+      "result_origin": "cited",
+      "cited_publication_id": "7b02133b3318c11b8d302dde",
+      "acquisition_method": "published_numeric",
+      "extraction_method": "geometry_table",
+      "confidence": null,
+      "formula": null,
+      "input_result_ids": null,
+      "calculation_inputs": null,
+      "assumption_basis": null,
+      "extraction_status": "Извлечено автоматически",
+      "manual": 0
+    },
+    {
+      "id": "217b56685e61934d251421e4",
+      "publication_id": "7efcf4f4ced817d227c5a676",
+      "pdf_version_id": "7a39418764c18203899ea32656884b45c5c86e55ca6532072bce3f8b006092b2",
+      "device_id": "8be5fa66374e31ae700de41d",
+      "measurement_id": "541317f484de71705c94f74b",
+      "material_id": "eff3dfc209055578928d4f08",
+      "candidate_device_ids": [],
+      "candidate_measurement_ids": [],
+      "metric_name": "FF",
+      "metric_value": 75.0,
+      "metric_unit": "%",
+      "aggregation": "unknown",
+      "spread_value": null,
+      "n_devices": null,
+      "time_point": null,
+      "time_unit": null,
+      "range_min": null,
+      "range_max": null,
+      "inequality_op": null,
+      "value_state": "numeric",
+      "raw_value": "75.00",
+      "raw_unit": "%",
+      "raw_record": {
+        "value": "75.00",
+        "unit": "%",
+        "spread_value": null,
+        "range_min": null,
+        "range_max": null,
+        "inequality_op": null,
+        "aggregation": "unknown",
+        "scan_direction": "forward"
+      },
+      "normalized_value": 75.0,
+      "normalized_unit": "%",
+      "result_origin": "primary",
+      "cited_publication_id": null,
+      "acquisition_method": "published_numeric",
+      "extraction_method": "geometry_table",
+      "confidence": null,
+      "formula": null,
+      "input_result_ids": null,
+      "calculation_inputs": null,
+      "assumption_basis": null,
+      "extraction_status": "Извлечено автоматически",
+      "manual": 0
+    },
+    {
+      "id": "2469aa796a50aec7dbf0faff",
+      "publication_id": "7efcf4f4ced817d227c5a676",
+      "pdf_version_id": "7a39418764c18203899ea32656884b45c5c86e55ca6532072bce3f8b006092b2",
+      "device_id": null,
+      "measurement_id": null,
+      "material_id": null,
+      "candidate_device_ids": [],
+      "candidate_measurement_ids": [],
+      "metric_name": "Voc",
+      "metric_value": 800.0,
+      "metric_unit": "mV",
+      "aggregation": "unknown",
+      "spread_value": null,
+      "n_devices": null,
+      "time_point": null,
+      "time_unit": null,
+      "range_min": null,
+      "range_max": null,
+      "inequality_op": null,
+      "value_state": "numeric",
+      "raw_value": "800",
+      "raw_unit": "mV",
+      "raw_record": {
+        "value": "800",
+        "unit": "mV",
+        "spread_value": null,
+        "range_min": null,
+        "range_max": null,
+        "inequality_op": null,
+        "aggregation": "unknown",
+        "scan_direction": "reverse"
+      },
+      "normalized_value": 0.8,
+      "normalized_unit": "V",
+      "result_origin": "cited",
+      "cited_publication_id": "7b02133b3318c11b8d302dde",
+      "acquisition_method": "published_numeric",
+      "extraction_method": "geometry_table",
+      "confidence": null,
+      "formula": null,
+      "input_result_ids": null,
+      "calculation_inputs": null,
+      "assumption_basis": null,
+      "extraction_status": "Извлечено автоматически",
+      "manual": 0
+    },
+    {
+      "id": "2859010b64cf60c6ca052deb",
+      "publication_id": "7efcf4f4ced817d227c5a676",
+      "pdf_version_id": "7a39418764c18203899ea32656884b45c5c86e55ca6532072bce3f8b006092b2",
+      "device_id": "10e6c1ccd4ec1f827b083a5c",
+      "measurement_id": "614b30918ba19d8222501b3b",
+      "material_id": "eff3dfc209055578928d4f08",
+      "candidate_device_ids": [],
+      "candidate_measurement_ids": [],
+      "metric_name": "Voc",
+      "metric_value": 1000.0,
+      "metric_unit": "mV",
+      "aggregation": "unknown",
+      "spread_value": null,
+      "n_devices": null,
+      "time_point": null,
+      "time_unit": null,
+      "range_min": null,
+      "range_max": null,
+      "inequality_op": null,
+      "value_state": "numeric",
+      "raw_value": "1000",
+      "raw_unit": "mV",
+      "raw_record": {
+        "value": "1000",
+        "unit": "mV",
+        "spread_value": null,
+        "range_min": null,
+        "range_max": null,
+        "inequality_op": null,
+        "aggregation": "unknown",
+        "scan_direction": "reverse"
+      },
+      "normalized_value": 1.0,
+      "normalized_unit": "V",
+      "result_origin": "primary",
+      "cited_publication_id": null,
+      "acquisition_method": "published_numeric",
+      "extraction_method": "geometry_table",
+      "confidence": null,
+      "formula": null,
+      "input_result_ids": null,
+      "calculation_inputs": null,
+      "assumption_basis": null,
+      "extraction_status": "Извлечено автоматически",
+      "manual": 0
+    },
+    {
+      "id": "3542f69c1cdc19bc5a0b76e5",
+      "publication_id": "7efcf4f4ced817d227c5a676",
+      "pdf_version_id": "7a39418764c18203899ea32656884b45c5c86e55ca6532072bce3f8b006092b2",
+      "device_id": "8be5fa66374e31ae700de41d",
+      "measurement_id": "01a98cd178d195c20ba5421a",
+      "material_id": "eff3dfc209055578928d4f08",
+      "candidate_device_ids": [],
+      "candidate_measurement_ids": [],
+      "metric_name": "Voc",
+      "metric_value": 1200.0,
+      "metric_unit": "mV",
+      "aggregation": "unknown",
+      "spread_value": null,
+      "n_devices": null,
+      "time_point": null,
+      "time_unit": null,
+      "range_min": null,
+      "range_max": null,
+      "inequality_op": null,
+      "value_state": "numeric",
+      "raw_value": "1200",
+      "raw_unit": "mV",
+      "raw_record": {
+        "value": "1200",
+        "unit": "mV",
+        "spread_value": null,
+        "range_min": null,
+        "range_max": null,
+        "inequality_op": null,
+        "aggregation": "unknown",
+        "scan_direction": "reverse"
+      },
+      "normalized_value": 1.2,
+      "normalized_unit": "V",
+      "result_origin": "primary",
+      "cited_publication_id": null,
+      "acquisition_method": "published_numeric",
+      "extraction_method": "geometry_table",
+      "confidence": null,
+      "formula": null,
+      "input_result_ids": null,
+      "calculation_inputs": null,
+      "assumption_basis": null,
+      "extraction_status": "Извлечено автоматически",
+      "manual": 0
+    },
+    {
+      "id": "3c1727c26d47824d4e20eaba",
+      "publication_id": "7efcf4f4ced817d227c5a676",
+      "pdf_version_id": "7a39418764c18203899ea32656884b45c5c86e55ca6532072bce3f8b006092b2",
+      "device_id": "8be5fa66374e31ae700de41d",
+      "measurement_id": "541317f484de71705c94f74b",
+      "material_id": "eff3dfc209055578928d4f08",
+      "candidate_device_ids": [],
+      "candidate_measurement_ids": [],
+      "metric_name": "PCE",
+      "metric_value": 18.0,
+      "metric_unit": "%",
+      "aggregation": "unknown",
+      "spread_value": null,
+      "n_devices": null,
+      "time_point": null,
+      "time_unit": null,
+      "range_min": null,
+      "range_max": null,
+      "inequality_op": null,
+      "value_state": "numeric",
+      "raw_value": "18.00",
+      "raw_unit": "%",
+      "raw_record": {
+        "value": "18.00",
+        "unit": "%",
+        "spread_value": null,
+        "range_min": null,
+        "range_max": null,
+        "inequality_op": null,
+        "aggregation": "unknown",
+        "scan_direction": "forward"
+      },
+      "normalized_value": 18.0,
+      "normalized_unit": "%",
+      "result_origin": "primary",
+      "cited_publication_id": null,
+      "acquisition_method": "published_numeric",
+      "extraction_method": "geometry_table",
+      "confidence": null,
+      "formula": null,
+      "input_result_ids": null,
+      "calculation_inputs": null,
+      "assumption_basis": null,
+      "extraction_status": "Извлечено автоматически",
+      "manual": 0
+    },
+    {
+      "id": "3d7fb1a0d88c91f201149e90",
+      "publication_id": "46ed2bd82a9f0b7a1052c475",
+      "pdf_version_id": "b2257a20852675e9c9765328acea4a1853a2413fedd1117118b787d49c03bfd8",
+      "device_id": "352dcbdce5c75e0de4dfcb1e",
+      "measurement_id": null,
+      "material_id": "72954dbe8d6fca2552fe1bbb",
+      "candidate_device_ids": [],
+      "candidate_measurement_ids": [],
+      "metric_name": "T80",
+      "metric_value": 67.85714285714286,
+      "metric_unit": "h",
+      "aggregation": "unknown",
+      "spread_value": null,
+      "n_devices": null,
+      "time_point": null,
+      "time_unit": null,
+      "range_min": null,
+      "range_max": null,
+      "inequality_op": null,
+      "value_state": "numeric",
+      "raw_value": null,
+      "raw_unit": null,
+      "raw_record": {},
+      "normalized_value": 67.85714285714286,
+      "normalized_unit": "h",
+      "result_origin": "primary",
+      "cited_publication_id": null,
+      "acquisition_method": "calculated",
+      "extraction_method": "plot_calculation",
+      "confidence": null,
+      "formula": "t0 + (0.8 − R0) × (t1 − t0)/(R1 − R0)",
+      "input_result_ids": null,
+      "calculation_inputs": {
+        "threshold": 0.8,
+        "bracket": [
+          50.0,
+          75.0
+        ]
+      },
+      "assumption_basis": null,
+      "extraction_status": "Требует проверки",
+      "manual": 0
+    },
+    {
+      "id": "3e6c63e8a9502c11241342f9",
+      "publication_id": "658e181369eab5e26d217642",
+      "pdf_version_id": "363a594ec686a15c19f6843630055bdb0c70ba3832fed18b7b54b7ca124d3409",
+      "device_id": "bbf08624113a9de88a65e36d",
+      "measurement_id": null,
+      "material_id": "02b58163a08e32065146f668",
+      "candidate_device_ids": [],
+      "candidate_measurement_ids": [],
+      "metric_name": "Jsc_EQE",
+      "metric_value": 21.922878386248193,
+      "metric_unit": "mA/cm²",
+      "aggregation": "unknown",
+      "spread_value": null,
+      "n_devices": null,
+      "time_point": null,
+      "time_unit": null,
+      "range_min": null,
+      "range_max": null,
+      "inequality_op": null,
+      "value_state": "numeric",
+      "raw_value": null,
+      "raw_unit": null,
+      "raw_record": {},
+      "normalized_value": 21.922878386248193,
+      "normalized_unit": "mA/cm²",
+      "result_origin": "primary",
+      "cited_publication_id": null,
+      "acquisition_method": "calculated",
+      "extraction_method": "plot_calculation",
+      "confidence": null,
+      "formula": "0.1 × q × ∫ EQE(λ) × Φ_ASTMG173(λ) dλ",
+      "input_result_ids": null,
+      "calculation_inputs": {
+        "reference": "ASTM G173-03 AM1.5G global tilt, SMARTS 2.9.2",
+        "reference_url": "https://www.nlr.gov/grid/solar-resource/spectra-am1.5",
+        "wavelength_nm": [
+          300.0,
+          900.0
+        ],
+        "coverage": "observed_interval",
+        "coverage_confirmed": false
+      },
+      "assumption_basis": null,
+      "extraction_status": "Требует проверки",
+      "manual": 0
+    },
+    {
+      "id": "453fa02dccd8d7af3aab5389",
+      "publication_id": "7efcf4f4ced817d227c5a676",
+      "pdf_version_id": "7a39418764c18203899ea32656884b45c5c86e55ca6532072bce3f8b006092b2",
+      "device_id": "10e6c1ccd4ec1f827b083a5c",
+      "measurement_id": "614b30918ba19d8222501b3b",
+      "material_id": "eff3dfc209055578928d4f08",
+      "candidate_device_ids": [],
+      "candidate_measurement_ids": [],
+      "metric_name": "Jsc",
+      "metric_value": 20.0,
+      "metric_unit": "mA/cm2",
+      "aggregation": "unknown",
+      "spread_value": null,
+      "n_devices": null,
+      "time_point": null,
+      "time_unit": null,
+      "range_min": null,
+      "range_max": null,
+      "inequality_op": null,
+      "value_state": "numeric",
+      "raw_value": "20.00",
+      "raw_unit": "mA/cm2",
+      "raw_record": {
+        "value": "20.00",
+        "unit": "mA/cm2",
+        "spread_value": null,
+        "range_min": null,
+        "range_max": null,
+        "inequality_op": null,
+        "aggregation": "unknown",
+        "scan_direction": "reverse"
+      },
+      "normalized_value": 20.0,
+      "normalized_unit": "mA/cm²",
+      "result_origin": "primary",
+      "cited_publication_id": null,
+      "acquisition_method": "published_numeric",
+      "extraction_method": "geometry_table",
+      "confidence": null,
+      "formula": null,
+      "input_result_ids": null,
+      "calculation_inputs": null,
+      "assumption_basis": null,
+      "extraction_status": "Извлечено автоматически",
+      "manual": 0
+    },
+    {
+      "id": "4adb4dbf80c1bc4fcb6affe0",
+      "publication_id": "7efcf4f4ced817d227c5a676",
+      "pdf_version_id": "7a39418764c18203899ea32656884b45c5c86e55ca6532072bce3f8b006092b2",
+      "device_id": null,
+      "measurement_id": null,
+      "material_id": "eff3dfc209055578928d4f08",
+      "candidate_device_ids": [
+        "8be5fa66374e31ae700de41d",
+        "10e6c1ccd4ec1f827b083a5c"
+      ],
+      "candidate_measurement_ids": [
+        "541317f484de71705c94f74b",
+        "01a98cd178d195c20ba5421a",
+        "614b30918ba19d8222501b3b"
+      ],
+      "metric_name": "PCE",
+      "metric_value": 16.0,
+      "metric_unit": "%",
+      "aggregation": "unknown",
+      "spread_value": null,
+      "n_devices": null,
+      "time_point": null,
+      "time_unit": null,
+      "range_min": null,
+      "range_max": null,
+      "inequality_op": null,
+      "value_state": "ambiguous",
+      "raw_value": "16.00",
+      "raw_unit": "%",
+      "raw_record": {
+        "value": "16.00",
+        "unit": "%",
+        "spread_value": null,
+        "range_min": null,
+        "range_max": null,
+        "inequality_op": null,
+        "aggregation": "unknown",
+        "scan_direction": null
+      },
+      "normalized_value": 16.0,
+      "normalized_unit": "%",
+      "result_origin": "primary",
+      "cited_publication_id": null,
+      "acquisition_method": "published_numeric",
+      "extraction_method": "pdf_text",
+      "confidence": null,
+      "formula": null,
+      "input_result_ids": null,
+      "calculation_inputs": null,
+      "assumption_basis": null,
+      "extraction_status": "Требует проверки",
+      "manual": 0
+    },
+    {
+      "id": "59dec54a7a374c2c35f4ee06",
+      "publication_id": "7efcf4f4ced817d227c5a676",
+      "pdf_version_id": "7a39418764c18203899ea32656884b45c5c86e55ca6532072bce3f8b006092b2",
+      "device_id": "8be5fa66374e31ae700de41d",
+      "measurement_id": "01a98cd178d195c20ba5421a",
+      "material_id": "eff3dfc209055578928d4f08",
+      "candidate_device_ids": [],
+      "candidate_measurement_ids": [],
+      "metric_name": "PCE",
+      "metric_value": 17.0,
+      "metric_unit": "%",
+      "aggregation": "unknown",
+      "spread_value": null,
+      "n_devices": null,
+      "time_point": null,
+      "time_unit": null,
+      "range_min": null,
+      "range_max": null,
+      "inequality_op": null,
+      "value_state": "numeric",
+      "raw_value": "17.00",
+      "raw_unit": "%",
+      "raw_record": {
+        "value": "17.00",
+        "unit": "%",
+        "spread_value": null,
+        "range_min": null,
+        "range_max": null,
+        "inequality_op": null,
+        "aggregation": "unknown",
+        "scan_direction": "reverse"
+      },
+      "normalized_value": 17.0,
+      "normalized_unit": "%",
+      "result_origin": "primary",
+      "cited_publication_id": null,
+      "acquisition_method": "published_numeric",
+      "extraction_method": "geometry_table",
+      "confidence": null,
+      "formula": null,
+      "input_result_ids": null,
+      "calculation_inputs": null,
+      "assumption_basis": null,
+      "extraction_status": "Извлечено автоматически",
+      "manual": 0
+    },
+    {
+      "id": "64ae341d32212c78e06a2fdc",
+      "publication_id": "7efcf4f4ced817d227c5a676",
+      "pdf_version_id": "7a39418764c18203899ea32656884b45c5c86e55ca6532072bce3f8b006092b2",
+      "device_id": "8be5fa66374e31ae700de41d",
+      "measurement_id": "541317f484de71705c94f74b",
+      "material_id": "eff3dfc209055578928d4f08",
+      "candidate_device_ids": [],
+      "candidate_measurement_ids": [],
+      "metric_name": "Jsc",
+      "metric_value": 20.0,
+      "metric_unit": "mA/cm2",
+      "aggregation": "unknown",
+      "spread_value": null,
+      "n_devices": null,
+      "time_point": null,
+      "time_unit": null,
+      "range_min": null,
+      "range_max": null,
+      "inequality_op": null,
+      "value_state": "numeric",
+      "raw_value": "20.00",
+      "raw_unit": "mA/cm2",
+      "raw_record": {
+        "value": "20.00",
+        "unit": "mA/cm2",
+        "spread_value": null,
+        "range_min": null,
+        "range_max": null,
+        "inequality_op": null,
+        "aggregation": "unknown",
+        "scan_direction": "forward"
+      },
+      "normalized_value": 20.0,
+      "normalized_unit": "mA/cm²",
+      "result_origin": "primary",
+      "cited_publication_id": null,
+      "acquisition_method": "published_numeric",
+      "extraction_method": "geometry_table",
+      "confidence": null,
+      "formula": null,
+      "input_result_ids": null,
+      "calculation_inputs": null,
+      "assumption_basis": null,
+      "extraction_status": "Извлечено автоматически",
+      "manual": 0
+    },
+    {
+      "id": "b8ac6c73083fcb5de5461506",
+      "publication_id": "7efcf4f4ced817d227c5a676",
+      "pdf_version_id": "7a39418764c18203899ea32656884b45c5c86e55ca6532072bce3f8b006092b2",
+      "device_id": "8be5fa66374e31ae700de41d",
+      "measurement_id": "01a98cd178d195c20ba5421a",
+      "material_id": "eff3dfc209055578928d4f08",
+      "candidate_device_ids": [],
+      "candidate_measurement_ids": [],
+      "metric_name": "Jsc_EQE",
+      "metric_value": 17.0,
+      "metric_unit": "mA/cm2",
+      "aggregation": "unknown",
+      "spread_value": null,
+      "n_devices": null,
+      "time_point": null,
+      "time_unit": null,
+      "range_min": null,
+      "range_max": null,
+      "inequality_op": null,
+      "value_state": "numeric",
+      "raw_value": "17.00",
+      "raw_unit": "mA/cm2",
+      "raw_record": {
+        "value": "17.00",
+        "unit": "mA/cm2",
+        "spread_value": null,
+        "range_min": null,
+        "range_max": null,
+        "inequality_op": null,
+        "aggregation": "unknown",
+        "scan_direction": "reverse"
+      },
+      "normalized_value": 17.0,
+      "normalized_unit": "mA/cm²",
+      "result_origin": "primary",
+      "cited_publication_id": null,
+      "acquisition_method": "published_numeric",
+      "extraction_method": "pdf_text",
+      "confidence": null,
+      "formula": null,
+      "input_result_ids": null,
+      "calculation_inputs": null,
+      "assumption_basis": null,
+      "extraction_status": "Извлечено автоматически",
+      "manual": 0
+    },
+    {
+      "id": "bea206a8406bd4a7e942e595",
+      "publication_id": "4c86ea859fb1a3006868426f",
+      "pdf_version_id": "3e282cb718f16322503adcbfb4c0b35994f4cd3f4cc2c306a85642cb222730d2",
+      "device_id": "7cf0373b8bd3db91f345d932",
+      "measurement_id": "09ebbeb5c4ede622e24626d0",
+      "material_id": "66a26dfcf9aa34f72b6f9384",
+      "candidate_device_ids": [],
+      "candidate_measurement_ids": [],
+      "metric_name": "PCE",
+      "metric_value": 12.0,
+      "metric_unit": "%",
+      "aggregation": "unknown",
+      "spread_value": null,
+      "n_devices": null,
+      "time_point": null,
+      "time_unit": null,
+      "range_min": null,
+      "range_max": null,
+      "inequality_op": null,
+      "value_state": "numeric",
+      "raw_value": "12.00",
+      "raw_unit": "%",
+      "raw_record": {
+        "value": "12.00",
+        "unit": "%",
+        "spread_value": null,
+        "range_min": null,
+        "range_max": null,
+        "inequality_op": null,
+        "aggregation": "unknown",
+        "scan_direction": "reverse"
+      },
+      "normalized_value": 12.0,
+      "normalized_unit": "%",
+      "result_origin": "primary",
+      "cited_publication_id": null,
+      "acquisition_method": "published_numeric",
+      "extraction_method": "pdf_text",
+      "confidence": null,
+      "formula": null,
+      "input_result_ids": null,
+      "calculation_inputs": null,
+      "assumption_basis": null,
+      "extraction_status": "Извлечено автоматически",
+      "manual": 0
+    },
+    {
+      "id": "d5f22d5eed5d2e0d8ed0f300",
+      "publication_id": "4c86ea859fb1a3006868426f",
+      "pdf_version_id": "3e282cb718f16322503adcbfb4c0b35994f4cd3f4cc2c306a85642cb222730d2",
+      "device_id": "7cf0373b8bd3db91f345d932",
+      "measurement_id": "09ebbeb5c4ede622e24626d0",
+      "material_id": "66a26dfcf9aa34f72b6f9384",
+      "candidate_device_ids": [],
+      "candidate_measurement_ids": [],
+      "metric_name": "Jsc",
+      "metric_value": 20.0,
+      "metric_unit": "mA/cm2",
+      "aggregation": "unknown",
+      "spread_value": null,
+      "n_devices": null,
+      "time_point": null,
+      "time_unit": null,
+      "range_min": null,
+      "range_max": null,
+      "inequality_op": null,
+      "value_state": "numeric",
+      "raw_value": "20",
+      "raw_unit": "mA/cm2",
+      "raw_record": {
+        "value": "20",
+        "unit": "mA/cm2",
+        "spread_value": null,
+        "range_min": null,
+        "range_max": null,
+        "inequality_op": null,
+        "aggregation": "unknown",
+        "scan_direction": "reverse"
+      },
+      "normalized_value": 20.0,
+      "normalized_unit": "mA/cm²",
+      "result_origin": "primary",
+      "cited_publication_id": null,
+      "acquisition_method": "published_numeric",
+      "extraction_method": "pdf_text",
+      "confidence": null,
+      "formula": null,
+      "input_result_ids": null,
+      "calculation_inputs": null,
+      "assumption_basis": null,
+      "extraction_status": "Извлечено автоматически",
+      "manual": 0
+    },
+    {
+      "id": "e833576caaabafc560a57e04",
+      "publication_id": "7efcf4f4ced817d227c5a676",
+      "pdf_version_id": "7a39418764c18203899ea32656884b45c5c86e55ca6532072bce3f8b006092b2",
+      "device_id": "10e6c1ccd4ec1f827b083a5c",
+      "measurement_id": "614b30918ba19d8222501b3b",
+      "material_id": "eff3dfc209055578928d4f08",
+      "candidate_device_ids": [],
+      "candidate_measurement_ids": [],
+      "metric_name": "FF",
+      "metric_value": 70.0,
+      "metric_unit": "%",
+      "aggregation": "unknown",
+      "spread_value": null,
+      "n_devices": null,
+      "time_point": null,
+      "time_unit": null,
+      "range_min": null,
+      "range_max": null,
+      "inequality_op": null,
+      "value_state": "numeric",
+      "raw_value": "70.00",
+      "raw_unit": "%",
+      "raw_record": {
+        "value": "70.00",
+        "unit": "%",
+        "spread_value": null,
+        "range_min": null,
+        "range_max": null,
+        "inequality_op": null,
+        "aggregation": "unknown",
+        "scan_direction": "reverse"
+      },
+      "normalized_value": 70.0,
+      "normalized_unit": "%",
+      "result_origin": "primary",
+      "cited_publication_id": null,
+      "acquisition_method": "published_numeric",
+      "extraction_method": "geometry_table",
+      "confidence": null,
+      "formula": null,
+      "input_result_ids": null,
+      "calculation_inputs": null,
+      "assumption_basis": null,
+      "extraction_status": "Извлечено автоматически",
+      "manual": 0
+    },
+    {
+      "id": "ea20c615b446af4053f984b3",
+      "publication_id": "7efcf4f4ced817d227c5a676",
+      "pdf_version_id": "7a39418764c18203899ea32656884b45c5c86e55ca6532072bce3f8b006092b2",
+      "device_id": "10e6c1ccd4ec1f827b083a5c",
+      "measurement_id": "614b30918ba19d8222501b3b",
+      "material_id": "eff3dfc209055578928d4f08",
+      "candidate_device_ids": [],
+      "candidate_measurement_ids": [],
+      "metric_name": "PCE",
+      "metric_value": 14.0,
+      "metric_unit": "%",
+      "aggregation": "unknown",
+      "spread_value": null,
+      "n_devices": null,
+      "time_point": null,
+      "time_unit": null,
+      "range_min": null,
+      "range_max": null,
+      "inequality_op": null,
+      "value_state": "numeric",
+      "raw_value": "14.00",
+      "raw_unit": "%",
+      "raw_record": {
+        "value": "14.00",
+        "unit": "%",
+        "spread_value": null,
+        "range_min": null,
+        "range_max": null,
+        "inequality_op": null,
+        "aggregation": "unknown",
+        "scan_direction": "reverse"
+      },
+      "normalized_value": 14.0,
+      "normalized_unit": "%",
+      "result_origin": "primary",
+      "cited_publication_id": null,
+      "acquisition_method": "published_numeric",
+      "extraction_method": "geometry_table",
+      "confidence": null,
+      "formula": null,
+      "input_result_ids": null,
+      "calculation_inputs": null,
+      "assumption_basis": null,
+      "extraction_status": "Извлечено автоматически",
+      "manual": 0
+    },
+    {
+      "id": "ef1e473cb0e94436a220ea3f",
+      "publication_id": "7efcf4f4ced817d227c5a676",
+      "pdf_version_id": "7a39418764c18203899ea32656884b45c5c86e55ca6532072bce3f8b006092b2",
+      "device_id": "8be5fa66374e31ae700de41d",
+      "measurement_id": "01a98cd178d195c20ba5421a",
+      "material_id": "eff3dfc209055578928d4f08",
+      "candidate_device_ids": [],
+      "candidate_measurement_ids": [],
+      "metric_name": "FF",
+      "metric_value": 75.0,
+      "metric_unit": "%",
+      "aggregation": "unknown",
+      "spread_value": null,
+      "n_devices": null,
+      "time_point": null,
+      "time_unit": null,
+      "range_min": null,
+      "range_max": null,
+      "inequality_op": null,
+      "value_state": "numeric",
+      "raw_value": "75.00",
+      "raw_unit": "%",
+      "raw_record": {
+        "value": "75.00",
+        "unit": "%",
+        "spread_value": null,
+        "range_min": null,
+        "range_max": null,
+        "inequality_op": null,
+        "aggregation": "unknown",
+        "scan_direction": "reverse"
+      },
+      "normalized_value": 75.0,
+      "normalized_unit": "%",
+      "result_origin": "primary",
+      "cited_publication_id": null,
+      "acquisition_method": "published_numeric",
+      "extraction_method": "geometry_table",
+      "confidence": null,
+      "formula": null,
+      "input_result_ids": null,
+      "calculation_inputs": null,
+      "assumption_basis": null,
+      "extraction_status": "Извлечено автоматически",
+      "manual": 0
+    },
+    {
+      "id": "f01674c71397a9ac00f56f5d",
+      "publication_id": "7efcf4f4ced817d227c5a676",
+      "pdf_version_id": "7a39418764c18203899ea32656884b45c5c86e55ca6532072bce3f8b006092b2",
+      "device_id": null,
+      "measurement_id": null,
+      "material_id": null,
+      "candidate_device_ids": [],
+      "candidate_measurement_ids": [],
+      "metric_name": "PCE",
+      "metric_value": 10.0,
+      "metric_unit": "%",
+      "aggregation": "unknown",
+      "spread_value": null,
+      "n_devices": null,
+      "time_point": null,
+      "time_unit": null,
+      "range_min": null,
+      "range_max": null,
+      "inequality_op": null,
+      "value_state": "numeric",
+      "raw_value": "10.00",
+      "raw_unit": "%",
+      "raw_record": {
+        "value": "10.00",
+        "unit": "%",
+        "spread_value": null,
+        "range_min": null,
+        "range_max": null,
+        "inequality_op": null,
+        "aggregation": "unknown",
+        "scan_direction": "reverse"
+      },
+      "normalized_value": 10.0,
+      "normalized_unit": "%",
+      "result_origin": "cited",
+      "cited_publication_id": "7b02133b3318c11b8d302dde",
+      "acquisition_method": "published_numeric",
+      "extraction_method": "geometry_table",
+      "confidence": null,
+      "formula": null,
+      "input_result_ids": null,
+      "calculation_inputs": null,
+      "assumption_basis": null,
+      "extraction_status": "Извлечено автоматически",
+      "manual": 0
+    },
+    {
+      "id": "f5f9738cc8b1568d25c7c62c",
+      "publication_id": "4c86ea859fb1a3006868426f",
+      "pdf_version_id": "3e282cb718f16322503adcbfb4c0b35994f4cd3f4cc2c306a85642cb222730d2",
+      "device_id": "7cf0373b8bd3db91f345d932",
+      "measurement_id": "09ebbeb5c4ede622e24626d0",
+      "material_id": "66a26dfcf9aa34f72b6f9384",
+      "candidate_device_ids": [],
+      "candidate_measurement_ids": [],
+      "metric_name": "FF",
+      "metric_value": 75.0,
+      "metric_unit": "%",
+      "aggregation": "unknown",
+      "spread_value": null,
+      "n_devices": null,
+      "time_point": null,
+      "time_unit": null,
+      "range_min": null,
+      "range_max": null,
+      "inequality_op": null,
+      "value_state": "numeric",
+      "raw_value": "75",
+      "raw_unit": "%",
+      "raw_record": {
+        "value": "75",
+        "unit": "%",
+        "spread_value": null,
+        "range_min": null,
+        "range_max": null,
+        "inequality_op": null,
+        "aggregation": "unknown",
+        "scan_direction": "reverse"
+      },
+      "normalized_value": 75.0,
+      "normalized_unit": "%",
+      "result_origin": "primary",
+      "cited_publication_id": null,
+      "acquisition_method": "published_numeric",
+      "extraction_method": "pdf_text",
+      "confidence": null,
+      "formula": null,
+      "input_result_ids": null,
+      "calculation_inputs": null,
+      "assumption_basis": null,
+      "extraction_status": "Извлечено автоматически",
+      "manual": 0
+    },
+    {
+      "id": "ffaa008d52cb8127bbd3b1d9",
+      "publication_id": "7efcf4f4ced817d227c5a676",
+      "pdf_version_id": "7a39418764c18203899ea32656884b45c5c86e55ca6532072bce3f8b006092b2",
+      "device_id": null,
+      "measurement_id": null,
+      "material_id": null,
+      "candidate_device_ids": [],
+      "candidate_measurement_ids": [],
+      "metric_name": "FF",
+      "metric_value": 62.5,
+      "metric_unit": "%",
+      "aggregation": "unknown",
+      "spread_value": null,
+      "n_devices": null,
+      "time_point": null,
+      "time_unit": null,
+      "range_min": null,
+      "range_max": null,
+      "inequality_op": null,
+      "value_state": "numeric",
+      "raw_value": "62.50",
+      "raw_unit": "%",
+      "raw_record": {
+        "value": "62.50",
+        "unit": "%",
+        "spread_value": null,
+        "range_min": null,
+        "range_max": null,
+        "inequality_op": null,
+        "aggregation": "unknown",
+        "scan_direction": "reverse"
+      },
+      "normalized_value": 62.5,
+      "normalized_unit": "%",
+      "result_origin": "cited",
+      "cited_publication_id": "7b02133b3318c11b8d302dde",
+      "acquisition_method": "published_numeric",
+      "extraction_method": "geometry_table",
+      "confidence": null,
+      "formula": null,
+      "input_result_ids": null,
+      "calculation_inputs": null,
+      "assumption_basis": null,
+      "extraction_status": "Извлечено автоматически",
+      "manual": 0
+    }
+  ],
+  "source_reference": [
+    {
+      "id": "0673865856ce829268db7352",
+      "publication_id": "7efcf4f4ced817d227c5a676",
+      "pdf_version_id": "7a39418764c18203899ea32656884b45c5c86e55ca6532072bce3f8b006092b2",
+      "source_page": 1,
+      "source_section": null,
+      "source_table": "2",
+      "source_figure": null,
+      "source_fragment": "FF (%)",
+      "bbox": [
+        505.0,
+        327.668,
+        538.60507,
+        338.019
+      ],
+      "source_type": "table_header",
+      "fragment_role": "unit"
+    },
+    {
+      "id": "0b71f9cc718f70183bcbadce",
+      "publication_id": "4c86ea859fb1a3006868426f",
+      "pdf_version_id": "3e282cb718f16322503adcbfb4c0b35994f4cd3f4cc2c306a85642cb222730d2",
+      "source_page": 1,
+      "source_section": null,
+      "source_table": null,
+      "source_figure": null,
+      "source_fragment": "%",
+      "bbox": [
+        455.9552,
+        609.78,
+        465.7342,
+        617.799
+      ],
+      "source_type": "text",
+      "fragment_role": "unit"
+    },
+    {
+      "id": "0b79200af887ab0529df5942",
+      "publication_id": "7efcf4f4ced817d227c5a676",
+      "pdf_version_id": "7a39418764c18203899ea32656884b45c5c86e55ca6532072bce3f8b006092b2",
+      "source_page": 1,
+      "source_section": null,
+      "source_table": "1",
+      "source_figure": null,
+      "source_fragment": "18.00",
+      "bbox": [
+        227.0,
+        454.747,
+        254.52199,
+        462.953
+      ],
+      "source_type": "table_cell",
+      "fragment_role": "value"
+    },
+    {
+      "id": "0c0073a8f9acdfd2c8f4a66b",
+      "publication_id": "4c86ea859fb1a3006868426f",
+      "pdf_version_id": "3e282cb718f16322503adcbfb4c0b35994f4cd3f4cc2c306a85642cb222730d2",
+      "source_page": 1,
+      "source_section": null,
+      "source_table": null,
+      "source_figure": null,
+      "source_fragment": "mV",
+      "bbox": [
+        301.28404,
+        610.0,
+        317.78404,
+        618.019
+      ],
+      "source_type": "text",
+      "fragment_role": "unit"
+    },
+    {
+      "id": "0c54555a749a076fbbf629d5",
+      "publication_id": "658e181369eab5e26d217642",
+      "pdf_version_id": "363a594ec686a15c19f6843630055bdb0c70ba3832fed18b7b54b7ca124d3409",
+      "source_page": 1,
+      "source_section": null,
+      "source_table": null,
+      "source_figure": "2",
+      "source_fragment": "Figure 2(b). EQE spectrum for D.",
+      "bbox": [
+        50.0,
+        473.602,
+        211.38095,
+        484.151
+      ],
+      "source_type": "caption",
+      "fragment_role": "condition"
+    },
+    {
+      "id": "17858493a50a3475d2750651",
+      "publication_id": "7efcf4f4ced817d227c5a676",
+      "pdf_version_id": "7a39418764c18203899ea32656884b45c5c86e55ca6532072bce3f8b006092b2",
+      "source_page": 1,
+      "source_section": null,
+      "source_table": "2",
+      "source_figure": null,
+      "source_fragment": "10.00",
+      "bbox": [
+        227.0,
+        311.747,
+        254.52199,
+        319.953
+      ],
+      "source_type": "table_cell",
+      "fragment_role": "value"
+    },
+    {
+      "id": "1bf32aa73ad1dc8b0fb8beb5",
+      "publication_id": "27f665e054a4f0727b4a27e0",
+      "pdf_version_id": "fc353f07267721eae73f2a02686fd6e5034fb519245b4745463eb050b6a62bb3",
+      "source_page": 1,
+      "source_section": null,
+      "source_table": null,
+      "source_figure": "4",
+      "source_fragment": "Figure 4. Annealing temperature for D.",
+      "bbox": [
+        50.0,
+        473.602,
+        237.69293,
+        484.052
+      ],
+      "source_type": "caption",
+      "fragment_role": "condition"
+    },
+    {
+      "id": "23fd71e812cda5befbf5d2fc",
+      "publication_id": "7efcf4f4ced817d227c5a676",
+      "pdf_version_id": "7a39418764c18203899ea32656884b45c5c86e55ca6532072bce3f8b006092b2",
+      "source_page": 1,
+      "source_section": null,
+      "source_table": "1",
+      "source_figure": null,
+      "source_fragment": "1200",
+      "bbox": [
+        310.0,
+        433.747,
+        334.464,
+        441.953
+      ],
+      "source_type": "table_cell",
+      "fragment_role": "value"
+    },
+    {
+      "id": "25f7042cda879b7183e242f1",
+      "publication_id": "27f665e054a4f0727b4a27e0",
+      "pdf_version_id": "fc353f07267721eae73f2a02686fd6e5034fb519245b4745463eb050b6a62bb3",
+      "source_page": 1,
+      "source_section": null,
+      "source_table": null,
+      "source_figure": "4",
+      "source_fragment": "Figure 4. Annealing temperature for D.",
+      "bbox": [
+        125.0,
+        210.0,
+        505.0,
+        418.0
+      ],
+      "source_type": "figure",
+      "fragment_role": "condition"
+    },
+    {
+      "id": "28e5c1ff9de5e3fadba6eb8e",
+      "publication_id": "4c86ea859fb1a3006868426f",
+      "pdf_version_id": "3e282cb718f16322503adcbfb4c0b35994f4cd3f4cc2c306a85642cb222730d2",
+      "source_page": 1,
+      "source_section": null,
+      "source_table": null,
+      "source_figure": null,
+      "source_fragment": "mA/cm2",
+      "bbox": [
+        368.2301,
+        609.7470000000001,
+        408.5671,
+        618.019
+      ],
+      "source_type": "text",
+      "fragment_role": "unit"
+    },
+    {
+      "id": "28f2c0ebebc8a0f66ca23e04",
+      "publication_id": "7efcf4f4ced817d227c5a676",
+      "pdf_version_id": "7a39418764c18203899ea32656884b45c5c86e55ca6532072bce3f8b006092b2",
+      "source_page": 1,
+      "source_section": null,
+      "source_table": "1",
+      "source_figure": null,
+      "source_fragment": "20.00",
+      "bbox": [
+        398.0,
+        433.747,
+        425.522,
+        441.953
+      ],
+      "source_type": "table_cell",
+      "fragment_role": "value"
+    },
+    {
+      "id": "2c5cb32b5acfaa94622700f3",
+      "publication_id": "7efcf4f4ced817d227c5a676",
+      "pdf_version_id": "7a39418764c18203899ea32656884b45c5c86e55ca6532072bce3f8b006092b2",
+      "source_page": 1,
+      "source_section": null,
+      "source_table": "1",
+      "source_figure": null,
+      "source_fragment": "forward",
+      "bbox": [
+        145.0,
+        454.747,
+        181.67398,
+        463.052
+      ],
+      "source_type": "table_cell",
+      "fragment_role": "condition"
+    },
+    {
+      "id": "372ff7adf14181e2c364565f",
+      "publication_id": "7efcf4f4ced817d227c5a676",
+      "pdf_version_id": "7a39418764c18203899ea32656884b45c5c86e55ca6532072bce3f8b006092b2",
+      "source_page": 1,
+      "source_section": null,
+      "source_table": "1",
+      "source_figure": null,
+      "source_fragment": "70.00",
+      "bbox": [
+        505.0,
+        412.747,
+        532.52206,
+        420.953
+      ],
+      "source_type": "table_cell",
+      "fragment_role": "value"
+    },
+    {
+      "id": "39e72de91277d45919d6eb2c",
+      "publication_id": "7efcf4f4ced817d227c5a676",
+      "pdf_version_id": "7a39418764c18203899ea32656884b45c5c86e55ca6532072bce3f8b006092b2",
+      "source_page": 1,
+      "source_section": null,
+      "source_table": null,
+      "source_figure": null,
+      "source_fragment": "eV",
+      "bbox": [
+        100.45699,
+        540.7470000000001,
+        113.90999,
+        549.019
+      ],
+      "source_type": "text",
+      "fragment_role": "unit"
+    },
+    {
+      "id": "3a27eae0f6aff8813ce4c1fa",
+      "publication_id": "7efcf4f4ced817d227c5a676",
+      "pdf_version_id": "7a39418764c18203899ea32656884b45c5c86e55ca6532072bce3f8b006092b2",
+      "source_page": 1,
+      "source_section": null,
+      "source_table": "1",
+      "source_figure": null,
+      "source_fragment": "75.00",
+      "bbox": [
+        505.0,
+        454.747,
+        532.52206,
+        462.953
+      ],
+      "source_type": "table_cell",
+      "fragment_role": "value"
+    },
+    {
+      "id": "3cb1579df7b4c3c37a82dffb",
+      "publication_id": "7efcf4f4ced817d227c5a676",
+      "pdf_version_id": "7a39418764c18203899ea32656884b45c5c86e55ca6532072bce3f8b006092b2",
+      "source_page": 1,
+      "source_section": null,
+      "source_table": "1",
+      "source_figure": null,
+      "source_fragment": "20.00",
+      "bbox": [
+        398.0,
+        454.747,
+        425.522,
+        462.953
+      ],
+      "source_type": "table_cell",
+      "fragment_role": "value"
+    },
+    {
+      "id": "3d0b7a8befef972a6653cc40",
+      "publication_id": "7efcf4f4ced817d227c5a676",
+      "pdf_version_id": "7a39418764c18203899ea32656884b45c5c86e55ca6532072bce3f8b006092b2",
+      "source_page": 1,
+      "source_section": null,
+      "source_table": "2",
+      "source_figure": null,
+      "source_fragment": "PCE (%)",
+      "bbox": [
+        227.0,
+        327.668,
+        269.779,
+        338.151
+      ],
+      "source_type": "table_header",
+      "fragment_role": "unit"
+    },
+    {
+      "id": "3dfe7f25d6711f0b38279893",
+      "publication_id": "7efcf4f4ced817d227c5a676",
+      "pdf_version_id": "7a39418764c18203899ea32656884b45c5c86e55ca6532072bce3f8b006092b2",
+      "source_page": 1,
+      "source_section": null,
+      "source_table": "1",
+      "source_figure": null,
+      "source_fragment": "14.00",
+      "bbox": [
+        227.0,
+        412.747,
+        254.52199,
+        420.953
+      ],
+      "source_type": "table_cell",
+      "fragment_role": "value"
+    },
+    {
+      "id": "44aa88a794323db60b630692",
+      "publication_id": "7efcf4f4ced817d227c5a676",
+      "pdf_version_id": "7a39418764c18203899ea32656884b45c5c86e55ca6532072bce3f8b006092b2",
+      "source_page": 1,
+      "source_section": null,
+      "source_table": null,
+      "source_figure": null,
+      "source_fragment": "17.00",
+      "bbox": [
+        224.53699,
+        389.747,
+        252.05898,
+        397.953
+      ],
+      "source_type": "text",
+      "fragment_role": "value"
+    },
+    {
+      "id": "48555de4671d97302efd0201",
+      "publication_id": "7efcf4f4ced817d227c5a676",
+      "pdf_version_id": "7a39418764c18203899ea32656884b45c5c86e55ca6532072bce3f8b006092b2",
+      "source_page": 1,
+      "source_section": null,
+      "source_table": "1",
+      "source_figure": null,
+      "source_fragment": "Jsc (mA/cm2)",
+      "bbox": [
+        398.0,
+        473.668,
+        465.221,
+        484.019
+      ],
+      "source_type": "table_header",
+      "fragment_role": "unit"
+    },
+    {
+      "id": "4af869cfb415a9878b3e8586",
+      "publication_id": "7efcf4f4ced817d227c5a676",
+      "pdf_version_id": "7a39418764c18203899ea32656884b45c5c86e55ca6532072bce3f8b006092b2",
+      "source_page": 1,
+      "source_section": null,
+      "source_table": "2",
+      "source_figure": null,
+      "source_fragment": "Jsc (mA/cm2)",
+      "bbox": [
+        398.0,
+        327.668,
+        465.221,
+        338.019
+      ],
+      "source_type": "table_header",
+      "fragment_role": "unit"
+    },
+    {
+      "id": "4bfe4e7a81ee7aa4d4174e3c",
+      "publication_id": "7efcf4f4ced817d227c5a676",
+      "pdf_version_id": "7a39418764c18203899ea32656884b45c5c86e55ca6532072bce3f8b006092b2",
+      "source_page": 1,
+      "source_section": null,
+      "source_table": null,
+      "source_figure": null,
+      "source_fragment": "reverse",
+      "bbox": [
+        97.06899,
+        389.747,
+        133.743,
+        395.929
+      ],
+      "source_type": "text",
+      "fragment_role": "condition"
+    },
+    {
+      "id": "548512014a7a13a272b5e37a",
+      "publication_id": "7efcf4f4ced817d227c5a676",
+      "pdf_version_id": "7a39418764c18203899ea32656884b45c5c86e55ca6532072bce3f8b006092b2",
+      "source_page": 1,
+      "source_section": null,
+      "source_table": null,
+      "source_figure": "1",
+      "source_fragment": "Figure 1(a). JV curve for B, reverse scan.",
+      "bbox": [
+        115.0,
+        83.0,
+        495.0,
+        251.0
+      ],
+      "source_type": "figure",
+      "fragment_role": "condition"
+    },
+    {
+      "id": "56b77605d9f3bcec4d6c8073",
+      "publication_id": "7efcf4f4ced817d227c5a676",
+      "pdf_version_id": "7a39418764c18203899ea32656884b45c5c86e55ca6532072bce3f8b006092b2",
+      "source_page": 1,
+      "source_section": null,
+      "source_table": "1",
+      "source_figure": null,
+      "source_fragment": "A",
+      "bbox": [
+        50.0,
+        434.0,
+        57.337,
+        442.019
+      ],
+      "source_type": "table_cell",
+      "fragment_role": "sample_label"
+    },
+    {
+      "id": "6134619300050f85ba525520",
+      "publication_id": "658e181369eab5e26d217642",
+      "pdf_version_id": "363a594ec686a15c19f6843630055bdb0c70ba3832fed18b7b54b7ca124d3409",
+      "source_page": 1,
+      "source_section": null,
+      "source_table": null,
+      "source_figure": "2",
+      "source_fragment": "Figure 2(b). EQE spectrum for D.",
+      "bbox": [
+        125.0,
+        210.0,
+        505.0,
+        418.0
+      ],
+      "source_type": "figure",
+      "fragment_role": "condition"
+    },
+    {
+      "id": "6145919e026da115c85c85ce",
+      "publication_id": "7efcf4f4ced817d227c5a676",
+      "pdf_version_id": "7a39418764c18203899ea32656884b45c5c86e55ca6532072bce3f8b006092b2",
+      "source_page": 1,
+      "source_section": null,
+      "source_table": "2",
+      "source_figure": null,
+      "source_fragment": "20.00",
+      "bbox": [
+        398.0,
+        311.747,
+        425.522,
+        319.953
+      ],
+      "source_type": "table_cell",
+      "fragment_role": "value"
+    },
+    {
+      "id": "622627a381bfb0d79abf5de3",
+      "publication_id": "7efcf4f4ced817d227c5a676",
+      "pdf_version_id": "7a39418764c18203899ea32656884b45c5c86e55ca6532072bce3f8b006092b2",
+      "source_page": 1,
+      "source_section": null,
+      "source_table": "2",
+      "source_figure": null,
+      "source_fragment": "reverse",
+      "bbox": [
+        145.0,
+        311.747,
+        181.67398,
+        317.929
+      ],
+      "source_type": "table_cell",
+      "fragment_role": "condition"
+    },
+    {
+      "id": "6371c37a2e66be624b90e297",
+      "publication_id": "4c86ea859fb1a3006868426f",
+      "pdf_version_id": "3e282cb718f16322503adcbfb4c0b35994f4cd3f4cc2c306a85642cb222730d2",
+      "source_page": 1,
+      "source_section": null,
+      "source_table": null,
+      "source_figure": null,
+      "source_fragment": "12.00",
+      "bbox": [
+        201.90999,
+        609.7470000000001,
+        229.43198,
+        617.953
+      ],
+      "source_type": "text",
+      "fragment_role": "value"
+    },
+    {
+      "id": "6a167bee158c837bc5df8691",
+      "publication_id": "7efcf4f4ced817d227c5a676",
+      "pdf_version_id": "7a39418764c18203899ea32656884b45c5c86e55ca6532072bce3f8b006092b2",
+      "source_page": 1,
+      "source_section": null,
+      "source_table": "1",
+      "source_figure": null,
+      "source_fragment": "PCE (%)",
+      "bbox": [
+        227.0,
+        473.668,
+        269.779,
+        484.151
+      ],
+      "source_type": "table_header",
+      "fragment_role": "unit"
+    },
+    {
+      "id": "7159bef8d8622748283fa1f8",
+      "publication_id": "7efcf4f4ced817d227c5a676",
+      "pdf_version_id": "7a39418764c18203899ea32656884b45c5c86e55ca6532072bce3f8b006092b2",
+      "source_page": 1,
+      "source_section": null,
+      "source_table": "1",
+      "source_figure": null,
+      "source_fragment": "1000",
+      "bbox": [
+        310.0,
+        412.747,
+        334.464,
+        420.953
+      ],
+      "source_type": "table_cell",
+      "fragment_role": "value"
+    },
+    {
+      "id": "757db0714c5928d0955e2cd9",
+      "publication_id": "7efcf4f4ced817d227c5a676",
+      "pdf_version_id": "7a39418764c18203899ea32656884b45c5c86e55ca6532072bce3f8b006092b2",
+      "source_page": 1,
+      "source_section": null,
+      "source_table": "1",
+      "source_figure": null,
+      "source_fragment": "A",
+      "bbox": [
+        50.0,
+        455.0,
+        57.337,
+        463.019
+      ],
+      "source_type": "table_cell",
+      "fragment_role": "sample_label"
+    },
+    {
+      "id": "7a4e25c6f5522eff02f360dc",
+      "publication_id": "a3a3fc44477031df7a55c75d",
+      "pdf_version_id": "8acbecc944da6540afad8c6c77cfcb6313c3ae9611942560242e41930223fd76",
+      "source_page": 1,
+      "source_section": null,
+      "source_table": null,
+      "source_figure": "5",
+      "source_fragment": "Figure 5. PCE versus thickness for D.",
+      "bbox": [
+        125.0,
+        210.0,
+        505.0,
+        418.0
+      ],
+      "source_type": "figure",
+      "fragment_role": "condition"
+    },
+    {
+      "id": "7e2a7ec3f501384617f0e0aa",
+      "publication_id": "7efcf4f4ced817d227c5a676",
+      "pdf_version_id": "7a39418764c18203899ea32656884b45c5c86e55ca6532072bce3f8b006092b2",
+      "source_page": 1,
+      "source_section": null,
+      "source_table": "1",
+      "source_figure": null,
+      "source_fragment": "75.00",
+      "bbox": [
+        505.0,
+        433.747,
+        532.52206,
+        441.953
+      ],
+      "source_type": "table_cell",
+      "fragment_role": "value"
+    },
+    {
+      "id": "85868c3eb83c8e4a68b059ab",
+      "publication_id": "7efcf4f4ced817d227c5a676",
+      "pdf_version_id": "7a39418764c18203899ea32656884b45c5c86e55ca6532072bce3f8b006092b2",
+      "source_page": 1,
+      "source_section": null,
+      "source_table": "2",
+      "source_figure": null,
+      "source_fragment": "10.5555/sx",
+      "bbox": [
+        50.0,
+        311.747,
+        103.81199,
+        320.019
+      ],
+      "source_type": "table_cell",
+      "fragment_role": "sample_label"
+    },
+    {
+      "id": "869ed043568e056c4eed234b",
+      "publication_id": "7efcf4f4ced817d227c5a676",
+      "pdf_version_id": "7a39418764c18203899ea32656884b45c5c86e55ca6532072bce3f8b006092b2",
+      "source_page": 1,
+      "source_section": null,
+      "source_table": "1",
+      "source_figure": null,
+      "source_fragment": "reverse",
+      "bbox": [
+        145.0,
+        433.747,
+        181.67398,
+        439.929
+      ],
+      "source_type": "table_cell",
+      "fragment_role": "condition"
+    },
+    {
+      "id": "8998e3d4aa2bf9aecbc5b1d4",
+      "publication_id": "0696a6d15d3464d9d683fa20",
+      "pdf_version_id": "67daa423539cd2fdc8b0dbf58e8bd8a6b3012f2079281c7cfd55e5f41a7dc8c1",
+      "source_page": 1,
+      "source_section": null,
+      "source_table": null,
+      "source_figure": "6",
+      "source_fragment": "Figure 6. Scatter data for D.",
+      "bbox": [
+        125.0,
+        210.0,
+        505.0,
+        418.0
+      ],
+      "source_type": "figure",
+      "fragment_role": "condition"
+    },
+    {
+      "id": "8c29d98b7e66a3126839ce84",
+      "publication_id": "4c86ea859fb1a3006868426f",
+      "pdf_version_id": "3e282cb718f16322503adcbfb4c0b35994f4cd3f4cc2c306a85642cb222730d2",
+      "source_page": 1,
+      "source_section": null,
+      "source_table": null,
+      "source_figure": null,
+      "source_fragment": "%",
+      "bbox": [
+        232.48998,
+        609.78,
+        242.26898,
+        617.799
+      ],
+      "source_type": "text",
+      "fragment_role": "unit"
+    },
+    {
+      "id": "8d4fb0825f536fb8103d4c2e",
+      "publication_id": "7efcf4f4ced817d227c5a676",
+      "pdf_version_id": "7a39418764c18203899ea32656884b45c5c86e55ca6532072bce3f8b006092b2",
+      "source_page": 1,
+      "source_section": null,
+      "source_table": "1",
+      "source_figure": null,
+      "source_fragment": "FF (%)",
+      "bbox": [
+        505.0,
+        473.668,
+        538.60507,
+        484.019
+      ],
+      "source_type": "table_header",
+      "fragment_role": "unit"
+    },
+    {
+      "id": "959ff8e1d7b9217ed1d6abcb",
+      "publication_id": "7efcf4f4ced817d227c5a676",
+      "pdf_version_id": "7a39418764c18203899ea32656884b45c5c86e55ca6532072bce3f8b006092b2",
+      "source_page": 1,
+      "source_section": null,
+      "source_table": "1",
+      "source_figure": null,
+      "source_fragment": "reverse",
+      "bbox": [
+        145.0,
+        412.747,
+        181.67398,
+        418.929
+      ],
+      "source_type": "table_cell",
+      "fragment_role": "condition"
+    },
+    {
+      "id": "97667b69333408baf4603ac8",
+      "publication_id": "7efcf4f4ced817d227c5a676",
+      "pdf_version_id": "7a39418764c18203899ea32656884b45c5c86e55ca6532072bce3f8b006092b2",
+      "source_page": 1,
+      "source_section": null,
+      "source_table": "2",
+      "source_figure": null,
+      "source_fragment": "800",
+      "bbox": [
+        310.0,
+        311.747,
+        328.348,
+        319.953
+      ],
+      "source_type": "table_cell",
+      "fragment_role": "value"
+    },
+    {
+      "id": "a2ff1de50a9a2f15ebe6d266",
+      "publication_id": "4c86ea859fb1a3006868426f",
+      "pdf_version_id": "3e282cb718f16322503adcbfb4c0b35994f4cd3f4cc2c306a85642cb222730d2",
+      "source_page": 1,
+      "source_section": null,
+      "source_table": null,
+      "source_figure": null,
+      "source_fragment": "Device C",
+      "bbox": [
+        50.0,
+        609.7470000000001,
+        94.616,
+        618.1510000000001
+      ],
+      "source_type": "text",
+      "fragment_role": "sample_label"
+    },
+    {
+      "id": "a453e13ed8a43690dadad86c",
+      "publication_id": "7efcf4f4ced817d227c5a676",
+      "pdf_version_id": "7a39418764c18203899ea32656884b45c5c86e55ca6532072bce3f8b006092b2",
+      "source_page": 1,
+      "source_section": null,
+      "source_table": null,
+      "source_figure": "1",
+      "source_fragment": "Figure 1(a). JV curve for B, reverse scan.",
+      "bbox": [
+        50.0,
+        289.602,
+        251.12395,
+        300.052
+      ],
+      "source_type": "caption",
+      "fragment_role": "condition"
+    },
+    {
+      "id": "ac3e09901dc4c697c5a42f7b",
+      "publication_id": "7efcf4f4ced817d227c5a676",
+      "pdf_version_id": "7a39418764c18203899ea32656884b45c5c86e55ca6532072bce3f8b006092b2",
+      "source_page": 1,
+      "source_section": null,
+      "source_table": null,
+      "source_figure": null,
+      "source_fragment": "%",
+      "bbox": [
+        115.735988,
+        370.78,
+        125.514987,
+        378.799
+      ],
+      "source_type": "text",
+      "fragment_role": "unit"
+    },
+    {
+      "id": "af2b2279fa2a600d9e3bd41e",
+      "publication_id": "0696a6d15d3464d9d683fa20",
+      "pdf_version_id": "67daa423539cd2fdc8b0dbf58e8bd8a6b3012f2079281c7cfd55e5f41a7dc8c1",
+      "source_page": 1,
+      "source_section": null,
+      "source_table": null,
+      "source_figure": "6",
+      "source_fragment": "Figure 6. Scatter data for D.",
+      "bbox": [
+        50.0,
+        473.602,
+        185.72896,
+        484.151
+      ],
+      "source_type": "caption",
+      "fragment_role": "condition"
+    },
+    {
+      "id": "b7c6d0213b9a0ec752937552",
+      "publication_id": "46ed2bd82a9f0b7a1052c475",
+      "pdf_version_id": "b2257a20852675e9c9765328acea4a1853a2413fedd1117118b787d49c03bfd8",
+      "source_page": 1,
+      "source_section": null,
+      "source_table": null,
+      "source_figure": "3",
+      "source_fragment": "Figure 3. Stability of D.",
+      "bbox": [
+        50.0,
+        473.602,
+        161.26499,
+        484.151
+      ],
+      "source_type": "caption",
+      "fragment_role": "condition"
+    },
+    {
+      "id": "b8eca9380f00ef452f6ec6ce",
+      "publication_id": "7efcf4f4ced817d227c5a676",
+      "pdf_version_id": "7a39418764c18203899ea32656884b45c5c86e55ca6532072bce3f8b006092b2",
+      "source_page": 1,
+      "source_section": null,
+      "source_table": "1",
+      "source_figure": null,
+      "source_fragment": "20.00",
+      "bbox": [
+        398.0,
+        412.747,
+        425.522,
+        420.953
+      ],
+      "source_type": "table_cell",
+      "fragment_role": "value"
+    },
+    {
+      "id": "baa5b5c296b8baa0f7541aa0",
+      "publication_id": "7efcf4f4ced817d227c5a676",
+      "pdf_version_id": "7a39418764c18203899ea32656884b45c5c86e55ca6532072bce3f8b006092b2",
+      "source_page": 1,
+      "source_section": null,
+      "source_table": null,
+      "source_figure": null,
+      "source_fragment": "mA/cm2",
+      "bbox": [
+        255.11698,
+        389.747,
+        295.45399,
+        398.019
+      ],
+      "source_type": "text",
+      "fragment_role": "unit"
+    },
+    {
+      "id": "bb5451cb21c6118201e011f5",
+      "publication_id": "7efcf4f4ced817d227c5a676",
+      "pdf_version_id": "7a39418764c18203899ea32656884b45c5c86e55ca6532072bce3f8b006092b2",
+      "source_page": 1,
+      "source_section": null,
+      "source_table": null,
+      "source_figure": null,
+      "source_fragment": "16.00",
+      "bbox": [
+        85.156,
+        370.747,
+        112.677989,
+        378.953
+      ],
+      "source_type": "text",
+      "fragment_role": "value"
+    },
+    {
+      "id": "bd648e3f736a218c863f239f",
+      "publication_id": "7efcf4f4ced817d227c5a676",
+      "pdf_version_id": "7a39418764c18203899ea32656884b45c5c86e55ca6532072bce3f8b006092b2",
+      "source_page": 1,
+      "source_section": null,
+      "source_table": "1",
+      "source_figure": null,
+      "source_fragment": "Voc (mV)",
+      "bbox": [
+        310.0,
+        473.668,
+        355.837,
+        484.019
+      ],
+      "source_type": "table_header",
+      "fragment_role": "unit"
+    },
+    {
+      "id": "be14a9e919e001907f37d655",
+      "publication_id": "7efcf4f4ced817d227c5a676",
+      "pdf_version_id": "7a39418764c18203899ea32656884b45c5c86e55ca6532072bce3f8b006092b2",
+      "source_page": 1,
+      "source_section": null,
+      "source_table": null,
+      "source_figure": null,
+      "source_fragment": "Device A",
+      "bbox": [
+        50.0,
+        389.747,
+        94.010997,
+        398.019
+      ],
+      "source_type": "text",
+      "fragment_role": "sample_label"
+    },
+    {
+      "id": "c4cb9e343e57a71830c06e9e",
+      "publication_id": "7efcf4f4ced817d227c5a676",
+      "pdf_version_id": "7a39418764c18203899ea32656884b45c5c86e55ca6532072bce3f8b006092b2",
+      "source_page": 1,
+      "source_section": null,
+      "source_table": "1",
+      "source_figure": null,
+      "source_fragment": "1200",
+      "bbox": [
+        310.0,
+        454.747,
+        334.464,
+        462.953
+      ],
+      "source_type": "table_cell",
+      "fragment_role": "value"
+    },
+    {
+      "id": "c9cf3c683701f23ea50da0d3",
+      "publication_id": "7efcf4f4ced817d227c5a676",
+      "pdf_version_id": "7a39418764c18203899ea32656884b45c5c86e55ca6532072bce3f8b006092b2",
+      "source_page": 1,
+      "source_section": null,
+      "source_table": null,
+      "source_figure": null,
+      "source_fragment": "1.10",
+      "bbox": [
+        75.993007,
+        540.7470000000001,
+        97.398998,
+        548.953
+      ],
+      "source_type": "text",
+      "fragment_role": "value"
+    },
+    {
+      "id": "ca41d3dab9254c28d7cfb300",
+      "publication_id": "7efcf4f4ced817d227c5a676",
+      "pdf_version_id": "7a39418764c18203899ea32656884b45c5c86e55ca6532072bce3f8b006092b2",
+      "source_page": 1,
+      "source_section": null,
+      "source_table": null,
+      "source_figure": null,
+      "source_fragment": "100 mW/cm2",
+      "bbox": [
+        251.75095,
+        521.7470000000001,
+        316.54096,
+        530.019
+      ],
+      "source_type": "text",
+      "fragment_role": "condition"
+    },
+    {
+      "id": "cb10948b0e2bcd0e5bb9dce7",
+      "publication_id": "7efcf4f4ced817d227c5a676",
+      "pdf_version_id": "7a39418764c18203899ea32656884b45c5c86e55ca6532072bce3f8b006092b2",
+      "source_page": 1,
+      "source_section": null,
+      "source_table": "2",
+      "source_figure": null,
+      "source_fragment": "62.50",
+      "bbox": [
+        505.0,
+        311.747,
+        532.52206,
+        319.953
+      ],
+      "source_type": "table_cell",
+      "fragment_role": "value"
+    },
+    {
+      "id": "cb978e4dc7a197d9eb761f05",
+      "publication_id": "7efcf4f4ced817d227c5a676",
+      "pdf_version_id": "7a39418764c18203899ea32656884b45c5c86e55ca6532072bce3f8b006092b2",
+      "source_page": 1,
+      "source_section": null,
+      "source_table": "2",
+      "source_figure": null,
+      "source_fragment": "Voc (mV)",
+      "bbox": [
+        310.0,
+        327.668,
+        355.837,
+        338.019
+      ],
+      "source_type": "table_header",
+      "fragment_role": "unit"
+    },
+    {
+      "id": "d7b05c4724de1ab045dbbfcf",
+      "publication_id": "46ed2bd82a9f0b7a1052c475",
+      "pdf_version_id": "b2257a20852675e9c9765328acea4a1853a2413fedd1117118b787d49c03bfd8",
+      "source_page": 1,
+      "source_section": null,
+      "source_table": null,
+      "source_figure": "3",
+      "source_fragment": "Figure 3. Stability of D.",
+      "bbox": [
+        125.0,
+        210.0,
+        505.0,
+        418.0
+      ],
+      "source_type": "figure",
+      "fragment_role": "condition"
+    },
+    {
+      "id": "df13a605dc5e1e38346cf5c0",
+      "publication_id": "4c86ea859fb1a3006868426f",
+      "pdf_version_id": "3e282cb718f16322503adcbfb4c0b35994f4cd3f4cc2c306a85642cb222730d2",
+      "source_page": 1,
+      "source_section": null,
+      "source_table": null,
+      "source_figure": null,
+      "source_fragment": "reverse",
+      "bbox": [
+        97.673999,
+        609.7470000000001,
+        134.34798999999998,
+        615.929
+      ],
+      "source_type": "text",
+      "fragment_role": "condition"
+    },
+    {
+      "id": "dfd0efcb28a79c9f7129fbad",
+      "publication_id": "4c86ea859fb1a3006868426f",
+      "pdf_version_id": "3e282cb718f16322503adcbfb4c0b35994f4cd3f4cc2c306a85642cb222730d2",
+      "source_page": 1,
+      "source_section": null,
+      "source_table": null,
+      "source_figure": null,
+      "source_fragment": "20",
+      "bbox": [
+        352.9401,
+        609.7470000000001,
+        365.1721,
+        617.953
+      ],
+      "source_type": "text",
+      "fragment_role": "value"
+    },
+    {
+      "id": "e919d2b7302839fce0bbd5b8",
+      "publication_id": "7efcf4f4ced817d227c5a676",
+      "pdf_version_id": "7a39418764c18203899ea32656884b45c5c86e55ca6532072bce3f8b006092b2",
+      "source_page": 1,
+      "source_section": null,
+      "source_table": "1",
+      "source_figure": null,
+      "source_fragment": "17.00",
+      "bbox": [
+        227.0,
+        433.747,
+        254.52199,
+        441.953
+      ],
+      "source_type": "table_cell",
+      "fragment_role": "value"
+    },
+    {
+      "id": "f9127c5f1a23ee5bbb4bf571",
+      "publication_id": "4c86ea859fb1a3006868426f",
+      "pdf_version_id": "3e282cb718f16322503adcbfb4c0b35994f4cd3f4cc2c306a85642cb222730d2",
+      "source_page": 1,
+      "source_section": null,
+      "source_table": null,
+      "source_figure": null,
+      "source_fragment": "75",
+      "bbox": [
+        440.6652,
+        609.7470000000001,
+        452.8972,
+        617.799
+      ],
+      "source_type": "text",
+      "fragment_role": "value"
+    },
+    {
+      "id": "f99b30d7b30a51e355dab89e",
+      "publication_id": "4c86ea859fb1a3006868426f",
+      "pdf_version_id": "3e282cb718f16322503adcbfb4c0b35994f4cd3f4cc2c306a85642cb222730d2",
+      "source_page": 1,
+      "source_section": null,
+      "source_table": null,
+      "source_figure": null,
+      "source_fragment": "800",
+      "bbox": [
+        279.87803,
+        609.7470000000001,
+        298.226,
+        617.953
+      ],
+      "source_type": "text",
+      "fragment_role": "value"
+    },
+    {
+      "id": "fc3a6cdacc6d82b06d6ba38e",
+      "publication_id": "a3a3fc44477031df7a55c75d",
+      "pdf_version_id": "8acbecc944da6540afad8c6c77cfcb6313c3ae9611942560242e41930223fd76",
+      "source_page": 1,
+      "source_section": null,
+      "source_table": null,
+      "source_figure": "5",
+      "source_fragment": "Figure 5. PCE versus thickness for D.",
+      "bbox": [
+        50.0,
+        473.602,
+        233.39196,
+        484.151
+      ],
+      "source_type": "caption",
+      "fragment_role": "condition"
+    },
+    {
+      "id": "fcbaf0c3886bf82659d7f4dc",
+      "publication_id": "7efcf4f4ced817d227c5a676",
+      "pdf_version_id": "7a39418764c18203899ea32656884b45c5c86e55ca6532072bce3f8b006092b2",
+      "source_page": 1,
+      "source_section": null,
+      "source_table": "1",
+      "source_figure": null,
+      "source_fragment": "B",
+      "bbox": [
+        50.0,
+        413.0,
+        57.337,
+        421.019
+      ],
+      "source_type": "table_cell",
+      "fragment_role": "sample_label"
+    }
+  ],
+  "result_source": [
+    {
+      "result_id": "01d905aa07cd3be402570a39",
+      "source_reference_id": "28f2c0ebebc8a0f66ca23e04"
+    },
+    {
+      "result_id": "01d905aa07cd3be402570a39",
+      "source_reference_id": "48555de4671d97302efd0201"
+    },
+    {
+      "result_id": "01d905aa07cd3be402570a39",
+      "source_reference_id": "56b77605d9f3bcec4d6c8073"
+    },
+    {
+      "result_id": "01d905aa07cd3be402570a39",
+      "source_reference_id": "869ed043568e056c4eed234b"
+    },
+    {
+      "result_id": "04a5bb71bcba2038a9f7ba98",
+      "source_reference_id": "2c5cb32b5acfaa94622700f3"
+    },
+    {
+      "result_id": "04a5bb71bcba2038a9f7ba98",
+      "source_reference_id": "757db0714c5928d0955e2cd9"
+    },
+    {
+      "result_id": "04a5bb71bcba2038a9f7ba98",
+      "source_reference_id": "bd648e3f736a218c863f239f"
+    },
+    {
+      "result_id": "04a5bb71bcba2038a9f7ba98",
+      "source_reference_id": "c4cb9e343e57a71830c06e9e"
+    },
+    {
+      "result_id": "0da7aa6d943ae60e72925a01",
+      "source_reference_id": "0c0073a8f9acdfd2c8f4a66b"
+    },
+    {
+      "result_id": "0da7aa6d943ae60e72925a01",
+      "source_reference_id": "a2ff1de50a9a2f15ebe6d266"
+    },
+    {
+      "result_id": "0da7aa6d943ae60e72925a01",
+      "source_reference_id": "df13a605dc5e1e38346cf5c0"
+    },
+    {
+      "result_id": "0da7aa6d943ae60e72925a01",
+      "source_reference_id": "f99b30d7b30a51e355dab89e"
+    },
+    {
+      "result_id": "116f3904df857a385a1fb7ed",
+      "source_reference_id": "39e72de91277d45919d6eb2c"
+    },
+    {
+      "result_id": "116f3904df857a385a1fb7ed",
+      "source_reference_id": "c9cf3c683701f23ea50da0d3"
+    },
+    {
+      "result_id": "20beaf8a6d8b7b217c6b74d0",
+      "source_reference_id": "4af869cfb415a9878b3e8586"
+    },
+    {
+      "result_id": "20beaf8a6d8b7b217c6b74d0",
+      "source_reference_id": "6145919e026da115c85c85ce"
+    },
+    {
+      "result_id": "20beaf8a6d8b7b217c6b74d0",
+      "source_reference_id": "622627a381bfb0d79abf5de3"
+    },
+    {
+      "result_id": "20beaf8a6d8b7b217c6b74d0",
+      "source_reference_id": "85868c3eb83c8e4a68b059ab"
+    },
+    {
+      "result_id": "217b56685e61934d251421e4",
+      "source_reference_id": "2c5cb32b5acfaa94622700f3"
+    },
+    {
+      "result_id": "217b56685e61934d251421e4",
+      "source_reference_id": "3a27eae0f6aff8813ce4c1fa"
+    },
+    {
+      "result_id": "217b56685e61934d251421e4",
+      "source_reference_id": "757db0714c5928d0955e2cd9"
+    },
+    {
+      "result_id": "217b56685e61934d251421e4",
+      "source_reference_id": "8d4fb0825f536fb8103d4c2e"
+    },
+    {
+      "result_id": "2469aa796a50aec7dbf0faff",
+      "source_reference_id": "622627a381bfb0d79abf5de3"
+    },
+    {
+      "result_id": "2469aa796a50aec7dbf0faff",
+      "source_reference_id": "85868c3eb83c8e4a68b059ab"
+    },
+    {
+      "result_id": "2469aa796a50aec7dbf0faff",
+      "source_reference_id": "97667b69333408baf4603ac8"
+    },
+    {
+      "result_id": "2469aa796a50aec7dbf0faff",
+      "source_reference_id": "cb978e4dc7a197d9eb761f05"
+    },
+    {
+      "result_id": "2859010b64cf60c6ca052deb",
+      "source_reference_id": "7159bef8d8622748283fa1f8"
+    },
+    {
+      "result_id": "2859010b64cf60c6ca052deb",
+      "source_reference_id": "959ff8e1d7b9217ed1d6abcb"
+    },
+    {
+      "result_id": "2859010b64cf60c6ca052deb",
+      "source_reference_id": "bd648e3f736a218c863f239f"
+    },
+    {
+      "result_id": "2859010b64cf60c6ca052deb",
+      "source_reference_id": "fcbaf0c3886bf82659d7f4dc"
+    },
+    {
+      "result_id": "3542f69c1cdc19bc5a0b76e5",
+      "source_reference_id": "23fd71e812cda5befbf5d2fc"
+    },
+    {
+      "result_id": "3542f69c1cdc19bc5a0b76e5",
+      "source_reference_id": "56b77605d9f3bcec4d6c8073"
+    },
+    {
+      "result_id": "3542f69c1cdc19bc5a0b76e5",
+      "source_reference_id": "869ed043568e056c4eed234b"
+    },
+    {
+      "result_id": "3542f69c1cdc19bc5a0b76e5",
+      "source_reference_id": "bd648e3f736a218c863f239f"
+    },
+    {
+      "result_id": "3c1727c26d47824d4e20eaba",
+      "source_reference_id": "0b79200af887ab0529df5942"
+    },
+    {
+      "result_id": "3c1727c26d47824d4e20eaba",
+      "source_reference_id": "2c5cb32b5acfaa94622700f3"
+    },
+    {
+      "result_id": "3c1727c26d47824d4e20eaba",
+      "source_reference_id": "6a167bee158c837bc5df8691"
+    },
+    {
+      "result_id": "3c1727c26d47824d4e20eaba",
+      "source_reference_id": "757db0714c5928d0955e2cd9"
+    },
+    {
+      "result_id": "3d7fb1a0d88c91f201149e90",
+      "source_reference_id": "b7c6d0213b9a0ec752937552"
+    },
+    {
+      "result_id": "3d7fb1a0d88c91f201149e90",
+      "source_reference_id": "d7b05c4724de1ab045dbbfcf"
+    },
+    {
+      "result_id": "3e6c63e8a9502c11241342f9",
+      "source_reference_id": "0c54555a749a076fbbf629d5"
+    },
+    {
+      "result_id": "3e6c63e8a9502c11241342f9",
+      "source_reference_id": "6134619300050f85ba525520"
+    },
+    {
+      "result_id": "453fa02dccd8d7af3aab5389",
+      "source_reference_id": "48555de4671d97302efd0201"
+    },
+    {
+      "result_id": "453fa02dccd8d7af3aab5389",
+      "source_reference_id": "959ff8e1d7b9217ed1d6abcb"
+    },
+    {
+      "result_id": "453fa02dccd8d7af3aab5389",
+      "source_reference_id": "b8eca9380f00ef452f6ec6ce"
+    },
+    {
+      "result_id": "453fa02dccd8d7af3aab5389",
+      "source_reference_id": "fcbaf0c3886bf82659d7f4dc"
+    },
+    {
+      "result_id": "4adb4dbf80c1bc4fcb6affe0",
+      "source_reference_id": "ac3e09901dc4c697c5a42f7b"
+    },
+    {
+      "result_id": "4adb4dbf80c1bc4fcb6affe0",
+      "source_reference_id": "bb5451cb21c6118201e011f5"
+    },
+    {
+      "result_id": "59dec54a7a374c2c35f4ee06",
+      "source_reference_id": "56b77605d9f3bcec4d6c8073"
+    },
+    {
+      "result_id": "59dec54a7a374c2c35f4ee06",
+      "source_reference_id": "6a167bee158c837bc5df8691"
+    },
+    {
+      "result_id": "59dec54a7a374c2c35f4ee06",
+      "source_reference_id": "869ed043568e056c4eed234b"
+    },
+    {
+      "result_id": "59dec54a7a374c2c35f4ee06",
+      "source_reference_id": "e919d2b7302839fce0bbd5b8"
+    },
+    {
+      "result_id": "64ae341d32212c78e06a2fdc",
+      "source_reference_id": "2c5cb32b5acfaa94622700f3"
+    },
+    {
+      "result_id": "64ae341d32212c78e06a2fdc",
+      "source_reference_id": "3cb1579df7b4c3c37a82dffb"
+    },
+    {
+      "result_id": "64ae341d32212c78e06a2fdc",
+      "source_reference_id": "48555de4671d97302efd0201"
+    },
+    {
+      "result_id": "64ae341d32212c78e06a2fdc",
+      "source_reference_id": "757db0714c5928d0955e2cd9"
+    },
+    {
+      "result_id": "b8ac6c73083fcb5de5461506",
+      "source_reference_id": "44aa88a794323db60b630692"
+    },
+    {
+      "result_id": "b8ac6c73083fcb5de5461506",
+      "source_reference_id": "4bfe4e7a81ee7aa4d4174e3c"
+    },
+    {
+      "result_id": "b8ac6c73083fcb5de5461506",
+      "source_reference_id": "baa5b5c296b8baa0f7541aa0"
+    },
+    {
+      "result_id": "b8ac6c73083fcb5de5461506",
+      "source_reference_id": "be14a9e919e001907f37d655"
+    },
+    {
+      "result_id": "bea206a8406bd4a7e942e595",
+      "source_reference_id": "6371c37a2e66be624b90e297"
+    },
+    {
+      "result_id": "bea206a8406bd4a7e942e595",
+      "source_reference_id": "8c29d98b7e66a3126839ce84"
+    },
+    {
+      "result_id": "bea206a8406bd4a7e942e595",
+      "source_reference_id": "a2ff1de50a9a2f15ebe6d266"
+    },
+    {
+      "result_id": "bea206a8406bd4a7e942e595",
+      "source_reference_id": "df13a605dc5e1e38346cf5c0"
+    },
+    {
+      "result_id": "d5f22d5eed5d2e0d8ed0f300",
+      "source_reference_id": "28e5c1ff9de5e3fadba6eb8e"
+    },
+    {
+      "result_id": "d5f22d5eed5d2e0d8ed0f300",
+      "source_reference_id": "a2ff1de50a9a2f15ebe6d266"
+    },
+    {
+      "result_id": "d5f22d5eed5d2e0d8ed0f300",
+      "source_reference_id": "df13a605dc5e1e38346cf5c0"
+    },
+    {
+      "result_id": "d5f22d5eed5d2e0d8ed0f300",
+      "source_reference_id": "dfd0efcb28a79c9f7129fbad"
+    },
+    {
+      "result_id": "e833576caaabafc560a57e04",
+      "source_reference_id": "372ff7adf14181e2c364565f"
+    },
+    {
+      "result_id": "e833576caaabafc560a57e04",
+      "source_reference_id": "8d4fb0825f536fb8103d4c2e"
+    },
+    {
+      "result_id": "e833576caaabafc560a57e04",
+      "source_reference_id": "959ff8e1d7b9217ed1d6abcb"
+    },
+    {
+      "result_id": "e833576caaabafc560a57e04",
+      "source_reference_id": "fcbaf0c3886bf82659d7f4dc"
+    },
+    {
+      "result_id": "ea20c615b446af4053f984b3",
+      "source_reference_id": "3dfe7f25d6711f0b38279893"
+    },
+    {
+      "result_id": "ea20c615b446af4053f984b3",
+      "source_reference_id": "6a167bee158c837bc5df8691"
+    },
+    {
+      "result_id": "ea20c615b446af4053f984b3",
+      "source_reference_id": "959ff8e1d7b9217ed1d6abcb"
+    },
+    {
+      "result_id": "ea20c615b446af4053f984b3",
+      "source_reference_id": "fcbaf0c3886bf82659d7f4dc"
+    },
+    {
+      "result_id": "ef1e473cb0e94436a220ea3f",
+      "source_reference_id": "56b77605d9f3bcec4d6c8073"
+    },
+    {
+      "result_id": "ef1e473cb0e94436a220ea3f",
+      "source_reference_id": "7e2a7ec3f501384617f0e0aa"
+    },
+    {
+      "result_id": "ef1e473cb0e94436a220ea3f",
+      "source_reference_id": "869ed043568e056c4eed234b"
+    },
+    {
+      "result_id": "ef1e473cb0e94436a220ea3f",
+      "source_reference_id": "8d4fb0825f536fb8103d4c2e"
+    },
+    {
+      "result_id": "f01674c71397a9ac00f56f5d",
+      "source_reference_id": "17858493a50a3475d2750651"
+    },
+    {
+      "result_id": "f01674c71397a9ac00f56f5d",
+      "source_reference_id": "3d0b7a8befef972a6653cc40"
+    },
+    {
+      "result_id": "f01674c71397a9ac00f56f5d",
+      "source_reference_id": "622627a381bfb0d79abf5de3"
+    },
+    {
+      "result_id": "f01674c71397a9ac00f56f5d",
+      "source_reference_id": "85868c3eb83c8e4a68b059ab"
+    },
+    {
+      "result_id": "f5f9738cc8b1568d25c7c62c",
+      "source_reference_id": "0b71f9cc718f70183bcbadce"
+    },
+    {
+      "result_id": "f5f9738cc8b1568d25c7c62c",
+      "source_reference_id": "a2ff1de50a9a2f15ebe6d266"
+    },
+    {
+      "result_id": "f5f9738cc8b1568d25c7c62c",
+      "source_reference_id": "df13a605dc5e1e38346cf5c0"
+    },
+    {
+      "result_id": "f5f9738cc8b1568d25c7c62c",
+      "source_reference_id": "f9127c5f1a23ee5bbb4bf571"
+    },
+    {
+      "result_id": "ffaa008d52cb8127bbd3b1d9",
+      "source_reference_id": "0673865856ce829268db7352"
+    },
+    {
+      "result_id": "ffaa008d52cb8127bbd3b1d9",
+      "source_reference_id": "622627a381bfb0d79abf5de3"
+    },
+    {
+      "result_id": "ffaa008d52cb8127bbd3b1d9",
+      "source_reference_id": "85868c3eb83c8e4a68b059ab"
+    },
+    {
+      "result_id": "ffaa008d52cb8127bbd3b1d9",
+      "source_reference_id": "cb10948b0e2bcd0e5bb9dce7"
+    }
+  ],
+  "plot_dataset": [
+    {
+      "id": "20cb919b076e9f3f447cbb6d",
+      "publication_id": "46ed2bd82a9f0b7a1052c475",
+      "pdf_version_id": "b2257a20852675e9c9765328acea4a1853a2413fedd1117118b787d49c03bfd8",
+      "source_page": 1,
+      "source_figure": "3",
+      "panel_id": null,
+      "plot_type": "stability",
+      "plot_bbox": [
+        125.0,
+        210.0,
+        505.0,
+        418.0
+      ],
+      "caption_text": "Figure 3. Stability of D.",
+      "legend_text": null,
+      "crop_image": "3b15a9eeb43a101e9fe0a6ad.png",
+      "axes": {
+        "x": {
+          "p0": 125.0,
+          "p1": 505.0,
+          "v0": 0.0,
+          "v1": 100.0,
+          "scale": "linear",
+          "unit": "h"
+        },
+        "y": {
+          "p0": 210.0,
+          "p1": 418.0,
+          "v0": 0.0,
+          "v1": 100.0,
+          "scale": "linear",
+          "unit": "%"
+        }
+      },
+      "points": [
+        {
+          "px": 125.0,
+          "py": 418.0,
+          "x": 0.0,
+          "y": 100.0
+        },
+        {
+          "px": 220.0,
+          "py": 407.6,
+          "x": 25.0,
+          "y": 95.0
+        },
+        {
+          "px": 315.0,
+          "py": 386.8,
+          "x": 50.0,
+          "y": 85.00000000000001
+        },
+        {
+          "px": 410.0,
+          "py": 372.24,
+          "x": 75.0,
+          "y": 78.0
+        },
+        {
+          "px": 505.0,
+          "py": 355.6,
+          "x": 100.0,
+          "y": 70.0
+        }
+      ],
+      "digitization_method": "vector_pdf",
+      "stroke_width_pdf": 1.5,
+      "uncertainty": {
+        "x": 0.19736842105263158,
+        "y": 0.3605769230769231
+      },
+      "uncertainty_method": "Полуширина штриха в координатах PDF, умноженная на модуль наклона шкалы. Вклад исходного эксперимента и ошибки калибровки не оценён.",
+      "is_approximate": 1,
+      "acquisition_method": "digitized_plot",
+      "device_id": "352dcbdce5c75e0de4dfcb1e",
+      "measurement_id": null,
+      "series_label": "Серия 1",
+      "manual": 0
+    },
+    {
+      "id": "5aa9286793a9a20b09ab6332",
+      "publication_id": "a3a3fc44477031df7a55c75d",
+      "pdf_version_id": "8acbecc944da6540afad8c6c77cfcb6313c3ae9611942560242e41930223fd76",
+      "source_page": 1,
+      "source_figure": "5",
+      "panel_id": null,
+      "plot_type": "PCE_vs_param",
+      "plot_bbox": [
+        125.0,
+        210.0,
+        505.0,
+        418.0
+      ],
+      "caption_text": "Figure 5. PCE versus thickness for D.",
+      "legend_text": null,
+      "crop_image": "2379fd7e2b533b521c0259a8.png",
+      "axes": {
+        "x": {
+          "p0": 125.0,
+          "p1": 505.0,
+          "v0": 100.0,
+          "v1": 400.0,
+          "scale": "linear",
+          "unit": "nm"
+        },
+        "y": {
+          "p0": 210.0,
+          "p1": 418.0,
+          "v0": 0.0,
+          "v1": 20.0,
+          "scale": "linear",
+          "unit": "%"
+        }
+      },
+      "points": [
+        {
+          "px": 125.0,
+          "py": 291.12,
+          "x": 100.0,
+          "y": 7.800000000000001
+        },
+        {
+          "px": 239.0,
+          "py": 320.24,
+          "x": 190.0,
+          "y": 10.600000000000001
+        },
+        {
+          "px": 353.0,
+          "py": 366.0,
+          "x": 280.0,
+          "y": 15.0
+        },
+        {
+          "px": 505.0,
+          "py": 359.76,
+          "x": 400.0,
+          "y": 14.399999999999999
+        }
+      ],
+      "digitization_method": "vector_pdf",
+      "stroke_width_pdf": 1.5,
+      "uncertainty": {
+        "x": 0.5921052631578947,
+        "y": 0.07211538461538462
+      },
+      "uncertainty_method": "Полуширина штриха в координатах PDF, умноженная на модуль наклона шкалы. Вклад исходного эксперимента и ошибки калибровки не оценён.",
+      "is_approximate": 1,
+      "acquisition_method": "digitized_plot",
+      "device_id": "729b258cb4c0b48a64ffe480",
+      "measurement_id": null,
+      "series_label": "Серия 1",
+      "manual": 0
+    },
+    {
+      "id": "a4eddae0b447d1ced2398594",
+      "publication_id": "658e181369eab5e26d217642",
+      "pdf_version_id": "363a594ec686a15c19f6843630055bdb0c70ba3832fed18b7b54b7ca124d3409",
+      "source_page": 1,
+      "source_figure": "2",
+      "panel_id": "b",
+      "plot_type": "EQE",
+      "plot_bbox": [
+        125.0,
+        210.0,
+        505.0,
+        418.0
+      ],
+      "caption_text": "Figure 2(b). EQE spectrum for D.",
+      "legend_text": null,
+      "crop_image": "cdd725def6e424890f08993b.png",
+      "axes": {
+        "x": {
+          "p0": 125.0,
+          "p1": 505.0,
+          "v0": 300.0,
+          "v1": 900.0,
+          "scale": "linear",
+          "unit": "nm"
+        },
+        "y": {
+          "p0": 210.0,
+          "p1": 418.0,
+          "v0": 0.0,
+          "v1": 100.0,
+          "scale": "linear",
+          "unit": "%"
+        }
+      },
+      "points": [
+        {
+          "px": 125.0,
+          "py": 210.0,
+          "x": 300.0,
+          "y": 0.0
+        },
+        {
+          "px": 220.0,
+          "py": 376.4,
+          "x": 450.0,
+          "y": 80.0
+        },
+        {
+          "px": 315.0,
+          "py": 390.96,
+          "x": 600.0,
+          "y": 86.99999999999999
+        },
+        {
+          "px": 410.0,
+          "py": 355.6,
+          "x": 750.0,
+          "y": 70.0
+        },
+        {
+          "px": 505.0,
+          "py": 210.0,
+          "x": 900.0,
+          "y": 0.0
+        }
+      ],
+      "digitization_method": "vector_pdf",
+      "stroke_width_pdf": 1.5,
+      "uncertainty": {
+        "x": 1.1842105263157894,
+        "y": 0.3605769230769231
+      },
+      "uncertainty_method": "Полуширина штриха в координатах PDF, умноженная на модуль наклона шкалы. Вклад исходного эксперимента и ошибки калибровки не оценён.",
+      "is_approximate": 1,
+      "acquisition_method": "digitized_plot",
+      "device_id": "bbf08624113a9de88a65e36d",
+      "measurement_id": null,
+      "series_label": "Серия 1",
+      "manual": 0
+    },
+    {
+      "id": "b265428627ca938625397f3c",
+      "publication_id": "27f665e054a4f0727b4a27e0",
+      "pdf_version_id": "fc353f07267721eae73f2a02686fd6e5034fb519245b4745463eb050b6a62bb3",
+      "source_page": 1,
+      "source_figure": "4",
+      "panel_id": null,
+      "plot_type": "thermal",
+      "plot_bbox": [
+        125.0,
+        210.0,
+        505.0,
+        418.0
+      ],
+      "caption_text": "Figure 4. Annealing temperature for D.",
+      "legend_text": null,
+      "crop_image": "895531eb0e4d3c4d8ff1f490.png",
+      "axes": {
+        "x": {
+          "p0": 125.0,
+          "p1": 505.0,
+          "v0": 50.0,
+          "v1": 200.0,
+          "scale": "linear",
+          "unit": "C"
+        },
+        "y": {
+          "p0": 210.0,
+          "p1": 418.0,
+          "v0": 0.0,
+          "v1": 20.0,
+          "scale": "linear",
+          "unit": "%"
+        }
+      },
+      "points": [
+        {
+          "px": 125.0,
+          "py": 272.4,
+          "x": 50.0,
+          "y": 5.999999999999997
+        },
+        {
+          "px": 250.4,
+          "py": 314.0,
+          "x": 99.5,
+          "y": 10.0
+        },
+        {
+          "px": 375.8,
+          "py": 359.76,
+          "x": 149.0,
+          "y": 14.399999999999999
+        },
+        {
+          "px": 505.0,
+          "py": 299.44,
+          "x": 200.0,
+          "y": 8.6
+        }
+      ],
+      "digitization_method": "vector_pdf",
+      "stroke_width_pdf": 1.5,
+      "uncertainty": {
+        "x": 0.29605263157894735,
+        "y": 0.07211538461538462
+      },
+      "uncertainty_method": "Полуширина штриха в координатах PDF, умноженная на модуль наклона шкалы. Вклад исходного эксперимента и ошибки калибровки не оценён.",
+      "is_approximate": 1,
+      "acquisition_method": "digitized_plot",
+      "device_id": "7f0e94b5ffb8bc9280293e40",
+      "measurement_id": null,
+      "series_label": "Серия 1",
+      "manual": 0
+    },
+    {
+      "id": "e169d7c528cbd7b325a39afe",
+      "publication_id": "7efcf4f4ced817d227c5a676",
+      "pdf_version_id": "7a39418764c18203899ea32656884b45c5c86e55ca6532072bce3f8b006092b2",
+      "source_page": 1,
+      "source_figure": "1",
+      "panel_id": "a",
+      "plot_type": "JV",
+      "plot_bbox": [
+        115.0,
+        83.0,
+        495.0,
+        251.0
+      ],
+      "caption_text": "Figure 1(a). JV curve for B, reverse scan.",
+      "legend_text": null,
+      "crop_image": "74d648d2868f29d59e32a2ed.png",
+      "axes": {
+        "x": {
+          "p0": 115.0,
+          "p1": 495.0,
+          "v0": 0.0,
+          "v1": 1.0,
+          "scale": "linear",
+          "unit": "V"
+        },
+        "y": {
+          "p0": 83.0,
+          "p1": 251.0,
+          "v0": 0.0,
+          "v1": 20.0,
+          "scale": "linear",
+          "unit": "mA/cm²"
+        }
+      },
+      "points": [
+        {
+          "px": 115.0,
+          "py": 251.0,
+          "x": 0.0,
+          "y": 20.0
+        },
+        {
+          "px": 153.0,
+          "py": 250.98000000000002,
+          "x": 0.1,
+          "y": 19.99761904761905
+        },
+        {
+          "px": 191.0,
+          "py": 250.73000000000002,
+          "x": 0.2,
+          "y": 19.967857142857145
+        },
+        {
+          "px": 229.0,
+          "py": 249.64,
+          "x": 0.3,
+          "y": 19.838095238095235
+        },
+        {
+          "px": 267.0,
+          "py": 246.70000000000005,
+          "x": 0.4,
+          "y": 19.488095238095244
+        },
+        {
+          "px": 305.0,
+          "py": 240.5,
+          "x": 0.5,
+          "y": 18.75
+        },
+        {
+          "px": 343.0,
+          "py": 229.23000000000002,
+          "x": 0.6,
+          "y": 17.408333333333335
+        },
+        {
+          "px": 381.0,
+          "py": 210.65999999999997,
+          "x": 0.7,
+          "y": 15.197619047619044
+        },
+        {
+          "px": 419.0,
+          "py": 182.19000000000005,
+          "x": 0.8,
+          "y": 11.80833333333334
+        },
+        {
+          "px": 457.0,
+          "py": 140.77999999999997,
+          "x": 0.9,
+          "y": 6.878571428571425
+        },
+        {
+          "px": 495.0,
+          "py": 83.0,
+          "x": 1.0,
+          "y": 0.0
+        }
+      ],
+      "digitization_method": "vector_pdf",
+      "stroke_width_pdf": 1.5,
+      "uncertainty": {
+        "x": 0.001973684210526316,
+        "y": 0.08928571428571427
+      },
+      "uncertainty_method": "Полуширина штриха в координатах PDF, умноженная на модуль наклона шкалы. Вклад исходного эксперимента и ошибки калибровки не оценён.",
+      "is_approximate": 1,
+      "acquisition_method": "digitized_plot",
+      "device_id": "10e6c1ccd4ec1f827b083a5c",
+      "measurement_id": "614b30918ba19d8222501b3b",
+      "series_label": "Серия 1",
+      "manual": 0
+    },
+    {
+      "id": "f1e307c2e091a7b36d3d91f2",
+      "publication_id": "0696a6d15d3464d9d683fa20",
+      "pdf_version_id": "67daa423539cd2fdc8b0dbf58e8bd8a6b3012f2079281c7cfd55e5f41a7dc8c1",
+      "source_page": 1,
+      "source_figure": "6",
+      "panel_id": null,
+      "plot_type": "scatter",
+      "plot_bbox": [
+        125.0,
+        210.0,
+        505.0,
+        418.0
+      ],
+      "caption_text": "Figure 6. Scatter data for D.",
+      "legend_text": null,
+      "crop_image": "0cfdb3576c3ad5d08b07a467.png",
+      "axes": {
+        "x": {
+          "p0": 125.0,
+          "p1": 505.0,
+          "v0": 0.6,
+          "v1": 1.0,
+          "scale": "linear",
+          "unit": "V"
+        },
+        "y": {
+          "p0": 210.0,
+          "p1": 418.0,
+          "v0": 0.0,
+          "v1": 20.0,
+          "scale": "linear",
+          "unit": "%"
+        }
+      },
+      "points": [
+        {
+          "px": 182.0,
+          "py": 282.8,
+          "x": 0.6599999999999999,
+          "y": 7.000000000000001
+        },
+        {
+          "px": 242.8,
+          "py": 318.16,
+          "x": 0.724,
+          "y": 10.400000000000002
+        },
+        {
+          "px": 383.4,
+          "py": 353.52,
+          "x": 0.8719999999999999,
+          "y": 13.799999999999999
+        },
+        {
+          "px": 470.8,
+          "py": 359.76,
+          "x": 0.964,
+          "y": 14.399999999999999
+        }
+      ],
+      "digitization_method": "vector_pdf",
+      "stroke_width_pdf": null,
+      "uncertainty": null,
+      "uncertainty_method": "Оценка не определена. Нет толщины восстановленного штриха или линейной калибровки обеих осей.",
+      "is_approximate": 1,
+      "acquisition_method": "digitized_plot",
+      "device_id": "12fe35bd8bfc0a61356737bf",
+      "measurement_id": null,
+      "series_label": "Серия 1",
+      "manual": 0
+    }
+  ],
+  "plot_source": [
+    {
+      "plot_id": "20cb919b076e9f3f447cbb6d",
+      "source_reference_id": "b7c6d0213b9a0ec752937552"
+    },
+    {
+      "plot_id": "20cb919b076e9f3f447cbb6d",
+      "source_reference_id": "d7b05c4724de1ab045dbbfcf"
+    },
+    {
+      "plot_id": "5aa9286793a9a20b09ab6332",
+      "source_reference_id": "7a4e25c6f5522eff02f360dc"
+    },
+    {
+      "plot_id": "5aa9286793a9a20b09ab6332",
+      "source_reference_id": "fc3a6cdacc6d82b06d6ba38e"
+    },
+    {
+      "plot_id": "a4eddae0b447d1ced2398594",
+      "source_reference_id": "0c54555a749a076fbbf629d5"
+    },
+    {
+      "plot_id": "a4eddae0b447d1ced2398594",
+      "source_reference_id": "6134619300050f85ba525520"
+    },
+    {
+      "plot_id": "b265428627ca938625397f3c",
+      "source_reference_id": "1bf32aa73ad1dc8b0fb8beb5"
+    },
+    {
+      "plot_id": "b265428627ca938625397f3c",
+      "source_reference_id": "25f7042cda879b7183e242f1"
+    },
+    {
+      "plot_id": "e169d7c528cbd7b325a39afe",
+      "source_reference_id": "548512014a7a13a272b5e37a"
+    },
+    {
+      "plot_id": "e169d7c528cbd7b325a39afe",
+      "source_reference_id": "a453e13ed8a43690dadad86c"
+    },
+    {
+      "plot_id": "f1e307c2e091a7b36d3d91f2",
+      "source_reference_id": "8998e3d4aa2bf9aecbc5b1d4"
+    },
+    {
+      "plot_id": "f1e307c2e091a7b36d3d91f2",
+      "source_reference_id": "af2b2279fa2a600d9e3bd41e"
+    }
+  ],
+  "validation_issue": [
+    {
+      "id": "02596d7db35cb91ca49ab60b",
+      "publication_id": "7efcf4f4ced817d227c5a676",
+      "rule_code": "SHOCKLEY_QUEISSER",
+      "severity": "info",
+      "compared_values": [
+        {
+          "name": "PCE",
+          "value": 14.0,
+          "unit": "%"
+        },
+        {
+          "name": "Eg",
+          "value": 1.1,
+          "unit": "eV"
+        }
+      ],
+      "threshold": {
+        "max": 32.996667734486415,
+        "unit": "%",
+        "model_temperature_C": 25.0
+      },
+      "description": "Предел детального баланса для идеального однопереходного прибора, ASTM G173-03 AM1.5G global tilt, SMARTS 2.9.2. Температура модели 25 °C (эталонный ориентир, температура измерения неизвестна).",
+      "hypothesis": null,
+      "resolution_status": "passed",
+      "updated_at": "2026-11-20 22:44:03"
+    },
+    {
+      "id": "0bb81de446fc829be2931c48",
+      "publication_id": "7efcf4f4ced817d227c5a676",
+      "rule_code": "VOC_BANDGAP",
+      "severity": "error",
+      "compared_values": [
+        {
+          "name": "Voc",
+          "value": 1.2,
+          "unit": "V"
+        },
+        {
+          "name": "Eg",
+          "value": 1.1,
+          "unit": "eV"
+        }
+      ],
+      "threshold": {
+        "max_exclusive": 1.1,
+        "unit": "V"
+      },
+      "description": "Должно выполняться Voc < Eg/q.",
+      "hypothesis": "Уточните метод определения Eg и принадлежность образца.",
+      "resolution_status": "open",
+      "updated_at": "2026-11-20 22:44:03"
+    },
+    {
+      "id": "1232cc88ec69d484f4e3a4c7",
+      "publication_id": "4c86ea859fb1a3006868426f",
+      "rule_code": "SHOCKLEY_QUEISSER",
+      "severity": "not_applicable",
+      "compared_values": [
+        {
+          "name": "PCE",
+          "value": 12.0,
+          "unit": "%"
+        }
+      ],
+      "threshold": null,
+      "description": "Нужны однозначный Eg, нормализованный КПД или Jsc и подтверждённое освещение AM1.5G 100 мВт/см².",
+      "hypothesis": null,
+      "resolution_status": "not_applicable",
+      "updated_at": "2026-11-20 22:44:03"
+    },
+    {
+      "id": "156ced75d04d6980822866b0",
+      "publication_id": "7efcf4f4ced817d227c5a676",
+      "rule_code": "SCAN_ISOLATION",
+      "severity": "info",
+      "compared_values": [
+        {
+          "name": "Ход в статье",
+          "value": "forward",
+          "unit": null
+        },
+        {
+          "name": "Ход измерения",
+          "value": "forward",
+          "unit": null
+        }
+      ],
+      "threshold": null,
+      "description": "Согласованность указанного и связанного направления развёртки.",
+      "hypothesis": null,
+      "resolution_status": "passed",
+      "updated_at": "2026-11-20 22:44:03"
+    },
+    {
+      "id": "191971bf8244f52a4f68a703",
+      "publication_id": "7efcf4f4ced817d227c5a676",
+      "rule_code": "SCAN_ISOLATION",
+      "severity": "info",
+      "compared_values": [
+        {
+          "name": "Ход в статье",
+          "value": "reverse",
+          "unit": null
+        },
+        {
+          "name": "Ход измерения",
+          "value": "reverse",
+          "unit": null
+        }
+      ],
+      "threshold": null,
+      "description": "Согласованность указанного и связанного направления развёртки.",
+      "hypothesis": null,
+      "resolution_status": "passed",
+      "updated_at": "2026-11-20 22:44:03"
+    },
+    {
+      "id": "2074a097ed61dbbdd35bf210",
+      "publication_id": "7efcf4f4ced817d227c5a676",
+      "rule_code": "SHOCKLEY_QUEISSER",
+      "severity": "info",
+      "compared_values": [
+        {
+          "name": "Jsc",
+          "value": 20.0,
+          "unit": "mA/cm²"
+        },
+        {
+          "name": "Eg",
+          "value": 1.1,
+          "unit": "eV"
+        }
+      ],
+      "threshold": {
+        "max": 44.229891646140004,
+        "unit": "mA/cm²",
+        "model_temperature_C": 25.0
+      },
+      "description": "Предел детального баланса для идеального однопереходного прибора, ASTM G173-03 AM1.5G global tilt, SMARTS 2.9.2. Температура модели 25 °C (эталонный ориентир, температура измерения неизвестна).",
+      "hypothesis": null,
+      "resolution_status": "passed",
+      "updated_at": "2026-11-20 22:44:03"
+    },
+    {
+      "id": "2084953ec2410ed1cf14028e",
+      "publication_id": "7efcf4f4ced817d227c5a676",
+      "rule_code": "SHOCKLEY_QUEISSER",
+      "severity": "info",
+      "compared_values": [
+        {
+          "name": "PCE",
+          "value": 17.0,
+          "unit": "%"
+        },
+        {
+          "name": "Eg",
+          "value": 1.1,
+          "unit": "eV"
+        }
+      ],
+      "threshold": {
+        "max": 32.996667734486415,
+        "unit": "%",
+        "model_temperature_C": 25.0
+      },
+      "description": "Предел детального баланса для идеального однопереходного прибора, ASTM G173-03 AM1.5G global tilt, SMARTS 2.9.2. Температура модели 25 °C (эталонный ориентир, температура измерения неизвестна).",
+      "hypothesis": null,
+      "resolution_status": "passed",
+      "updated_at": "2026-11-20 22:44:03"
+    },
+    {
+      "id": "28df7c0545dcbecbad84e349",
+      "publication_id": "7efcf4f4ced817d227c5a676",
+      "rule_code": "SCAN_ISOLATION",
+      "severity": "info",
+      "compared_values": [
+        {
+          "name": "Ход в статье",
+          "value": "reverse",
+          "unit": null
+        },
+        {
+          "name": "Ход измерения",
+          "value": "reverse",
+          "unit": null
+        }
+      ],
+      "threshold": null,
+      "description": "Согласованность указанного и связанного направления развёртки.",
+      "hypothesis": null,
+      "resolution_status": "passed",
+      "updated_at": "2026-11-20 22:44:03"
+    },
+    {
+      "id": "2fc03a4c2cbc46dfbb5825c9",
+      "publication_id": "7efcf4f4ced817d227c5a676",
+      "rule_code": "SCAN_ISOLATION",
+      "severity": "info",
+      "compared_values": [
+        {
+          "name": "Ход в статье",
+          "value": "reverse",
+          "unit": null
+        },
+        {
+          "name": "Ход измерения",
+          "value": "reverse",
+          "unit": null
+        }
+      ],
+      "threshold": null,
+      "description": "Согласованность указанного и связанного направления развёртки.",
+      "hypothesis": null,
+      "resolution_status": "passed",
+      "updated_at": "2026-11-20 22:44:03"
+    },
+    {
+      "id": "357f931a12a5ab9f0b80836e",
+      "publication_id": "4c86ea859fb1a3006868426f",
+      "rule_code": "SHOCKLEY_QUEISSER",
+      "severity": "not_applicable",
+      "compared_values": [
+        {
+          "name": "Jsc",
+          "value": 20.0,
+          "unit": "mA/cm²"
+        }
+      ],
+      "threshold": null,
+      "description": "Нужны однозначный Eg, нормализованный КПД или Jsc и подтверждённое освещение AM1.5G 100 мВт/см².",
+      "hypothesis": null,
+      "resolution_status": "not_applicable",
+      "updated_at": "2026-11-20 22:44:03"
+    },
+    {
+      "id": "3de18b4aa66532f84ee41898",
+      "publication_id": "7efcf4f4ced817d227c5a676",
+      "rule_code": "SCAN_ISOLATION",
+      "severity": "info",
+      "compared_values": [
+        {
+          "name": "Ход в статье",
+          "value": "forward",
+          "unit": null
+        },
+        {
+          "name": "Ход измерения",
+          "value": "forward",
+          "unit": null
+        }
+      ],
+      "threshold": null,
+      "description": "Согласованность указанного и связанного направления развёртки.",
+      "hypothesis": null,
+      "resolution_status": "passed",
+      "updated_at": "2026-11-20 22:44:03"
+    },
+    {
+      "id": "52a37651cf8ca263558eb035",
+      "publication_id": "7efcf4f4ced817d227c5a676",
+      "rule_code": "SHOCKLEY_QUEISSER",
+      "severity": "not_applicable",
+      "compared_values": [
+        {
+          "name": "PCE",
+          "value": null,
+          "unit": "%"
+        },
+        {
+          "name": "Eg",
+          "value": 1.1,
+          "unit": "eV"
+        }
+      ],
+      "threshold": null,
+      "description": "Нужны однозначный Eg, нормализованный КПД или Jsc и подтверждённое освещение AM1.5G 100 мВт/см².",
+      "hypothesis": null,
+      "resolution_status": "not_applicable",
+      "updated_at": "2026-11-20 22:44:03"
+    },
+    {
+      "id": "5829e608b566a0bc4d0fc0e3",
+      "publication_id": "4c86ea859fb1a3006868426f",
+      "rule_code": "PHYSICAL_RANGE",
+      "severity": "info",
+      "compared_values": [
+        {
+          "name": "FF",
+          "value": 75.0,
+          "unit": "%"
+        }
+      ],
+      "threshold": {
+        "min_exclusive": 0,
+        "max": 100,
+        "unit": "%"
+      },
+      "description": "FF должен удовлетворять 0 < FF ≤ 100%.",
+      "hypothesis": null,
+      "resolution_status": "passed",
+      "updated_at": "2026-11-20 22:44:03"
+    },
+    {
+      "id": "5e4c26daedbbc1abc27aa724",
+      "publication_id": "7efcf4f4ced817d227c5a676",
+      "rule_code": "SHOCKLEY_QUEISSER",
+      "severity": "info",
+      "compared_values": [
+        {
+          "name": "Jsc",
+          "value": 20.0,
+          "unit": "mA/cm²"
+        },
+        {
+          "name": "Eg",
+          "value": 1.1,
+          "unit": "eV"
+        }
+      ],
+      "threshold": {
+        "max": 44.229891646140004,
+        "unit": "mA/cm²",
+        "model_temperature_C": 25.0
+      },
+      "description": "Предел детального баланса для идеального однопереходного прибора, ASTM G173-03 AM1.5G global tilt, SMARTS 2.9.2. Температура модели 25 °C (эталонный ориентир, температура измерения неизвестна).",
+      "hypothesis": null,
+      "resolution_status": "passed",
+      "updated_at": "2026-11-20 22:44:03"
+    },
+    {
+      "id": "5f5be4ca2081337f9aa7abe7",
+      "publication_id": "7efcf4f4ced817d227c5a676",
+      "rule_code": "PHYSICAL_RANGE",
+      "severity": "info",
+      "compared_values": [
+        {
+          "name": "FF",
+          "value": 75.0,
+          "unit": "%"
+        }
+      ],
+      "threshold": {
+        "min_exclusive": 0,
+        "max": 100,
+        "unit": "%"
+      },
+      "description": "FF должен удовлетворять 0 < FF ≤ 100%.",
+      "hypothesis": null,
+      "resolution_status": "passed",
+      "updated_at": "2026-11-20 22:44:03"
+    },
+    {
+      "id": "60bf0fa441a2e6021b2e58ea",
+      "publication_id": "7efcf4f4ced817d227c5a676",
+      "rule_code": "PHYSICAL_RANGE",
+      "severity": "info",
+      "compared_values": [
+        {
+          "name": "PCE",
+          "value": 18.0,
+          "unit": "%"
+        }
+      ],
+      "threshold": {
+        "min": 0,
+        "max": 100,
+        "unit": "%"
+      },
+      "description": "КПД должен находиться в диапазоне 0–100%.",
+      "hypothesis": null,
+      "resolution_status": "passed",
+      "updated_at": "2026-11-20 22:44:03"
+    },
+    {
+      "id": "637e3781649f43fd209b172c",
+      "publication_id": "7efcf4f4ced817d227c5a676",
+      "rule_code": "VOC_BANDGAP",
+      "severity": "error",
+      "compared_values": [
+        {
+          "name": "Voc",
+          "value": 1.2,
+          "unit": "V"
+        },
+        {
+          "name": "Eg",
+          "value": 1.1,
+          "unit": "eV"
+        }
+      ],
+      "threshold": {
+        "max_exclusive": 1.1,
+        "unit": "V"
+      },
+      "description": "Должно выполняться Voc < Eg/q.",
+      "hypothesis": "Уточните метод определения Eg и принадлежность образца.",
+      "resolution_status": "open",
+      "updated_at": "2026-11-20 22:44:03"
+    },
+    {
+      "id": "64f5dc952475d99f56ba37d8",
+      "publication_id": "7efcf4f4ced817d227c5a676",
+      "rule_code": "PHYSICAL_RANGE",
+      "severity": "info",
+      "compared_values": [
+        {
+          "name": "FF",
+          "value": 75.0,
+          "unit": "%"
+        }
+      ],
+      "threshold": {
+        "min_exclusive": 0,
+        "max": 100,
+        "unit": "%"
+      },
+      "description": "FF должен удовлетворять 0 < FF ≤ 100%.",
+      "hypothesis": null,
+      "resolution_status": "passed",
+      "updated_at": "2026-11-20 22:44:03"
+    },
+    {
+      "id": "6762900461d3b9b1141ea531",
+      "publication_id": "7efcf4f4ced817d227c5a676",
+      "rule_code": "SCAN_ISOLATION",
+      "severity": "info",
+      "compared_values": [
+        {
+          "name": "Ход в статье",
+          "value": "forward",
+          "unit": null
+        },
+        {
+          "name": "Ход измерения",
+          "value": "forward",
+          "unit": null
+        }
+      ],
+      "threshold": null,
+      "description": "Согласованность указанного и связанного направления развёртки.",
+      "hypothesis": null,
+      "resolution_status": "passed",
+      "updated_at": "2026-11-20 22:44:03"
+    },
+    {
+      "id": "681799cf39d6ec3c8f164a0a",
+      "publication_id": "7efcf4f4ced817d227c5a676",
+      "rule_code": "SHOCKLEY_QUEISSER",
+      "severity": "info",
+      "compared_values": [
+        {
+          "name": "PCE",
+          "value": 18.0,
+          "unit": "%"
+        },
+        {
+          "name": "Eg",
+          "value": 1.1,
+          "unit": "eV"
+        }
+      ],
+      "threshold": {
+        "max": 32.996667734486415,
+        "unit": "%",
+        "model_temperature_C": 25.0
+      },
+      "description": "Предел детального баланса для идеального однопереходного прибора, ASTM G173-03 AM1.5G global tilt, SMARTS 2.9.2. Температура модели 25 °C (эталонный ориентир, температура измерения неизвестна).",
+      "hypothesis": null,
+      "resolution_status": "passed",
+      "updated_at": "2026-11-20 22:44:03"
+    },
+    {
+      "id": "6b896789281a22d215454397",
+      "publication_id": "7efcf4f4ced817d227c5a676",
+      "rule_code": "SCAN_ISOLATION",
+      "severity": "info",
+      "compared_values": [
+        {
+          "name": "Ход в статье",
+          "value": "reverse",
+          "unit": null
+        },
+        {
+          "name": "Ход измерения",
+          "value": "reverse",
+          "unit": null
+        }
+      ],
+      "threshold": null,
+      "description": "Согласованность указанного и связанного направления развёртки.",
+      "hypothesis": null,
+      "resolution_status": "passed",
+      "updated_at": "2026-11-20 22:44:03"
+    },
+    {
+      "id": "7035ebc4d8170011a8690bbb",
+      "publication_id": "7efcf4f4ced817d227c5a676",
+      "rule_code": "SCAN_ISOLATION",
+      "severity": "info",
+      "compared_values": [
+        {
+          "name": "Ход в статье",
+          "value": "reverse",
+          "unit": null
+        },
+        {
+          "name": "Ход измерения",
+          "value": "reverse",
+          "unit": null
+        }
+      ],
+      "threshold": null,
+      "description": "Согласованность указанного и связанного направления развёртки.",
+      "hypothesis": null,
+      "resolution_status": "passed",
+      "updated_at": "2026-11-20 22:44:03"
+    },
+    {
+      "id": "7624423971f3fae91748d882",
+      "publication_id": "4c86ea859fb1a3006868426f",
+      "rule_code": "SCAN_ISOLATION",
+      "severity": "info",
+      "compared_values": [
+        {
+          "name": "Ход в статье",
+          "value": "reverse",
+          "unit": null
+        },
+        {
+          "name": "Ход измерения",
+          "value": "reverse",
+          "unit": null
+        }
+      ],
+      "threshold": null,
+      "description": "Согласованность указанного и связанного направления развёртки.",
+      "hypothesis": null,
+      "resolution_status": "passed",
+      "updated_at": "2026-11-20 22:44:03"
+    },
+    {
+      "id": "78d16b020c6a404739aefa83",
+      "publication_id": "4c86ea859fb1a3006868426f",
+      "rule_code": "SCAN_ISOLATION",
+      "severity": "info",
+      "compared_values": [
+        {
+          "name": "Ход в статье",
+          "value": "reverse",
+          "unit": null
+        },
+        {
+          "name": "Ход измерения",
+          "value": "reverse",
+          "unit": null
+        }
+      ],
+      "threshold": null,
+      "description": "Согласованность указанного и связанного направления развёртки.",
+      "hypothesis": null,
+      "resolution_status": "passed",
+      "updated_at": "2026-11-20 22:44:03"
+    },
+    {
+      "id": "798f593c9234ecbc16c67201",
+      "publication_id": "7efcf4f4ced817d227c5a676",
+      "rule_code": "PHYSICAL_RANGE",
+      "severity": "info",
+      "compared_values": [
+        {
+          "name": "Jsc",
+          "value": 20.0,
+          "unit": "mA/cm²"
+        },
+        {
+          "name": "Eg",
+          "value": 1.1,
+          "unit": "eV"
+        },
+        {
+          "name": "Pin",
+          "value": 100.0,
+          "unit": "mW/cm²"
+        }
+      ],
+      "threshold": {
+        "max": 90.9090909090909,
+        "unit": "mA/cm²"
+      },
+      "description": "Энергетическая граница |Jsc| × Eg/q ≤ Pin для одного собранного носителя на фотон.",
+      "hypothesis": null,
+      "resolution_status": "passed",
+      "updated_at": "2026-11-20 22:44:03"
+    },
+    {
+      "id": "7e6fe43a1107aed7f116d3a9",
+      "publication_id": "7efcf4f4ced817d227c5a676",
+      "rule_code": "PHYSICAL_RANGE",
+      "severity": "info",
+      "compared_values": [
+        {
+          "name": "FF",
+          "value": 70.0,
+          "unit": "%"
+        }
+      ],
+      "threshold": {
+        "min_exclusive": 0,
+        "max": 100,
+        "unit": "%"
+      },
+      "description": "FF должен удовлетворять 0 < FF ≤ 100%.",
+      "hypothesis": null,
+      "resolution_status": "passed",
+      "updated_at": "2026-11-20 22:44:03"
+    },
+    {
+      "id": "83ddaa92c9191d6e7ba018db",
+      "publication_id": "4c86ea859fb1a3006868426f",
+      "rule_code": "SCAN_ISOLATION",
+      "severity": "info",
+      "compared_values": [
+        {
+          "name": "Ход в статье",
+          "value": "reverse",
+          "unit": null
+        },
+        {
+          "name": "Ход измерения",
+          "value": "reverse",
+          "unit": null
+        }
+      ],
+      "threshold": null,
+      "description": "Согласованность указанного и связанного направления развёртки.",
+      "hypothesis": null,
+      "resolution_status": "passed",
+      "updated_at": "2026-11-20 22:44:03"
+    },
+    {
+      "id": "8bac57362c75697d1c3ba332",
+      "publication_id": "4c86ea859fb1a3006868426f",
+      "rule_code": "SCAN_ISOLATION",
+      "severity": "info",
+      "compared_values": [
+        {
+          "name": "Ход в статье",
+          "value": "reverse",
+          "unit": null
+        },
+        {
+          "name": "Ход измерения",
+          "value": "reverse",
+          "unit": null
+        }
+      ],
+      "threshold": null,
+      "description": "Согласованность указанного и связанного направления развёртки.",
+      "hypothesis": null,
+      "resolution_status": "passed",
+      "updated_at": "2026-11-20 22:44:03"
+    },
+    {
+      "id": "8cd5a1b6b6f70f7510fc2a03",
+      "publication_id": "7efcf4f4ced817d227c5a676",
+      "rule_code": "PCE_CONSISTENCY",
+      "severity": "info",
+      "compared_values": [
+        {
+          "name": "PCE",
+          "value": 18.0,
+          "unit": "%"
+        },
+        {
+          "name": "Voc",
+          "value": 1.2,
+          "unit": "V"
+        },
+        {
+          "name": "Jsc",
+          "value": 20.0,
+          "unit": "mA/cm²"
+        },
+        {
+          "name": "FF",
+          "value": 75.0,
+          "unit": "%"
+        },
+        {
+          "name": "Pin",
+          "value": 100.0,
+          "unit": "mW/cm²"
+        },
+        {
+          "name": "PCE_calc",
+          "value": 18.0,
+          "unit": "%"
+        },
+        {
+          "name": "Расхождение",
+          "value": 0.0,
+          "unit": "%"
+        }
+      ],
+      "threshold": {
+        "relative": 0.03,
+        "denominator": "abs(PCE_calc)"
+      },
+      "description": "PCE_calc = 100 × Voc × |Jsc| × (FF/100) / Pin.",
+      "hypothesis": null,
+      "resolution_status": "passed",
+      "updated_at": "2026-11-20 22:44:03"
+    },
+    {
+      "id": "97f7578782f74ea3ee93500d",
+      "publication_id": "7efcf4f4ced817d227c5a676",
+      "rule_code": "SCAN_ISOLATION",
+      "severity": "info",
+      "compared_values": [
+        {
+          "name": "Ход в статье",
+          "value": "forward",
+          "unit": null
+        },
+        {
+          "name": "Ход измерения",
+          "value": "forward",
+          "unit": null
+        }
+      ],
+      "threshold": null,
+      "description": "Согласованность указанного и связанного направления развёртки.",
+      "hypothesis": null,
+      "resolution_status": "passed",
+      "updated_at": "2026-11-20 22:44:03"
+    },
+    {
+      "id": "9a3686d276e627956a7a6c70",
+      "publication_id": "4c86ea859fb1a3006868426f",
+      "rule_code": "PHYSICAL_RANGE",
+      "severity": "not_applicable",
+      "compared_values": [
+        {
+          "name": "Jsc",
+          "value": 20.0,
+          "unit": "mA/cm²"
+        }
+      ],
+      "threshold": null,
+      "description": "Для энергетической границы |Jsc| нужны подтверждённые Pin и Eg этого материала.",
+      "hypothesis": null,
+      "resolution_status": "not_applicable",
+      "updated_at": "2026-11-20 22:44:03"
+    },
+    {
+      "id": "a1e703e8358865c1e17a8b4c",
+      "publication_id": "7efcf4f4ced817d227c5a676",
+      "rule_code": "VOC_BANDGAP",
+      "severity": "info",
+      "compared_values": [
+        {
+          "name": "Voc",
+          "value": 1.0,
+          "unit": "V"
+        },
+        {
+          "name": "Eg",
+          "value": 1.1,
+          "unit": "eV"
+        }
+      ],
+      "threshold": {
+        "max_exclusive": 1.1,
+        "unit": "V"
+      },
+      "description": "Должно выполняться Voc < Eg/q.",
+      "hypothesis": null,
+      "resolution_status": "passed",
+      "updated_at": "2026-11-20 22:44:03"
+    },
+    {
+      "id": "a20b5b8b0b293d729170f075",
+      "publication_id": "658e181369eab5e26d217642",
+      "rule_code": "EQE_JSC",
+      "severity": "not_applicable",
+      "compared_values": [
+        {
+          "name": "Jsc_EQE",
+          "value": 21.922878386248193,
+          "unit": "mA/cm²"
+        }
+      ],
+      "threshold": {
+        "relative": 0.05,
+        "denominator": "abs(Jsc_JV)"
+      },
+      "description": "Не найдена единственная пара Jsc_EQE и Jsc с подтверждённым прибором, ходом, агрегацией и условиями. Для расчёта из графика также нужны AM1.5G 100 мВт/см² и подтверждение спектрального покрытия.",
+      "hypothesis": null,
+      "resolution_status": "not_applicable",
+      "updated_at": "2026-11-20 22:44:03"
+    },
+    {
+      "id": "a3cb3d87ac36516cdde78ac4",
+      "publication_id": "7efcf4f4ced817d227c5a676",
+      "rule_code": "PHYSICAL_RANGE",
+      "severity": "info",
+      "compared_values": [
+        {
+          "name": "PCE",
+          "value": 17.0,
+          "unit": "%"
+        }
+      ],
+      "threshold": {
+        "min": 0,
+        "max": 100,
+        "unit": "%"
+      },
+      "description": "КПД должен находиться в диапазоне 0–100%.",
+      "hypothesis": null,
+      "resolution_status": "passed",
+      "updated_at": "2026-11-20 22:44:03"
+    },
+    {
+      "id": "a65ac80302f7d20478fea954",
+      "publication_id": "7efcf4f4ced817d227c5a676",
+      "rule_code": "SCAN_ISOLATION",
+      "severity": "info",
+      "compared_values": [
+        {
+          "name": "Ход в статье",
+          "value": "reverse",
+          "unit": null
+        },
+        {
+          "name": "Ход измерения",
+          "value": "reverse",
+          "unit": null
+        }
+      ],
+      "threshold": null,
+      "description": "Согласованность указанного и связанного направления развёртки.",
+      "hypothesis": null,
+      "resolution_status": "passed",
+      "updated_at": "2026-11-20 22:44:03"
+    },
+    {
+      "id": "a89552ed78d5720943b99863",
+      "publication_id": "7efcf4f4ced817d227c5a676",
+      "rule_code": "PHYSICAL_RANGE",
+      "severity": "info",
+      "compared_values": [
+        {
+          "name": "Jsc",
+          "value": 20.0,
+          "unit": "mA/cm²"
+        },
+        {
+          "name": "Eg",
+          "value": 1.1,
+          "unit": "eV"
+        },
+        {
+          "name": "Pin",
+          "value": 100.0,
+          "unit": "mW/cm²"
+        }
+      ],
+      "threshold": {
+        "max": 90.9090909090909,
+        "unit": "mA/cm²"
+      },
+      "description": "Энергетическая граница |Jsc| × Eg/q ≤ Pin для одного собранного носителя на фотон.",
+      "hypothesis": null,
+      "resolution_status": "passed",
+      "updated_at": "2026-11-20 22:44:03"
+    },
+    {
+      "id": "aca42105913efc05aee3e511",
+      "publication_id": "7efcf4f4ced817d227c5a676",
+      "rule_code": "PHYSICAL_RANGE",
+      "severity": "info",
+      "compared_values": [
+        {
+          "name": "PCE",
+          "value": 14.0,
+          "unit": "%"
+        }
+      ],
+      "threshold": {
+        "min": 0,
+        "max": 100,
+        "unit": "%"
+      },
+      "description": "КПД должен находиться в диапазоне 0–100%.",
+      "hypothesis": null,
+      "resolution_status": "passed",
+      "updated_at": "2026-11-20 22:44:03"
+    },
+    {
+      "id": "afc99bd8b34fd3661142be18",
+      "publication_id": "4c86ea859fb1a3006868426f",
+      "rule_code": "PHYSICAL_RANGE",
+      "severity": "info",
+      "compared_values": [
+        {
+          "name": "PCE",
+          "value": 12.0,
+          "unit": "%"
+        }
+      ],
+      "threshold": {
+        "min": 0,
+        "max": 100,
+        "unit": "%"
+      },
+      "description": "КПД должен находиться в диапазоне 0–100%.",
+      "hypothesis": null,
+      "resolution_status": "passed",
+      "updated_at": "2026-11-20 22:44:03"
+    },
+    {
+      "id": "ba8ea6f5107550056d5e2d62",
+      "publication_id": "4c86ea859fb1a3006868426f",
+      "rule_code": "VOC_BANDGAP",
+      "severity": "not_applicable",
+      "compared_values": [
+        {
+          "name": "Voc",
+          "value": 0.8,
+          "unit": "V"
+        }
+      ],
+      "threshold": null,
+      "description": "Нет однозначной пары Voc и Eg для материала прибора.",
+      "hypothesis": null,
+      "resolution_status": "not_applicable",
+      "updated_at": "2026-11-20 22:44:03"
+    },
+    {
+      "id": "bc12f819410c022ba66c1b3f",
+      "publication_id": "4c86ea859fb1a3006868426f",
+      "rule_code": "PCE_CONSISTENCY",
+      "severity": "not_applicable",
+      "compared_values": [
+        {
+          "name": "PCE",
+          "value": 12.0,
+          "unit": "%"
+        },
+        {
+          "name": "Voc",
+          "value": 0.8,
+          "unit": "V"
+        },
+        {
+          "name": "Jsc",
+          "value": 20.0,
+          "unit": "mA/cm²"
+        },
+        {
+          "name": "FF",
+          "value": 75.0,
+          "unit": "%"
+        },
+        {
+          "name": "Pin",
+          "value": null,
+          "unit": null
+        }
+      ],
+      "threshold": {
+        "relative": 0.03,
+        "denominator": "abs(PCE_calc)"
+      },
+      "description": "Проверка невозможна: нет подтверждённой Pin в мВт/см² для этого измерения.",
+      "hypothesis": null,
+      "resolution_status": "not_applicable",
+      "updated_at": "2026-11-20 22:44:03"
+    },
+    {
+      "id": "bee376937570cff417ba1f8b",
+      "publication_id": "7efcf4f4ced817d227c5a676",
+      "rule_code": "SCAN_ISOLATION",
+      "severity": "info",
+      "compared_values": [
+        {
+          "name": "Ход в статье",
+          "value": "reverse",
+          "unit": null
+        },
+        {
+          "name": "Ход измерения",
+          "value": "reverse",
+          "unit": null
+        }
+      ],
+      "threshold": null,
+      "description": "Согласованность указанного и связанного направления развёртки.",
+      "hypothesis": null,
+      "resolution_status": "passed",
+      "updated_at": "2026-11-20 22:44:03"
+    },
+    {
+      "id": "c63458d7cc6a960e7c8493fc",
+      "publication_id": "7efcf4f4ced817d227c5a676",
+      "rule_code": "PHYSICAL_RANGE",
+      "severity": "info",
+      "compared_values": [
+        {
+          "name": "Jsc",
+          "value": 20.0,
+          "unit": "mA/cm²"
+        },
+        {
+          "name": "Eg",
+          "value": 1.1,
+          "unit": "eV"
+        },
+        {
+          "name": "Pin",
+          "value": 100.0,
+          "unit": "mW/cm²"
+        }
+      ],
+      "threshold": {
+        "max": 90.9090909090909,
+        "unit": "mA/cm²"
+      },
+      "description": "Энергетическая граница |Jsc| × Eg/q ≤ Pin для одного собранного носителя на фотон.",
+      "hypothesis": null,
+      "resolution_status": "passed",
+      "updated_at": "2026-11-20 22:44:03"
+    },
+    {
+      "id": "c73b6c30a61c7de427102213",
+      "publication_id": "7efcf4f4ced817d227c5a676",
+      "rule_code": "PCE_CONSISTENCY",
+      "severity": "not_applicable",
+      "compared_values": [
+        {
+          "name": "PCE",
+          "value": null,
+          "unit": "%"
+        },
+        {
+          "name": "Pin",
+          "value": null,
+          "unit": null
+        }
+      ],
+      "threshold": {
+        "relative": 0.03,
+        "denominator": "abs(PCE_calc)"
+      },
+      "description": "Проверка невозможна: не подтверждена привязка к одному измерению; не указан ход развёртки; нет единственного нормализованного Voc в том же измерении и с той же агрегацией; нет единственного нормализованного Jsc в том же измерении и с той же агрегацией; нет единственного нормализованного FF в том же измерении и с той же агрегацией; нет подтверждённой Pin в мВт/см² для этого измерения; КПД не является однозначным числом.",
+      "hypothesis": null,
+      "resolution_status": "not_applicable",
+      "updated_at": "2026-11-20 22:44:03"
+    },
+    {
+      "id": "e5b825cead4d85fbd7983dd0",
+      "publication_id": "7efcf4f4ced817d227c5a676",
+      "rule_code": "PCE_CONSISTENCY",
+      "severity": "info",
+      "compared_values": [
+        {
+          "name": "PCE",
+          "value": 14.0,
+          "unit": "%"
+        },
+        {
+          "name": "Voc",
+          "value": 1.0,
+          "unit": "V"
+        },
+        {
+          "name": "Jsc",
+          "value": 20.0,
+          "unit": "mA/cm²"
+        },
+        {
+          "name": "FF",
+          "value": 70.0,
+          "unit": "%"
+        },
+        {
+          "name": "Pin",
+          "value": 100.0,
+          "unit": "mW/cm²"
+        },
+        {
+          "name": "PCE_calc",
+          "value": 14.0,
+          "unit": "%"
+        },
+        {
+          "name": "Расхождение",
+          "value": 0.0,
+          "unit": "%"
+        }
+      ],
+      "threshold": {
+        "relative": 0.03,
+        "denominator": "abs(PCE_calc)"
+      },
+      "description": "PCE_calc = 100 × Voc × |Jsc| × (FF/100) / Pin.",
+      "hypothesis": null,
+      "resolution_status": "passed",
+      "updated_at": "2026-11-20 22:44:03"
+    },
+    {
+      "id": "e5f520065d88bae875f87100",
+      "publication_id": "7efcf4f4ced817d227c5a676",
+      "rule_code": "SCAN_ISOLATION",
+      "severity": "info",
+      "compared_values": [
+        {
+          "name": "Ход в статье",
+          "value": "reverse",
+          "unit": null
+        },
+        {
+          "name": "Ход измерения",
+          "value": "reverse",
+          "unit": null
+        }
+      ],
+      "threshold": null,
+      "description": "Согласованность указанного и связанного направления развёртки.",
+      "hypothesis": null,
+      "resolution_status": "passed",
+      "updated_at": "2026-11-20 22:44:03"
+    },
+    {
+      "id": "e7a54b957e5fdc1de61e2b6e",
+      "publication_id": "7efcf4f4ced817d227c5a676",
+      "rule_code": "EQE_JSC",
+      "severity": "warning",
+      "compared_values": [
+        {
+          "name": "Jsc_EQE",
+          "value": 17.0,
+          "unit": "mA/cm²"
+        },
+        {
+          "name": "Jsc",
+          "value": 20.0,
+          "unit": "mA/cm²"
+        },
+        {
+          "name": "Расхождение",
+          "value": 15.0,
+          "unit": "%"
+        }
+      ],
+      "threshold": {
+        "relative": 0.05,
+        "denominator": "abs(Jsc_JV)"
+      },
+      "description": "Сопоставлены модули интегрального Jsc по EQE и Jsc по ВАХ.",
+      "hypothesis": "Проверьте калибровку спектра или соответствие образцов.",
+      "resolution_status": "open",
+      "updated_at": "2026-11-20 22:44:03"
+    },
+    {
+      "id": "efa6c1cd6ef81e1cb2d7ec0f",
+      "publication_id": "7efcf4f4ced817d227c5a676",
+      "rule_code": "PCE_CONSISTENCY",
+      "severity": "warning",
+      "compared_values": [
+        {
+          "name": "PCE",
+          "value": 17.0,
+          "unit": "%"
+        },
+        {
+          "name": "Voc",
+          "value": 1.2,
+          "unit": "V"
+        },
+        {
+          "name": "Jsc",
+          "value": 20.0,
+          "unit": "mA/cm²"
+        },
+        {
+          "name": "FF",
+          "value": 75.0,
+          "unit": "%"
+        },
+        {
+          "name": "Pin",
+          "value": 100.0,
+          "unit": "mW/cm²"
+        },
+        {
+          "name": "PCE_calc",
+          "value": 18.0,
+          "unit": "%"
+        },
+        {
+          "name": "Расхождение",
+          "value": 5.555555555555555,
+          "unit": "%"
+        }
+      ],
+      "threshold": {
+        "relative": 0.03,
+        "denominator": "abs(PCE_calc)"
+      },
+      "description": "PCE_calc = 100 × Voc × |Jsc| × (FF/100) / Pin.",
+      "hypothesis": "Проверьте округление, единицы и выбор строки измерения.",
+      "resolution_status": "open",
+      "updated_at": "2026-11-20 22:44:03"
+    },
+    {
+      "id": "f3bde3240613be5bb6fd81ce",
+      "publication_id": "7efcf4f4ced817d227c5a676",
+      "rule_code": "SHOCKLEY_QUEISSER",
+      "severity": "info",
+      "compared_values": [
+        {
+          "name": "Jsc",
+          "value": 20.0,
+          "unit": "mA/cm²"
+        },
+        {
+          "name": "Eg",
+          "value": 1.1,
+          "unit": "eV"
+        }
+      ],
+      "threshold": {
+        "max": 44.229891646140004,
+        "unit": "mA/cm²",
+        "model_temperature_C": 25.0
+      },
+      "description": "Предел детального баланса для идеального однопереходного прибора, ASTM G173-03 AM1.5G global tilt, SMARTS 2.9.2. Температура модели 25 °C (эталонный ориентир, температура измерения неизвестна).",
+      "hypothesis": null,
+      "resolution_status": "passed",
+      "updated_at": "2026-11-20 22:44:03"
+    },
+    {
+      "id": "f5505b980a1f43ca907ec56b",
+      "publication_id": "7efcf4f4ced817d227c5a676",
+      "rule_code": "SCAN_ISOLATION",
+      "severity": "info",
+      "compared_values": [
+        {
+          "name": "Ход в статье",
+          "value": "reverse",
+          "unit": null
+        },
+        {
+          "name": "Ход измерения",
+          "value": "reverse",
+          "unit": null
+        }
+      ],
+      "threshold": null,
+      "description": "Согласованность указанного и связанного направления развёртки.",
+      "hypothesis": null,
+      "resolution_status": "passed",
+      "updated_at": "2026-11-20 22:44:03"
+    }
+  ],
+  "issue_result": [
+    {
+      "issue_id": "02596d7db35cb91ca49ab60b",
+      "result_id": "116f3904df857a385a1fb7ed"
+    },
+    {
+      "issue_id": "02596d7db35cb91ca49ab60b",
+      "result_id": "ea20c615b446af4053f984b3"
+    },
+    {
+      "issue_id": "0bb81de446fc829be2931c48",
+      "result_id": "04a5bb71bcba2038a9f7ba98"
+    },
+    {
+      "issue_id": "0bb81de446fc829be2931c48",
+      "result_id": "116f3904df857a385a1fb7ed"
+    },
+    {
+      "issue_id": "1232cc88ec69d484f4e3a4c7",
+      "result_id": "bea206a8406bd4a7e942e595"
+    },
+    {
+      "issue_id": "156ced75d04d6980822866b0",
+      "result_id": "3c1727c26d47824d4e20eaba"
+    },
+    {
+      "issue_id": "191971bf8244f52a4f68a703",
+      "result_id": "453fa02dccd8d7af3aab5389"
+    },
+    {
+      "issue_id": "2074a097ed61dbbdd35bf210",
+      "result_id": "116f3904df857a385a1fb7ed"
+    },
+    {
+      "issue_id": "2074a097ed61dbbdd35bf210",
+      "result_id": "64ae341d32212c78e06a2fdc"
+    },
+    {
+      "issue_id": "2084953ec2410ed1cf14028e",
+      "result_id": "116f3904df857a385a1fb7ed"
+    },
+    {
+      "issue_id": "2084953ec2410ed1cf14028e",
+      "result_id": "59dec54a7a374c2c35f4ee06"
+    },
+    {
+      "issue_id": "28df7c0545dcbecbad84e349",
+      "result_id": "b8ac6c73083fcb5de5461506"
+    },
+    {
+      "issue_id": "2fc03a4c2cbc46dfbb5825c9",
+      "result_id": "3542f69c1cdc19bc5a0b76e5"
+    },
+    {
+      "issue_id": "357f931a12a5ab9f0b80836e",
+      "result_id": "d5f22d5eed5d2e0d8ed0f300"
+    },
+    {
+      "issue_id": "3de18b4aa66532f84ee41898",
+      "result_id": "04a5bb71bcba2038a9f7ba98"
+    },
+    {
+      "issue_id": "52a37651cf8ca263558eb035",
+      "result_id": "116f3904df857a385a1fb7ed"
+    },
+    {
+      "issue_id": "52a37651cf8ca263558eb035",
+      "result_id": "4adb4dbf80c1bc4fcb6affe0"
+    },
+    {
+      "issue_id": "5829e608b566a0bc4d0fc0e3",
+      "result_id": "f5f9738cc8b1568d25c7c62c"
+    },
+    {
+      "issue_id": "5e4c26daedbbc1abc27aa724",
+      "result_id": "01d905aa07cd3be402570a39"
+    },
+    {
+      "issue_id": "5e4c26daedbbc1abc27aa724",
+      "result_id": "116f3904df857a385a1fb7ed"
+    },
+    {
+      "issue_id": "5f5be4ca2081337f9aa7abe7",
+      "result_id": "217b56685e61934d251421e4"
+    },
+    {
+      "issue_id": "60bf0fa441a2e6021b2e58ea",
+      "result_id": "3c1727c26d47824d4e20eaba"
+    },
+    {
+      "issue_id": "637e3781649f43fd209b172c",
+      "result_id": "116f3904df857a385a1fb7ed"
+    },
+    {
+      "issue_id": "637e3781649f43fd209b172c",
+      "result_id": "3542f69c1cdc19bc5a0b76e5"
+    },
+    {
+      "issue_id": "64f5dc952475d99f56ba37d8",
+      "result_id": "ef1e473cb0e94436a220ea3f"
+    },
+    {
+      "issue_id": "6762900461d3b9b1141ea531",
+      "result_id": "217b56685e61934d251421e4"
+    },
+    {
+      "issue_id": "681799cf39d6ec3c8f164a0a",
+      "result_id": "116f3904df857a385a1fb7ed"
+    },
+    {
+      "issue_id": "681799cf39d6ec3c8f164a0a",
+      "result_id": "3c1727c26d47824d4e20eaba"
+    },
+    {
+      "issue_id": "6b896789281a22d215454397",
+      "result_id": "ef1e473cb0e94436a220ea3f"
+    },
+    {
+      "issue_id": "7035ebc4d8170011a8690bbb",
+      "result_id": "e833576caaabafc560a57e04"
+    },
+    {
+      "issue_id": "7624423971f3fae91748d882",
+      "result_id": "0da7aa6d943ae60e72925a01"
+    },
+    {
+      "issue_id": "78d16b020c6a404739aefa83",
+      "result_id": "f5f9738cc8b1568d25c7c62c"
+    },
+    {
+      "issue_id": "798f593c9234ecbc16c67201",
+      "result_id": "116f3904df857a385a1fb7ed"
+    },
+    {
+      "issue_id": "798f593c9234ecbc16c67201",
+      "result_id": "64ae341d32212c78e06a2fdc"
+    },
+    {
+      "issue_id": "7e6fe43a1107aed7f116d3a9",
+      "result_id": "e833576caaabafc560a57e04"
+    },
+    {
+      "issue_id": "83ddaa92c9191d6e7ba018db",
+      "result_id": "d5f22d5eed5d2e0d8ed0f300"
+    },
+    {
+      "issue_id": "8bac57362c75697d1c3ba332",
+      "result_id": "bea206a8406bd4a7e942e595"
+    },
+    {
+      "issue_id": "8cd5a1b6b6f70f7510fc2a03",
+      "result_id": "04a5bb71bcba2038a9f7ba98"
+    },
+    {
+      "issue_id": "8cd5a1b6b6f70f7510fc2a03",
+      "result_id": "217b56685e61934d251421e4"
+    },
+    {
+      "issue_id": "8cd5a1b6b6f70f7510fc2a03",
+      "result_id": "3c1727c26d47824d4e20eaba"
+    },
+    {
+      "issue_id": "8cd5a1b6b6f70f7510fc2a03",
+      "result_id": "64ae341d32212c78e06a2fdc"
+    },
+    {
+      "issue_id": "97f7578782f74ea3ee93500d",
+      "result_id": "64ae341d32212c78e06a2fdc"
+    },
+    {
+      "issue_id": "9a3686d276e627956a7a6c70",
+      "result_id": "d5f22d5eed5d2e0d8ed0f300"
+    },
+    {
+      "issue_id": "a1e703e8358865c1e17a8b4c",
+      "result_id": "116f3904df857a385a1fb7ed"
+    },
+    {
+      "issue_id": "a1e703e8358865c1e17a8b4c",
+      "result_id": "2859010b64cf60c6ca052deb"
+    },
+    {
+      "issue_id": "a20b5b8b0b293d729170f075",
+      "result_id": "3e6c63e8a9502c11241342f9"
+    },
+    {
+      "issue_id": "a3cb3d87ac36516cdde78ac4",
+      "result_id": "59dec54a7a374c2c35f4ee06"
+    },
+    {
+      "issue_id": "a65ac80302f7d20478fea954",
+      "result_id": "ea20c615b446af4053f984b3"
+    },
+    {
+      "issue_id": "a89552ed78d5720943b99863",
+      "result_id": "116f3904df857a385a1fb7ed"
+    },
+    {
+      "issue_id": "a89552ed78d5720943b99863",
+      "result_id": "453fa02dccd8d7af3aab5389"
+    },
+    {
+      "issue_id": "aca42105913efc05aee3e511",
+      "result_id": "ea20c615b446af4053f984b3"
+    },
+    {
+      "issue_id": "afc99bd8b34fd3661142be18",
+      "result_id": "bea206a8406bd4a7e942e595"
+    },
+    {
+      "issue_id": "ba8ea6f5107550056d5e2d62",
+      "result_id": "0da7aa6d943ae60e72925a01"
+    },
+    {
+      "issue_id": "bc12f819410c022ba66c1b3f",
+      "result_id": "0da7aa6d943ae60e72925a01"
+    },
+    {
+      "issue_id": "bc12f819410c022ba66c1b3f",
+      "result_id": "bea206a8406bd4a7e942e595"
+    },
+    {
+      "issue_id": "bc12f819410c022ba66c1b3f",
+      "result_id": "d5f22d5eed5d2e0d8ed0f300"
+    },
+    {
+      "issue_id": "bc12f819410c022ba66c1b3f",
+      "result_id": "f5f9738cc8b1568d25c7c62c"
+    },
+    {
+      "issue_id": "bee376937570cff417ba1f8b",
+      "result_id": "2859010b64cf60c6ca052deb"
+    },
+    {
+      "issue_id": "c63458d7cc6a960e7c8493fc",
+      "result_id": "01d905aa07cd3be402570a39"
+    },
+    {
+      "issue_id": "c63458d7cc6a960e7c8493fc",
+      "result_id": "116f3904df857a385a1fb7ed"
+    },
+    {
+      "issue_id": "c73b6c30a61c7de427102213",
+      "result_id": "4adb4dbf80c1bc4fcb6affe0"
+    },
+    {
+      "issue_id": "e5b825cead4d85fbd7983dd0",
+      "result_id": "2859010b64cf60c6ca052deb"
+    },
+    {
+      "issue_id": "e5b825cead4d85fbd7983dd0",
+      "result_id": "453fa02dccd8d7af3aab5389"
+    },
+    {
+      "issue_id": "e5b825cead4d85fbd7983dd0",
+      "result_id": "e833576caaabafc560a57e04"
+    },
+    {
+      "issue_id": "e5b825cead4d85fbd7983dd0",
+      "result_id": "ea20c615b446af4053f984b3"
+    },
+    {
+      "issue_id": "e5f520065d88bae875f87100",
+      "result_id": "01d905aa07cd3be402570a39"
+    },
+    {
+      "issue_id": "e7a54b957e5fdc1de61e2b6e",
+      "result_id": "01d905aa07cd3be402570a39"
+    },
+    {
+      "issue_id": "e7a54b957e5fdc1de61e2b6e",
+      "result_id": "b8ac6c73083fcb5de5461506"
+    },
+    {
+      "issue_id": "efa6c1cd6ef81e1cb2d7ec0f",
+      "result_id": "01d905aa07cd3be402570a39"
+    },
+    {
+      "issue_id": "efa6c1cd6ef81e1cb2d7ec0f",
+      "result_id": "3542f69c1cdc19bc5a0b76e5"
+    },
+    {
+      "issue_id": "efa6c1cd6ef81e1cb2d7ec0f",
+      "result_id": "59dec54a7a374c2c35f4ee06"
+    },
+    {
+      "issue_id": "efa6c1cd6ef81e1cb2d7ec0f",
+      "result_id": "ef1e473cb0e94436a220ea3f"
+    },
+    {
+      "issue_id": "f3bde3240613be5bb6fd81ce",
+      "result_id": "116f3904df857a385a1fb7ed"
+    },
+    {
+      "issue_id": "f3bde3240613be5bb6fd81ce",
+      "result_id": "453fa02dccd8d7af3aab5389"
+    },
+    {
+      "issue_id": "f5505b980a1f43ca907ec56b",
+      "result_id": "59dec54a7a374c2c35f4ee06"
+    }
+  ],
+  "issue_source": [
+    {
+      "issue_id": "02596d7db35cb91ca49ab60b",
+      "source_reference_id": "39e72de91277d45919d6eb2c"
+    },
+    {
+      "issue_id": "02596d7db35cb91ca49ab60b",
+      "source_reference_id": "3dfe7f25d6711f0b38279893"
+    },
+    {
+      "issue_id": "02596d7db35cb91ca49ab60b",
+      "source_reference_id": "6a167bee158c837bc5df8691"
+    },
+    {
+      "issue_id": "02596d7db35cb91ca49ab60b",
+      "source_reference_id": "959ff8e1d7b9217ed1d6abcb"
+    },
+    {
+      "issue_id": "02596d7db35cb91ca49ab60b",
+      "source_reference_id": "c9cf3c683701f23ea50da0d3"
+    },
+    {
+      "issue_id": "02596d7db35cb91ca49ab60b",
+      "source_reference_id": "ca41d3dab9254c28d7cfb300"
+    },
+    {
+      "issue_id": "02596d7db35cb91ca49ab60b",
+      "source_reference_id": "fcbaf0c3886bf82659d7f4dc"
+    },
+    {
+      "issue_id": "0bb81de446fc829be2931c48",
+      "source_reference_id": "2c5cb32b5acfaa94622700f3"
+    },
+    {
+      "issue_id": "0bb81de446fc829be2931c48",
+      "source_reference_id": "39e72de91277d45919d6eb2c"
+    },
+    {
+      "issue_id": "0bb81de446fc829be2931c48",
+      "source_reference_id": "757db0714c5928d0955e2cd9"
+    },
+    {
+      "issue_id": "0bb81de446fc829be2931c48",
+      "source_reference_id": "bd648e3f736a218c863f239f"
+    },
+    {
+      "issue_id": "0bb81de446fc829be2931c48",
+      "source_reference_id": "c4cb9e343e57a71830c06e9e"
+    },
+    {
+      "issue_id": "0bb81de446fc829be2931c48",
+      "source_reference_id": "c9cf3c683701f23ea50da0d3"
+    },
+    {
+      "issue_id": "1232cc88ec69d484f4e3a4c7",
+      "source_reference_id": "6371c37a2e66be624b90e297"
+    },
+    {
+      "issue_id": "1232cc88ec69d484f4e3a4c7",
+      "source_reference_id": "8c29d98b7e66a3126839ce84"
+    },
+    {
+      "issue_id": "1232cc88ec69d484f4e3a4c7",
+      "source_reference_id": "a2ff1de50a9a2f15ebe6d266"
+    },
+    {
+      "issue_id": "1232cc88ec69d484f4e3a4c7",
+      "source_reference_id": "df13a605dc5e1e38346cf5c0"
+    },
+    {
+      "issue_id": "156ced75d04d6980822866b0",
+      "source_reference_id": "0b79200af887ab0529df5942"
+    },
+    {
+      "issue_id": "156ced75d04d6980822866b0",
+      "source_reference_id": "2c5cb32b5acfaa94622700f3"
+    },
+    {
+      "issue_id": "156ced75d04d6980822866b0",
+      "source_reference_id": "6a167bee158c837bc5df8691"
+    },
+    {
+      "issue_id": "156ced75d04d6980822866b0",
+      "source_reference_id": "757db0714c5928d0955e2cd9"
+    },
+    {
+      "issue_id": "191971bf8244f52a4f68a703",
+      "source_reference_id": "48555de4671d97302efd0201"
+    },
+    {
+      "issue_id": "191971bf8244f52a4f68a703",
+      "source_reference_id": "959ff8e1d7b9217ed1d6abcb"
+    },
+    {
+      "issue_id": "191971bf8244f52a4f68a703",
+      "source_reference_id": "b8eca9380f00ef452f6ec6ce"
+    },
+    {
+      "issue_id": "191971bf8244f52a4f68a703",
+      "source_reference_id": "fcbaf0c3886bf82659d7f4dc"
+    },
+    {
+      "issue_id": "2074a097ed61dbbdd35bf210",
+      "source_reference_id": "2c5cb32b5acfaa94622700f3"
+    },
+    {
+      "issue_id": "2074a097ed61dbbdd35bf210",
+      "source_reference_id": "39e72de91277d45919d6eb2c"
+    },
+    {
+      "issue_id": "2074a097ed61dbbdd35bf210",
+      "source_reference_id": "3cb1579df7b4c3c37a82dffb"
+    },
+    {
+      "issue_id": "2074a097ed61dbbdd35bf210",
+      "source_reference_id": "48555de4671d97302efd0201"
+    },
+    {
+      "issue_id": "2074a097ed61dbbdd35bf210",
+      "source_reference_id": "757db0714c5928d0955e2cd9"
+    },
+    {
+      "issue_id": "2074a097ed61dbbdd35bf210",
+      "source_reference_id": "c9cf3c683701f23ea50da0d3"
+    },
+    {
+      "issue_id": "2074a097ed61dbbdd35bf210",
+      "source_reference_id": "ca41d3dab9254c28d7cfb300"
+    },
+    {
+      "issue_id": "2084953ec2410ed1cf14028e",
+      "source_reference_id": "39e72de91277d45919d6eb2c"
+    },
+    {
+      "issue_id": "2084953ec2410ed1cf14028e",
+      "source_reference_id": "56b77605d9f3bcec4d6c8073"
+    },
+    {
+      "issue_id": "2084953ec2410ed1cf14028e",
+      "source_reference_id": "6a167bee158c837bc5df8691"
+    },
+    {
+      "issue_id": "2084953ec2410ed1cf14028e",
+      "source_reference_id": "869ed043568e056c4eed234b"
+    },
+    {
+      "issue_id": "2084953ec2410ed1cf14028e",
+      "source_reference_id": "c9cf3c683701f23ea50da0d3"
+    },
+    {
+      "issue_id": "2084953ec2410ed1cf14028e",
+      "source_reference_id": "ca41d3dab9254c28d7cfb300"
+    },
+    {
+      "issue_id": "2084953ec2410ed1cf14028e",
+      "source_reference_id": "e919d2b7302839fce0bbd5b8"
+    },
+    {
+      "issue_id": "28df7c0545dcbecbad84e349",
+      "source_reference_id": "44aa88a794323db60b630692"
+    },
+    {
+      "issue_id": "28df7c0545dcbecbad84e349",
+      "source_reference_id": "4bfe4e7a81ee7aa4d4174e3c"
+    },
+    {
+      "issue_id": "28df7c0545dcbecbad84e349",
+      "source_reference_id": "baa5b5c296b8baa0f7541aa0"
+    },
+    {
+      "issue_id": "28df7c0545dcbecbad84e349",
+      "source_reference_id": "be14a9e919e001907f37d655"
+    },
+    {
+      "issue_id": "2fc03a4c2cbc46dfbb5825c9",
+      "source_reference_id": "23fd71e812cda5befbf5d2fc"
+    },
+    {
+      "issue_id": "2fc03a4c2cbc46dfbb5825c9",
+      "source_reference_id": "56b77605d9f3bcec4d6c8073"
+    },
+    {
+      "issue_id": "2fc03a4c2cbc46dfbb5825c9",
+      "source_reference_id": "869ed043568e056c4eed234b"
+    },
+    {
+      "issue_id": "2fc03a4c2cbc46dfbb5825c9",
+      "source_reference_id": "bd648e3f736a218c863f239f"
+    },
+    {
+      "issue_id": "357f931a12a5ab9f0b80836e",
+      "source_reference_id": "28e5c1ff9de5e3fadba6eb8e"
+    },
+    {
+      "issue_id": "357f931a12a5ab9f0b80836e",
+      "source_reference_id": "a2ff1de50a9a2f15ebe6d266"
+    },
+    {
+      "issue_id": "357f931a12a5ab9f0b80836e",
+      "source_reference_id": "df13a605dc5e1e38346cf5c0"
+    },
+    {
+      "issue_id": "357f931a12a5ab9f0b80836e",
+      "source_reference_id": "dfd0efcb28a79c9f7129fbad"
+    },
+    {
+      "issue_id": "3de18b4aa66532f84ee41898",
+      "source_reference_id": "2c5cb32b5acfaa94622700f3"
+    },
+    {
+      "issue_id": "3de18b4aa66532f84ee41898",
+      "source_reference_id": "757db0714c5928d0955e2cd9"
+    },
+    {
+      "issue_id": "3de18b4aa66532f84ee41898",
+      "source_reference_id": "bd648e3f736a218c863f239f"
+    },
+    {
+      "issue_id": "3de18b4aa66532f84ee41898",
+      "source_reference_id": "c4cb9e343e57a71830c06e9e"
+    },
+    {
+      "issue_id": "52a37651cf8ca263558eb035",
+      "source_reference_id": "39e72de91277d45919d6eb2c"
+    },
+    {
+      "issue_id": "52a37651cf8ca263558eb035",
+      "source_reference_id": "ac3e09901dc4c697c5a42f7b"
+    },
+    {
+      "issue_id": "52a37651cf8ca263558eb035",
+      "source_reference_id": "bb5451cb21c6118201e011f5"
+    },
+    {
+      "issue_id": "52a37651cf8ca263558eb035",
+      "source_reference_id": "c9cf3c683701f23ea50da0d3"
+    },
+    {
+      "issue_id": "5829e608b566a0bc4d0fc0e3",
+      "source_reference_id": "0b71f9cc718f70183bcbadce"
+    },
+    {
+      "issue_id": "5829e608b566a0bc4d0fc0e3",
+      "source_reference_id": "a2ff1de50a9a2f15ebe6d266"
+    },
+    {
+      "issue_id": "5829e608b566a0bc4d0fc0e3",
+      "source_reference_id": "df13a605dc5e1e38346cf5c0"
+    },
+    {
+      "issue_id": "5829e608b566a0bc4d0fc0e3",
+      "source_reference_id": "f9127c5f1a23ee5bbb4bf571"
+    },
+    {
+      "issue_id": "5e4c26daedbbc1abc27aa724",
+      "source_reference_id": "28f2c0ebebc8a0f66ca23e04"
+    },
+    {
+      "issue_id": "5e4c26daedbbc1abc27aa724",
+      "source_reference_id": "39e72de91277d45919d6eb2c"
+    },
+    {
+      "issue_id": "5e4c26daedbbc1abc27aa724",
+      "source_reference_id": "48555de4671d97302efd0201"
+    },
+    {
+      "issue_id": "5e4c26daedbbc1abc27aa724",
+      "source_reference_id": "56b77605d9f3bcec4d6c8073"
+    },
+    {
+      "issue_id": "5e4c26daedbbc1abc27aa724",
+      "source_reference_id": "869ed043568e056c4eed234b"
+    },
+    {
+      "issue_id": "5e4c26daedbbc1abc27aa724",
+      "source_reference_id": "c9cf3c683701f23ea50da0d3"
+    },
+    {
+      "issue_id": "5e4c26daedbbc1abc27aa724",
+      "source_reference_id": "ca41d3dab9254c28d7cfb300"
+    },
+    {
+      "issue_id": "5f5be4ca2081337f9aa7abe7",
+      "source_reference_id": "2c5cb32b5acfaa94622700f3"
+    },
+    {
+      "issue_id": "5f5be4ca2081337f9aa7abe7",
+      "source_reference_id": "3a27eae0f6aff8813ce4c1fa"
+    },
+    {
+      "issue_id": "5f5be4ca2081337f9aa7abe7",
+      "source_reference_id": "757db0714c5928d0955e2cd9"
+    },
+    {
+      "issue_id": "5f5be4ca2081337f9aa7abe7",
+      "source_reference_id": "8d4fb0825f536fb8103d4c2e"
+    },
+    {
+      "issue_id": "60bf0fa441a2e6021b2e58ea",
+      "source_reference_id": "0b79200af887ab0529df5942"
+    },
+    {
+      "issue_id": "60bf0fa441a2e6021b2e58ea",
+      "source_reference_id": "2c5cb32b5acfaa94622700f3"
+    },
+    {
+      "issue_id": "60bf0fa441a2e6021b2e58ea",
+      "source_reference_id": "6a167bee158c837bc5df8691"
+    },
+    {
+      "issue_id": "60bf0fa441a2e6021b2e58ea",
+      "source_reference_id": "757db0714c5928d0955e2cd9"
+    },
+    {
+      "issue_id": "637e3781649f43fd209b172c",
+      "source_reference_id": "23fd71e812cda5befbf5d2fc"
+    },
+    {
+      "issue_id": "637e3781649f43fd209b172c",
+      "source_reference_id": "39e72de91277d45919d6eb2c"
+    },
+    {
+      "issue_id": "637e3781649f43fd209b172c",
+      "source_reference_id": "56b77605d9f3bcec4d6c8073"
+    },
+    {
+      "issue_id": "637e3781649f43fd209b172c",
+      "source_reference_id": "869ed043568e056c4eed234b"
+    },
+    {
+      "issue_id": "637e3781649f43fd209b172c",
+      "source_reference_id": "bd648e3f736a218c863f239f"
+    },
+    {
+      "issue_id": "637e3781649f43fd209b172c",
+      "source_reference_id": "c9cf3c683701f23ea50da0d3"
+    },
+    {
+      "issue_id": "64f5dc952475d99f56ba37d8",
+      "source_reference_id": "56b77605d9f3bcec4d6c8073"
+    },
+    {
+      "issue_id": "64f5dc952475d99f56ba37d8",
+      "source_reference_id": "7e2a7ec3f501384617f0e0aa"
+    },
+    {
+      "issue_id": "64f5dc952475d99f56ba37d8",
+      "source_reference_id": "869ed043568e056c4eed234b"
+    },
+    {
+      "issue_id": "64f5dc952475d99f56ba37d8",
+      "source_reference_id": "8d4fb0825f536fb8103d4c2e"
+    },
+    {
+      "issue_id": "6762900461d3b9b1141ea531",
+      "source_reference_id": "2c5cb32b5acfaa94622700f3"
+    },
+    {
+      "issue_id": "6762900461d3b9b1141ea531",
+      "source_reference_id": "3a27eae0f6aff8813ce4c1fa"
+    },
+    {
+      "issue_id": "6762900461d3b9b1141ea531",
+      "source_reference_id": "757db0714c5928d0955e2cd9"
+    },
+    {
+      "issue_id": "6762900461d3b9b1141ea531",
+      "source_reference_id": "8d4fb0825f536fb8103d4c2e"
+    },
+    {
+      "issue_id": "681799cf39d6ec3c8f164a0a",
+      "source_reference_id": "0b79200af887ab0529df5942"
+    },
+    {
+      "issue_id": "681799cf39d6ec3c8f164a0a",
+      "source_reference_id": "2c5cb32b5acfaa94622700f3"
+    },
+    {
+      "issue_id": "681799cf39d6ec3c8f164a0a",
+      "source_reference_id": "39e72de91277d45919d6eb2c"
+    },
+    {
+      "issue_id": "681799cf39d6ec3c8f164a0a",
+      "source_reference_id": "6a167bee158c837bc5df8691"
+    },
+    {
+      "issue_id": "681799cf39d6ec3c8f164a0a",
+      "source_reference_id": "757db0714c5928d0955e2cd9"
+    },
+    {
+      "issue_id": "681799cf39d6ec3c8f164a0a",
+      "source_reference_id": "c9cf3c683701f23ea50da0d3"
+    },
+    {
+      "issue_id": "681799cf39d6ec3c8f164a0a",
+      "source_reference_id": "ca41d3dab9254c28d7cfb300"
+    },
+    {
+      "issue_id": "6b896789281a22d215454397",
+      "source_reference_id": "56b77605d9f3bcec4d6c8073"
+    },
+    {
+      "issue_id": "6b896789281a22d215454397",
+      "source_reference_id": "7e2a7ec3f501384617f0e0aa"
+    },
+    {
+      "issue_id": "6b896789281a22d215454397",
+      "source_reference_id": "869ed043568e056c4eed234b"
+    },
+    {
+      "issue_id": "6b896789281a22d215454397",
+      "source_reference_id": "8d4fb0825f536fb8103d4c2e"
+    },
+    {
+      "issue_id": "7035ebc4d8170011a8690bbb",
+      "source_reference_id": "372ff7adf14181e2c364565f"
+    },
+    {
+      "issue_id": "7035ebc4d8170011a8690bbb",
+      "source_reference_id": "8d4fb0825f536fb8103d4c2e"
+    },
+    {
+      "issue_id": "7035ebc4d8170011a8690bbb",
+      "source_reference_id": "959ff8e1d7b9217ed1d6abcb"
+    },
+    {
+      "issue_id": "7035ebc4d8170011a8690bbb",
+      "source_reference_id": "fcbaf0c3886bf82659d7f4dc"
+    },
+    {
+      "issue_id": "7624423971f3fae91748d882",
+      "source_reference_id": "0c0073a8f9acdfd2c8f4a66b"
+    },
+    {
+      "issue_id": "7624423971f3fae91748d882",
+      "source_reference_id": "a2ff1de50a9a2f15ebe6d266"
+    },
+    {
+      "issue_id": "7624423971f3fae91748d882",
+      "source_reference_id": "df13a605dc5e1e38346cf5c0"
+    },
+    {
+      "issue_id": "7624423971f3fae91748d882",
+      "source_reference_id": "f99b30d7b30a51e355dab89e"
+    },
+    {
+      "issue_id": "78d16b020c6a404739aefa83",
+      "source_reference_id": "0b71f9cc718f70183bcbadce"
+    },
+    {
+      "issue_id": "78d16b020c6a404739aefa83",
+      "source_reference_id": "a2ff1de50a9a2f15ebe6d266"
+    },
+    {
+      "issue_id": "78d16b020c6a404739aefa83",
+      "source_reference_id": "df13a605dc5e1e38346cf5c0"
+    },
+    {
+      "issue_id": "78d16b020c6a404739aefa83",
+      "source_reference_id": "f9127c5f1a23ee5bbb4bf571"
+    },
+    {
+      "issue_id": "798f593c9234ecbc16c67201",
+      "source_reference_id": "2c5cb32b5acfaa94622700f3"
+    },
+    {
+      "issue_id": "798f593c9234ecbc16c67201",
+      "source_reference_id": "39e72de91277d45919d6eb2c"
+    },
+    {
+      "issue_id": "798f593c9234ecbc16c67201",
+      "source_reference_id": "3cb1579df7b4c3c37a82dffb"
+    },
+    {
+      "issue_id": "798f593c9234ecbc16c67201",
+      "source_reference_id": "48555de4671d97302efd0201"
+    },
+    {
+      "issue_id": "798f593c9234ecbc16c67201",
+      "source_reference_id": "757db0714c5928d0955e2cd9"
+    },
+    {
+      "issue_id": "798f593c9234ecbc16c67201",
+      "source_reference_id": "c9cf3c683701f23ea50da0d3"
+    },
+    {
+      "issue_id": "798f593c9234ecbc16c67201",
+      "source_reference_id": "ca41d3dab9254c28d7cfb300"
+    },
+    {
+      "issue_id": "7e6fe43a1107aed7f116d3a9",
+      "source_reference_id": "372ff7adf14181e2c364565f"
+    },
+    {
+      "issue_id": "7e6fe43a1107aed7f116d3a9",
+      "source_reference_id": "8d4fb0825f536fb8103d4c2e"
+    },
+    {
+      "issue_id": "7e6fe43a1107aed7f116d3a9",
+      "source_reference_id": "959ff8e1d7b9217ed1d6abcb"
+    },
+    {
+      "issue_id": "7e6fe43a1107aed7f116d3a9",
+      "source_reference_id": "fcbaf0c3886bf82659d7f4dc"
+    },
+    {
+      "issue_id": "83ddaa92c9191d6e7ba018db",
+      "source_reference_id": "28e5c1ff9de5e3fadba6eb8e"
+    },
+    {
+      "issue_id": "83ddaa92c9191d6e7ba018db",
+      "source_reference_id": "a2ff1de50a9a2f15ebe6d266"
+    },
+    {
+      "issue_id": "83ddaa92c9191d6e7ba018db",
+      "source_reference_id": "df13a605dc5e1e38346cf5c0"
+    },
+    {
+      "issue_id": "83ddaa92c9191d6e7ba018db",
+      "source_reference_id": "dfd0efcb28a79c9f7129fbad"
+    },
+    {
+      "issue_id": "8bac57362c75697d1c3ba332",
+      "source_reference_id": "6371c37a2e66be624b90e297"
+    },
+    {
+      "issue_id": "8bac57362c75697d1c3ba332",
+      "source_reference_id": "8c29d98b7e66a3126839ce84"
+    },
+    {
+      "issue_id": "8bac57362c75697d1c3ba332",
+      "source_reference_id": "a2ff1de50a9a2f15ebe6d266"
+    },
+    {
+      "issue_id": "8bac57362c75697d1c3ba332",
+      "source_reference_id": "df13a605dc5e1e38346cf5c0"
+    },
+    {
+      "issue_id": "8cd5a1b6b6f70f7510fc2a03",
+      "source_reference_id": "0b79200af887ab0529df5942"
+    },
+    {
+      "issue_id": "8cd5a1b6b6f70f7510fc2a03",
+      "source_reference_id": "2c5cb32b5acfaa94622700f3"
+    },
+    {
+      "issue_id": "8cd5a1b6b6f70f7510fc2a03",
+      "source_reference_id": "3a27eae0f6aff8813ce4c1fa"
+    },
+    {
+      "issue_id": "8cd5a1b6b6f70f7510fc2a03",
+      "source_reference_id": "3cb1579df7b4c3c37a82dffb"
+    },
+    {
+      "issue_id": "8cd5a1b6b6f70f7510fc2a03",
+      "source_reference_id": "48555de4671d97302efd0201"
+    },
+    {
+      "issue_id": "8cd5a1b6b6f70f7510fc2a03",
+      "source_reference_id": "6a167bee158c837bc5df8691"
+    },
+    {
+      "issue_id": "8cd5a1b6b6f70f7510fc2a03",
+      "source_reference_id": "757db0714c5928d0955e2cd9"
+    },
+    {
+      "issue_id": "8cd5a1b6b6f70f7510fc2a03",
+      "source_reference_id": "8d4fb0825f536fb8103d4c2e"
+    },
+    {
+      "issue_id": "8cd5a1b6b6f70f7510fc2a03",
+      "source_reference_id": "bd648e3f736a218c863f239f"
+    },
+    {
+      "issue_id": "8cd5a1b6b6f70f7510fc2a03",
+      "source_reference_id": "c4cb9e343e57a71830c06e9e"
+    },
+    {
+      "issue_id": "8cd5a1b6b6f70f7510fc2a03",
+      "source_reference_id": "ca41d3dab9254c28d7cfb300"
+    },
+    {
+      "issue_id": "97f7578782f74ea3ee93500d",
+      "source_reference_id": "2c5cb32b5acfaa94622700f3"
+    },
+    {
+      "issue_id": "97f7578782f74ea3ee93500d",
+      "source_reference_id": "3cb1579df7b4c3c37a82dffb"
+    },
+    {
+      "issue_id": "97f7578782f74ea3ee93500d",
+      "source_reference_id": "48555de4671d97302efd0201"
+    },
+    {
+      "issue_id": "97f7578782f74ea3ee93500d",
+      "source_reference_id": "757db0714c5928d0955e2cd9"
+    },
+    {
+      "issue_id": "9a3686d276e627956a7a6c70",
+      "source_reference_id": "28e5c1ff9de5e3fadba6eb8e"
+    },
+    {
+      "issue_id": "9a3686d276e627956a7a6c70",
+      "source_reference_id": "a2ff1de50a9a2f15ebe6d266"
+    },
+    {
+      "issue_id": "9a3686d276e627956a7a6c70",
+      "source_reference_id": "df13a605dc5e1e38346cf5c0"
+    },
+    {
+      "issue_id": "9a3686d276e627956a7a6c70",
+      "source_reference_id": "dfd0efcb28a79c9f7129fbad"
+    },
+    {
+      "issue_id": "a1e703e8358865c1e17a8b4c",
+      "source_reference_id": "39e72de91277d45919d6eb2c"
+    },
+    {
+      "issue_id": "a1e703e8358865c1e17a8b4c",
+      "source_reference_id": "7159bef8d8622748283fa1f8"
+    },
+    {
+      "issue_id": "a1e703e8358865c1e17a8b4c",
+      "source_reference_id": "959ff8e1d7b9217ed1d6abcb"
+    },
+    {
+      "issue_id": "a1e703e8358865c1e17a8b4c",
+      "source_reference_id": "bd648e3f736a218c863f239f"
+    },
+    {
+      "issue_id": "a1e703e8358865c1e17a8b4c",
+      "source_reference_id": "c9cf3c683701f23ea50da0d3"
+    },
+    {
+      "issue_id": "a1e703e8358865c1e17a8b4c",
+      "source_reference_id": "fcbaf0c3886bf82659d7f4dc"
+    },
+    {
+      "issue_id": "a20b5b8b0b293d729170f075",
+      "source_reference_id": "0c54555a749a076fbbf629d5"
+    },
+    {
+      "issue_id": "a20b5b8b0b293d729170f075",
+      "source_reference_id": "6134619300050f85ba525520"
+    },
+    {
+      "issue_id": "a3cb3d87ac36516cdde78ac4",
+      "source_reference_id": "56b77605d9f3bcec4d6c8073"
+    },
+    {
+      "issue_id": "a3cb3d87ac36516cdde78ac4",
+      "source_reference_id": "6a167bee158c837bc5df8691"
+    },
+    {
+      "issue_id": "a3cb3d87ac36516cdde78ac4",
+      "source_reference_id": "869ed043568e056c4eed234b"
+    },
+    {
+      "issue_id": "a3cb3d87ac36516cdde78ac4",
+      "source_reference_id": "e919d2b7302839fce0bbd5b8"
+    },
+    {
+      "issue_id": "a65ac80302f7d20478fea954",
+      "source_reference_id": "3dfe7f25d6711f0b38279893"
+    },
+    {
+      "issue_id": "a65ac80302f7d20478fea954",
+      "source_reference_id": "6a167bee158c837bc5df8691"
+    },
+    {
+      "issue_id": "a65ac80302f7d20478fea954",
+      "source_reference_id": "959ff8e1d7b9217ed1d6abcb"
+    },
+    {
+      "issue_id": "a65ac80302f7d20478fea954",
+      "source_reference_id": "fcbaf0c3886bf82659d7f4dc"
+    },
+    {
+      "issue_id": "a89552ed78d5720943b99863",
+      "source_reference_id": "39e72de91277d45919d6eb2c"
+    },
+    {
+      "issue_id": "a89552ed78d5720943b99863",
+      "source_reference_id": "48555de4671d97302efd0201"
+    },
+    {
+      "issue_id": "a89552ed78d5720943b99863",
+      "source_reference_id": "959ff8e1d7b9217ed1d6abcb"
+    },
+    {
+      "issue_id": "a89552ed78d5720943b99863",
+      "source_reference_id": "b8eca9380f00ef452f6ec6ce"
+    },
+    {
+      "issue_id": "a89552ed78d5720943b99863",
+      "source_reference_id": "c9cf3c683701f23ea50da0d3"
+    },
+    {
+      "issue_id": "a89552ed78d5720943b99863",
+      "source_reference_id": "ca41d3dab9254c28d7cfb300"
+    },
+    {
+      "issue_id": "a89552ed78d5720943b99863",
+      "source_reference_id": "fcbaf0c3886bf82659d7f4dc"
+    },
+    {
+      "issue_id": "aca42105913efc05aee3e511",
+      "source_reference_id": "3dfe7f25d6711f0b38279893"
+    },
+    {
+      "issue_id": "aca42105913efc05aee3e511",
+      "source_reference_id": "6a167bee158c837bc5df8691"
+    },
+    {
+      "issue_id": "aca42105913efc05aee3e511",
+      "source_reference_id": "959ff8e1d7b9217ed1d6abcb"
+    },
+    {
+      "issue_id": "aca42105913efc05aee3e511",
+      "source_reference_id": "fcbaf0c3886bf82659d7f4dc"
+    },
+    {
+      "issue_id": "afc99bd8b34fd3661142be18",
+      "source_reference_id": "6371c37a2e66be624b90e297"
+    },
+    {
+      "issue_id": "afc99bd8b34fd3661142be18",
+      "source_reference_id": "8c29d98b7e66a3126839ce84"
+    },
+    {
+      "issue_id": "afc99bd8b34fd3661142be18",
+      "source_reference_id": "a2ff1de50a9a2f15ebe6d266"
+    },
+    {
+      "issue_id": "afc99bd8b34fd3661142be18",
+      "source_reference_id": "df13a605dc5e1e38346cf5c0"
+    },
+    {
+      "issue_id": "ba8ea6f5107550056d5e2d62",
+      "source_reference_id": "0c0073a8f9acdfd2c8f4a66b"
+    },
+    {
+      "issue_id": "ba8ea6f5107550056d5e2d62",
+      "source_reference_id": "a2ff1de50a9a2f15ebe6d266"
+    },
+    {
+      "issue_id": "ba8ea6f5107550056d5e2d62",
+      "source_reference_id": "df13a605dc5e1e38346cf5c0"
+    },
+    {
+      "issue_id": "ba8ea6f5107550056d5e2d62",
+      "source_reference_id": "f99b30d7b30a51e355dab89e"
+    },
+    {
+      "issue_id": "bc12f819410c022ba66c1b3f",
+      "source_reference_id": "0b71f9cc718f70183bcbadce"
+    },
+    {
+      "issue_id": "bc12f819410c022ba66c1b3f",
+      "source_reference_id": "0c0073a8f9acdfd2c8f4a66b"
+    },
+    {
+      "issue_id": "bc12f819410c022ba66c1b3f",
+      "source_reference_id": "28e5c1ff9de5e3fadba6eb8e"
+    },
+    {
+      "issue_id": "bc12f819410c022ba66c1b3f",
+      "source_reference_id": "6371c37a2e66be624b90e297"
+    },
+    {
+      "issue_id": "bc12f819410c022ba66c1b3f",
+      "source_reference_id": "8c29d98b7e66a3126839ce84"
+    },
+    {
+      "issue_id": "bc12f819410c022ba66c1b3f",
+      "source_reference_id": "a2ff1de50a9a2f15ebe6d266"
+    },
+    {
+      "issue_id": "bc12f819410c022ba66c1b3f",
+      "source_reference_id": "df13a605dc5e1e38346cf5c0"
+    },
+    {
+      "issue_id": "bc12f819410c022ba66c1b3f",
+      "source_reference_id": "dfd0efcb28a79c9f7129fbad"
+    },
+    {
+      "issue_id": "bc12f819410c022ba66c1b3f",
+      "source_reference_id": "f9127c5f1a23ee5bbb4bf571"
+    },
+    {
+      "issue_id": "bc12f819410c022ba66c1b3f",
+      "source_reference_id": "f99b30d7b30a51e355dab89e"
+    },
+    {
+      "issue_id": "bee376937570cff417ba1f8b",
+      "source_reference_id": "7159bef8d8622748283fa1f8"
+    },
+    {
+      "issue_id": "bee376937570cff417ba1f8b",
+      "source_reference_id": "959ff8e1d7b9217ed1d6abcb"
+    },
+    {
+      "issue_id": "bee376937570cff417ba1f8b",
+      "source_reference_id": "bd648e3f736a218c863f239f"
+    },
+    {
+      "issue_id": "bee376937570cff417ba1f8b",
+      "source_reference_id": "fcbaf0c3886bf82659d7f4dc"
+    },
+    {
+      "issue_id": "c63458d7cc6a960e7c8493fc",
+      "source_reference_id": "28f2c0ebebc8a0f66ca23e04"
+    },
+    {
+      "issue_id": "c63458d7cc6a960e7c8493fc",
+      "source_reference_id": "39e72de91277d45919d6eb2c"
+    },
+    {
+      "issue_id": "c63458d7cc6a960e7c8493fc",
+      "source_reference_id": "48555de4671d97302efd0201"
+    },
+    {
+      "issue_id": "c63458d7cc6a960e7c8493fc",
+      "source_reference_id": "56b77605d9f3bcec4d6c8073"
+    },
+    {
+      "issue_id": "c63458d7cc6a960e7c8493fc",
+      "source_reference_id": "869ed043568e056c4eed234b"
+    },
+    {
+      "issue_id": "c63458d7cc6a960e7c8493fc",
+      "source_reference_id": "c9cf3c683701f23ea50da0d3"
+    },
+    {
+      "issue_id": "c63458d7cc6a960e7c8493fc",
+      "source_reference_id": "ca41d3dab9254c28d7cfb300"
+    },
+    {
+      "issue_id": "c73b6c30a61c7de427102213",
+      "source_reference_id": "ac3e09901dc4c697c5a42f7b"
+    },
+    {
+      "issue_id": "c73b6c30a61c7de427102213",
+      "source_reference_id": "bb5451cb21c6118201e011f5"
+    },
+    {
+      "issue_id": "e5b825cead4d85fbd7983dd0",
+      "source_reference_id": "372ff7adf14181e2c364565f"
+    },
+    {
+      "issue_id": "e5b825cead4d85fbd7983dd0",
+      "source_reference_id": "3dfe7f25d6711f0b38279893"
+    },
+    {
+      "issue_id": "e5b825cead4d85fbd7983dd0",
+      "source_reference_id": "48555de4671d97302efd0201"
+    },
+    {
+      "issue_id": "e5b825cead4d85fbd7983dd0",
+      "source_reference_id": "6a167bee158c837bc5df8691"
+    },
+    {
+      "issue_id": "e5b825cead4d85fbd7983dd0",
+      "source_reference_id": "7159bef8d8622748283fa1f8"
+    },
+    {
+      "issue_id": "e5b825cead4d85fbd7983dd0",
+      "source_reference_id": "8d4fb0825f536fb8103d4c2e"
+    },
+    {
+      "issue_id": "e5b825cead4d85fbd7983dd0",
+      "source_reference_id": "959ff8e1d7b9217ed1d6abcb"
+    },
+    {
+      "issue_id": "e5b825cead4d85fbd7983dd0",
+      "source_reference_id": "b8eca9380f00ef452f6ec6ce"
+    },
+    {
+      "issue_id": "e5b825cead4d85fbd7983dd0",
+      "source_reference_id": "bd648e3f736a218c863f239f"
+    },
+    {
+      "issue_id": "e5b825cead4d85fbd7983dd0",
+      "source_reference_id": "ca41d3dab9254c28d7cfb300"
+    },
+    {
+      "issue_id": "e5b825cead4d85fbd7983dd0",
+      "source_reference_id": "fcbaf0c3886bf82659d7f4dc"
+    },
+    {
+      "issue_id": "e5f520065d88bae875f87100",
+      "source_reference_id": "28f2c0ebebc8a0f66ca23e04"
+    },
+    {
+      "issue_id": "e5f520065d88bae875f87100",
+      "source_reference_id": "48555de4671d97302efd0201"
+    },
+    {
+      "issue_id": "e5f520065d88bae875f87100",
+      "source_reference_id": "56b77605d9f3bcec4d6c8073"
+    },
+    {
+      "issue_id": "e5f520065d88bae875f87100",
+      "source_reference_id": "869ed043568e056c4eed234b"
+    },
+    {
+      "issue_id": "e7a54b957e5fdc1de61e2b6e",
+      "source_reference_id": "28f2c0ebebc8a0f66ca23e04"
+    },
+    {
+      "issue_id": "e7a54b957e5fdc1de61e2b6e",
+      "source_reference_id": "44aa88a794323db60b630692"
+    },
+    {
+      "issue_id": "e7a54b957e5fdc1de61e2b6e",
+      "source_reference_id": "48555de4671d97302efd0201"
+    },
+    {
+      "issue_id": "e7a54b957e5fdc1de61e2b6e",
+      "source_reference_id": "4bfe4e7a81ee7aa4d4174e3c"
+    },
+    {
+      "issue_id": "e7a54b957e5fdc1de61e2b6e",
+      "source_reference_id": "56b77605d9f3bcec4d6c8073"
+    },
+    {
+      "issue_id": "e7a54b957e5fdc1de61e2b6e",
+      "source_reference_id": "869ed043568e056c4eed234b"
+    },
+    {
+      "issue_id": "e7a54b957e5fdc1de61e2b6e",
+      "source_reference_id": "baa5b5c296b8baa0f7541aa0"
+    },
+    {
+      "issue_id": "e7a54b957e5fdc1de61e2b6e",
+      "source_reference_id": "be14a9e919e001907f37d655"
+    },
+    {
+      "issue_id": "e7a54b957e5fdc1de61e2b6e",
+      "source_reference_id": "ca41d3dab9254c28d7cfb300"
+    },
+    {
+      "issue_id": "efa6c1cd6ef81e1cb2d7ec0f",
+      "source_reference_id": "23fd71e812cda5befbf5d2fc"
+    },
+    {
+      "issue_id": "efa6c1cd6ef81e1cb2d7ec0f",
+      "source_reference_id": "28f2c0ebebc8a0f66ca23e04"
+    },
+    {
+      "issue_id": "efa6c1cd6ef81e1cb2d7ec0f",
+      "source_reference_id": "48555de4671d97302efd0201"
+    },
+    {
+      "issue_id": "efa6c1cd6ef81e1cb2d7ec0f",
+      "source_reference_id": "56b77605d9f3bcec4d6c8073"
+    },
+    {
+      "issue_id": "efa6c1cd6ef81e1cb2d7ec0f",
+      "source_reference_id": "6a167bee158c837bc5df8691"
+    },
+    {
+      "issue_id": "efa6c1cd6ef81e1cb2d7ec0f",
+      "source_reference_id": "7e2a7ec3f501384617f0e0aa"
+    },
+    {
+      "issue_id": "efa6c1cd6ef81e1cb2d7ec0f",
+      "source_reference_id": "869ed043568e056c4eed234b"
+    },
+    {
+      "issue_id": "efa6c1cd6ef81e1cb2d7ec0f",
+      "source_reference_id": "8d4fb0825f536fb8103d4c2e"
+    },
+    {
+      "issue_id": "efa6c1cd6ef81e1cb2d7ec0f",
+      "source_reference_id": "bd648e3f736a218c863f239f"
+    },
+    {
+      "issue_id": "efa6c1cd6ef81e1cb2d7ec0f",
+      "source_reference_id": "ca41d3dab9254c28d7cfb300"
+    },
+    {
+      "issue_id": "efa6c1cd6ef81e1cb2d7ec0f",
+      "source_reference_id": "e919d2b7302839fce0bbd5b8"
+    },
+    {
+      "issue_id": "f3bde3240613be5bb6fd81ce",
+      "source_reference_id": "39e72de91277d45919d6eb2c"
+    },
+    {
+      "issue_id": "f3bde3240613be5bb6fd81ce",
+      "source_reference_id": "48555de4671d97302efd0201"
+    },
+    {
+      "issue_id": "f3bde3240613be5bb6fd81ce",
+      "source_reference_id": "959ff8e1d7b9217ed1d6abcb"
+    },
+    {
+      "issue_id": "f3bde3240613be5bb6fd81ce",
+      "source_reference_id": "b8eca9380f00ef452f6ec6ce"
+    },
+    {
+      "issue_id": "f3bde3240613be5bb6fd81ce",
+      "source_reference_id": "c9cf3c683701f23ea50da0d3"
+    },
+    {
+      "issue_id": "f3bde3240613be5bb6fd81ce",
+      "source_reference_id": "ca41d3dab9254c28d7cfb300"
+    },
+    {
+      "issue_id": "f3bde3240613be5bb6fd81ce",
+      "source_reference_id": "fcbaf0c3886bf82659d7f4dc"
+    },
+    {
+      "issue_id": "f5505b980a1f43ca907ec56b",
+      "source_reference_id": "56b77605d9f3bcec4d6c8073"
+    },
+    {
+      "issue_id": "f5505b980a1f43ca907ec56b",
+      "source_reference_id": "6a167bee158c837bc5df8691"
+    },
+    {
+      "issue_id": "f5505b980a1f43ca907ec56b",
+      "source_reference_id": "869ed043568e056c4eed234b"
+    },
+    {
+      "issue_id": "f5505b980a1f43ca907ec56b",
+      "source_reference_id": "e919d2b7302839fce0bbd5b8"
+    }
+  ],
+  "audit_log": [],
+  "result_plot": [
+    {
+      "result_id": "3d7fb1a0d88c91f201149e90",
+      "plot_id": "20cb919b076e9f3f447cbb6d"
+    },
+    {
+      "result_id": "3e6c63e8a9502c11241342f9",
+      "plot_id": "a4eddae0b447d1ced2398594"
+    }
+  ]
+}
