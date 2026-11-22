@@ -123,9 +123,10 @@ def publish(connection, plot, metric, refresh=False, coverage_confirmed=False, a
         return current
     irradiance=one(connection,"""SELECT m.light_intensity,m.intensity_source_id FROM measurement m
         JOIN source_reference s ON s.id=m.intensity_source_id
-        WHERE m.id=? AND m.device_id=? AND m.measurement_type='JV' AND m.light_intensity>0
+        WHERE m.id=? AND (m.device_id=? OR EXISTS (SELECT 1 FROM measurement_device link
+             WHERE link.measurement_id=m.id AND link.device_id=?)) AND m.measurement_type='JV' AND m.light_intensity>0
           AND m.light_intensity_unit='mW/cm²' AND s.pdf_version_id=?""",
-        plot["measurement_id"],plot["device_id"],plot["pdf_version_id"]) if metric=="PCE" else None
+        plot["measurement_id"],plot["device_id"],plot["device_id"],plot["pdf_version_id"]) if metric=="PCE" else None
     try:
         value,unit,formula,inputs=compute(plot,metric,irradiance)
         if not math.isfinite(value):

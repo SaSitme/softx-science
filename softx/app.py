@@ -26,7 +26,7 @@ from .pdf import draw, page_file, prepare, read_lines
 from .publications import delete_publication
 from .qwen_review import approve_qwen_evidence
 from .science import recheck, science
-from .store import DATA, data_dir, db, edit, encode, initialize, insert, key, one, rows, workspace
+from .store import DATA, EXTRACTION_REVISION, data_dir, db, device_measurement, edit, encode, initialize, insert, key, one, rows, workspace
 from .vision import vision_suggestions
 
 app = Flask(__name__, static_folder=None)
@@ -83,16 +83,30 @@ def queue_pdf(version):
     worker.submit(copy_context().run, process, version)
 
 
-def finish_processing(connection, pub, version, pages, failures):
-    recheck(connection,pub)
+def finish_processing(connection, extraction, pages, failures):
+    version = extraction.version
     status = "partial" if failures else "completed"
+    if all(failure["fields"] == ["plot_dataset"] for failure in failures):
+        # Keep original records and all evidence in the archive. Replace the
+        # visible automatic extraction only once the entire PDF has been read.
+        observed = encode(sorted(extraction.result_ids))
+        connection.execute("""UPDATE measurement_result SET superseded=NOT EXISTS (
+            SELECT 1 FROM json_each(?) WHERE value=measurement_result.id)
+            WHERE pdf_version_id=? AND acquisition_method='published_numeric' AND manual=0 AND deleted=0""",
+            (observed, version))
+        scope = dict(devices=sorted(extraction.devices.values()), measurements=sorted(extraction.measurements),
+                     materials=sorted(set(filter(None, [extraction.material_id, *extraction.device_materials.values()]))))
+        connection.execute("UPDATE pdf_version SET entity_scope=?, extraction_revision=? WHERE id=?",
+                           (encode(scope), EXTRACTION_REVISION, version))
+    recheck(connection, extraction.pub)
     connection.execute("UPDATE pdf_version SET processing_status=?,pages=?,failed_pages=?,error_message=NULL WHERE id=?",
                        (status, encode(pages), encode(failures), version))
 
 
 def process(version):
     with db() as connection:
-        changed = connection.execute("UPDATE pdf_version SET processing_status='processing' WHERE id=? AND processing_status='queued'", (version,)).rowcount
+        changed = connection.execute("""UPDATE pdf_version SET processing_status='processing',refresh_requested=?
+            WHERE id=? AND processing_status='queued'""", (EXTRACTION_REVISION, version)).rowcount
         if not changed:
             return
         entry = one(connection, "SELECT * FROM pdf_version WHERE id=?", version)
@@ -155,12 +169,14 @@ def process(version):
                 for plot in rows(connection,"SELECT * FROM plot_dataset WHERE pdf_version_id=?",version):
                     extract_plot_results(connection,plot)
             if not eligible or not ai_providers:
-                finish_processing(connection,pub,version,pages,failures)
+                finish_processing(connection,extraction,pages,failures)
                 return
             covered_by_page={}
             for source in rows(connection,"""SELECT DISTINCT s.source_page,s.bbox FROM source_reference s
-                JOIN result_source l ON l.source_reference_id=s.id
-                WHERE s.pdf_version_id=? AND s.fragment_role='value'""",version):
+                JOIN result_source l ON l.source_reference_id=s.id JOIN measurement_result r ON r.id=l.result_id
+                WHERE s.pdf_version_id=? AND s.fragment_role='value'
+                  AND (r.manual=1 OR r.deleted=1 OR l.result_id IN (SELECT value FROM json_each(?)))""",
+                version, encode(sorted(extraction.result_ids))):
                 covered_by_page.setdefault(source["source_page"],[]).append(source["bbox"])
 
         # Network requests run after the SQLite write transaction has released its lock.
@@ -194,7 +210,7 @@ def process(version):
                                       extraction_method="deepseek_vision")
                     covered_by_page.setdefault(line.page,[]).append(span.bbox)
             approve_qwen_evidence(extraction)
-            finish_processing(connection,pub,version,pages,failures)
+            finish_processing(connection,extraction,pages,failures)
     except Exception as exc:
         if isinstance(exc,PdfReadError):
             message="Не удалось открыть PDF. Файл повреждён или неполон. "+str(exc)
@@ -312,18 +328,35 @@ def remove_publication(publication_id):
     return jsonify(ok=True)
 
 
+@app.before_request
+def refresh_saved_publications():
+    if request.endpoint not in ("library", "exports.submission"):
+        return
+    predicate = """extraction_revision<? AND refresh_requested<?
+                  AND processing_status IN ('completed','partial')"""
+    revisions = EXTRACTION_REVISION, EXTRACTION_REVISION
+    with db() as connection:
+        if not one(connection, f"SELECT id FROM pdf_version WHERE {predicate} LIMIT 1", *revisions):
+            return
+        connection.execute("BEGIN IMMEDIATE")
+        refresh = rows(connection, f"""UPDATE pdf_version SET processing_status='queued',
+                  refresh_requested=?, allow_cloud=0 WHERE {predicate} RETURNING id""", EXTRACTION_REVISION, *revisions)
+    for version in refresh:
+        queue_pdf(version["id"])
+
+
 @app.get("/api/library")
 def library():
     with db() as connection:
         publications = rows(connection, """SELECT p.*, f.id AS version_id, f.processing_status, f.filename, f.pages, f.error_message,
-            f.failed_pages, f.created_at,
+            f.failed_pages, f.created_at, f.extraction_revision, f.refresh_requested,
             (SELECT group_concat(DISTINCT material_class) FROM material m WHERE m.publication_id=p.id) AS material_class,
             (SELECT COUNT(*) FROM active_pv_result r WHERE r.pdf_version_id=f.id) AS result_count,
             (SELECT COUNT(*) FROM plot_dataset g WHERE g.pdf_version_id=f.id) AS plot_count
             FROM publication p JOIN pdf_version f ON f.publication_id=p.id ORDER BY f.created_at DESC, f.filename""")
         result_list = results(connection)
         active_issues = connection.execute("SELECT COUNT(*) FROM validation_issue WHERE resolution_status='open' AND severity IN ('error','warning')").fetchone()[0]
-    return jsonify(publications=publications, results=result_list, active_issues=active_issues,
+    return jsonify(extraction_revision=EXTRACTION_REVISION, publications=publications, results=result_list, active_issues=active_issues,
                    ai_provider=provider(), cloud_automatic=automatic_deepseek(), private_workspace=private_workspaces)
 
 
@@ -356,16 +389,56 @@ def data_entities(name):
     table=tables[name]
     with db() as connection:
         records=rows(connection,f"SELECT * FROM {table}")
+        visible = []
+        scopes = {}
         for record in records:
             pub=record.get("publication_id") or (record["id"] if name=="publications" else None)
             if not pub and record.get("device_id"):
                 device=one(connection,"SELECT publication_id FROM device WHERE id=?",record["device_id"])
                 pub=device["publication_id"] if device else None
-            version=one(connection,"SELECT id,filename FROM pdf_version WHERE publication_id=? ORDER BY created_at LIMIT 1",pub)
+            version=one(connection,"SELECT id,filename,entity_scope FROM pdf_version WHERE publication_id=? ORDER BY created_at DESC,id DESC LIMIT 1",pub)
+            if version and name in ("devices","measurements","materials","layers"):
+                if version["id"] not in scopes:
+                    scopes[version["id"]] = visible_entity_scope(connection, version)
+                scope = scopes[version["id"]]
+                if scope is not None and (record["device_id"] if name == "layers" else record["id"]) not in scope["devices" if name == "layers" else name]:
+                    continue
+            visible.append(record)
             record["publication_code"]=version["filename"] if version else None
             record["pdf_version_id"]=version["id"] if version else None
+        records = visible
         columns=["publication_code"]+[r["name"] for r in rows(connection,f"PRAGMA table_info({table})")]
+        if name == "measurements":
+            records = include_measurement_devices(connection, records)
+            columns = ["device_ids" if column == "device_id" else column for column in columns]
     return jsonify(records=records,columns=columns)
+
+
+def include_measurement_devices(connection, records):
+    members = {}
+    for link in rows(connection, "SELECT measurement_id,device_id FROM measurement_device ORDER BY device_id"):
+        members.setdefault(link["measurement_id"], []).append(link["device_id"])
+    return [dict(row, device_ids=members.get(row["id"], [row["device_id"]])) for row in records]
+
+
+def visible_entity_scope(connection, version):
+    if version["entity_scope"] is None:
+        return None
+    scope = {name: set(ids) for name, ids in version["entity_scope"].items()}
+    manual = rows(connection, """SELECT device_id,measurement_id,material_id FROM active_pv_result
+        WHERE pdf_version_id=? AND manual=1""", version["id"])
+    for row in manual:
+        for name, field in (("devices","device_id"),("measurements","measurement_id"),("materials","material_id")):
+            if row[field]:
+                scope[name].add(row[field])
+    return scope
+
+
+def with_source_ids(records, source_links, entity_key):
+    refs = {}
+    for link in source_links:
+        refs.setdefault(link[entity_key], []).append(link["source_reference_id"])
+    return [dict(record, source_ids=refs.get(record["id"], [])) for record in records]
 
 
 @app.get("/api/pdf/<version>")
@@ -375,11 +448,24 @@ def detail(version):
         if not f:
             abort(404)
         pub = f["publication_id"]
+        measurements = include_measurement_devices(connection, rows(connection,
+            "SELECT q.* FROM measurement q JOIN device d ON d.id=q.device_id WHERE d.publication_id=?", pub))
+        measurements = with_source_ids(measurements, rows(connection, """SELECT l.* FROM measurement_source l
+            JOIN source_reference s ON s.id=l.source_reference_id WHERE s.pdf_version_id=?""", version), "measurement_id")
+        layers = with_source_ids(rows(connection, """SELECT l.* FROM device_layer l JOIN device d ON d.id=l.device_id
+            WHERE d.publication_id=?""", pub), rows(connection, """SELECT l.* FROM layer_source l
+            JOIN source_reference s ON s.id=l.source_reference_id WHERE s.pdf_version_id=?""", version), "layer_id")
+        materials = rows(connection,"SELECT * FROM material WHERE publication_id=?",pub)
+        devices = rows(connection,"SELECT * FROM device WHERE publication_id=?",pub)
+        scope = visible_entity_scope(connection, f)
+        if scope is not None:
+            materials = [row for row in materials if row["id"] in scope["materials"]]
+            devices = [row for row in devices if row["id"] in scope["devices"]]
+            measurements = [row for row in measurements if row["id"] in scope["measurements"]]
+            layers = [row for row in layers if row["device_id"] in scope["devices"]]
         return jsonify(pdf=f, publication=one(connection,"SELECT * FROM publication WHERE id=?",pub),
-                       materials=rows(connection,"SELECT * FROM material WHERE publication_id=?",pub),
-                       devices=rows(connection,"SELECT * FROM device WHERE publication_id=?",pub),
-                       measurements=rows(connection,"SELECT q.* FROM measurement q JOIN device d ON d.id=q.device_id WHERE d.publication_id=?",pub),
-                       layers=rows(connection,"SELECT l.* FROM device_layer l JOIN device d ON d.id=l.device_id WHERE d.publication_id=?",pub),
+                       materials=materials, devices=devices,
+                       measurements=measurements, layers=layers,
                        results=results(connection, version),
                        sources=rows(connection,"SELECT * FROM source_reference WHERE pdf_version_id=?",version),
                        links=rows(connection,"SELECT l.* FROM result_source l JOIN active_pv_result r ON r.id=l.result_id WHERE r.pdf_version_id=?",version),
@@ -443,7 +529,7 @@ def add_result(version):
         if any(val is not None and not isinstance(val,str) for val in (device,measurement)):
             abort(400,"Некорректная привязка")
         bound = one(connection,"SELECT material_id FROM device WHERE id=? AND publication_id=?",device,pub) if device else None
-        if device and not bound or measurement and not one(connection,"SELECT id FROM measurement WHERE id=? AND device_id=?",measurement,device):
+        if device and not bound or measurement and not device_measurement(connection,measurement,device):
             abort(400,"Прибор и измерение должны принадлежать публикации")
         quote = body.get("quote") or literal
         if not isinstance(quote,str) or len(quote)>1500:
@@ -556,7 +642,7 @@ def update_result(ident):
                 abort(400, "Прибор должен принадлежать публикации")
             changes["material_id"] = device["material_id"]
         if updated["measurement_id"]:
-            measurement = one(connection,"SELECT * FROM measurement WHERE id=? AND device_id=?",updated["measurement_id"],updated["device_id"])
+            measurement = device_measurement(connection,updated["measurement_id"],updated["device_id"])
             if not measurement:
                 abort(400, "Измерение должно принадлежать выбранному прибору")
         scalar = not updated["inequality_op"] and updated["range_min"] is None and updated["range_max"] is None

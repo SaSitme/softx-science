@@ -4,7 +4,7 @@ import re
 from collections import defaultdict
 from itertools import combinations
 
-from .domain import normalize
+from .domain import normalize, outside_physical_bounds, physical_bounds
 from .spectrum import REFERENCE, detailed_balance
 from .store import rows
 from .validation import Finding
@@ -70,14 +70,19 @@ def precision(r):
 
 
 def physical(r, gap):
-    value,metric=val(r),r["metric_name"]
+    metric = r["metric_name"]
+    limits = physical_bounds(metric)
+    value = r["normalized_value"] if limits else val(r)
     if value is None:
         return
-    if metric=="FF":
-        severity,message,limits=("error" if not 0<value<=100 else "info","FF должен удовлетворять 0 < FF ≤ 100%.",{"min_exclusive":0,"max":100,"unit":"%"})
-    elif metric=="PCE":
-        severity,message,limits=("error" if not 0<=value<=100 else "info","КПД должен находиться в диапазоне 0–100%.",{"min":0,"max":100,"unit":"%"})
-    elif metric=="Jsc":
+    if limits:
+        invalid = outside_physical_bounds(metric, value)
+        descriptions = {"FF": "FF должен удовлетворять 0 < FF ≤ 100%.",
+                        "Eg": "Ширина запрещённой зоны Eg должна быть больше 0 эВ."}
+        message = descriptions.get(metric, "КПД должен находиться в диапазоне 0–100%.")
+        yield finding("PHYSICAL_RANGE", r["id"], [r], "error" if invalid else "info", message,
+                      [item(metric, value, r["normalized_unit"])], threshold=limits)
+    elif metric == "Jsc":
         pin=r["light_intensity"]
         if pin is None or not r["intensity_source_id"] or not gap or r["light_intensity_unit"]!="mW/cm²":
             yield finding("PHYSICAL_RANGE",r["id"],[r],"not_applicable",
@@ -89,9 +94,6 @@ def physical(r, gap):
                       [observed(r),observed(gap),item("Pin",pin,"mW/cm²")],{"max":ceiling,"unit":"mA/cm²"},
                       [r["intensity_source_id"]])
         return
-    else:
-        return
-    yield finding("PHYSICAL_RANGE",r["id"],[r],severity,message,threshold=limits)
 
 
 def same_pce_observation(records, references, verified):
@@ -207,14 +209,22 @@ def checks(connection, publication, corpus_status):
     measurement_groups=defaultdict(list)
     eg_by_material=defaultdict(list)
     for r in rs:
-        measurement_groups[r["pdf_version_id"],r["measurement_id"]].append(r)
+        measurement_groups[r["pdf_version_id"],r["measurement_id"],r["device_id"]].append(r)
         if r["metric_name"]=="Eg":
             eg_by_material[r["material_id"]].append(r)
     for r in rs:
         metric=r["metric_name"]
         gap=gap_for(r,eg_by_material)
-        group=measurement_groups[r["pdf_version_id"],r["measurement_id"]] if r["measurement_id"] else []
+        group=measurement_groups[r["pdf_version_id"],r["measurement_id"],r["device_id"]] if r["measurement_id"] else []
         yield from physical(r,gap)
+        if (metric != "Eg" and r["normalized_value"] is not None and r["acquisition_method"] == "published_numeric"
+                and (not r["device_id"] or not r["measurement_id"])):
+            missing = [field for field in ("device_id", "measurement_id") if not r[field]]
+            description = ("Не подтверждена привязка к прибору." if "device_id" in missing
+                           else "Не подтверждена привязка к измерению.")
+            yield finding("CROSS_SOURCE", r["id"], [r], "warning", description,
+                          [item(metric, r["normalized_value"], r["normalized_unit"])],
+                          {"missing_fields": missing})
         if metric=="PCE" and r["acquisition_method"]=="published_numeric":
             yield pce(r,group,references,verified)
         if metric in ("PCE","Jsc"):

@@ -10,6 +10,8 @@ UNITS = {
     "EQE": {"%": 1},
     "retained_PCE": {"%": 1},
     "Nt": {"cm⁻³": 1}, "tau": {"s": 1, "ms": 1e-3, "µs": 1e-6, "ns": 1e-9, "ps": 1e-12},
+    "stabilized_PCE": {"%": 1}, "Vmpp": {"V": 1, "mV": .001},
+    "Jmpp": {"mA/cm²": 1, "A/m²": .1, "A/cm²": 1000},
     "PCE": {"%": 1, "1": 100}, "FF": {"%": 1, "1": 100}, "HI": {"%": 1, "1": 100},
     "Voc": {"V": 1, "mV": .001}, "Jsc": {"mA/cm²": 1, "A/m²": .1, "A/cm²": 1000},
     "Jsc_EQE": {"mA/cm²": 1, "A/m²": .1, "A/cm²": 1000},
@@ -21,6 +23,8 @@ UNITS = {
 }
 METRICS = {
     "retained_PCE": r"(?:efficiency|PCE)\s+retention|retained\s+(?:efficiency|PCE)|(?:сохранени[ея]|удержани[ея]|остаточн\w+)\s+(?:исходного\s+)?(?:КПД|эффективност[иь])",
+    "stabilized_PCE": r"stabili[sz]ed\s+(?:(?:power conversion )?efficiency|PCE)",
+    "Vmpp": r"V[ _]*mpp", "Jmpp": r"J[ _]*mpp",
     "PCE": r"PCE|power conversion efficiency|[ηɳ]|КПД|коэффициент\w*\s+полезного\s+действия|эффективност[ьи]\s+(?:фотоэлектрического\s+)?преобразования",
     "Voc": r"V[ _]*[oₒ](?:[c꜀]|(?<=ₒ)�)|open[- ]circuit voltage|напряжени[ея]\s+холостого\s+хода",
     "Jsc_EQE": r"J[ _]*[sₛ](?:[c꜀]|(?<=ₛ)�)[ _-]*EQE|EQE[- ]integrated J[ _]*[sₛ](?:[c꜀]|(?<=ₛ)�)|плотност[ьи]\s+тока\s+короткого\s+замыкания\s+по\s+(?:ВКЭ|внешней\s+квантовой\s+эффективности)",
@@ -57,6 +61,7 @@ RUSSIAN_UNIT_TOKENS = {
 UNIT_TOKEN = re.compile("|".join(sorted(RUSSIAN_UNIT_TOKENS, key=len, reverse=True)))
 INTENSITY_UNIT = rf"mW\s*/\s*cm(?:\^?2|²)|W\s*/\s*m(?:\^?2|²)|{RUSSIAN_INTENSITY_UNIT}"
 AREA_UNIT = rf"[cm]m[²2]|{RUSSIAN_AREA_UNIT}"
+CURRENT_UNIT = r"(?:mA|A)\s*(?:/\s*(?:cm|m)(?:\^?2|²)|[·⋅∙]?\s*(?:cm|m)\s*(?:[−-]2|⁻²))"
 THICKNESS_UNIT = r"nm|[µμu]m|Å|нм|мкм"
 BANDGAP_UNIT = r"m?eV|м?[эЭ][вВ]"
 UNIT_PATTERN = (RUSSIAN_UNIT + "|" + r"m?V\b|m?eV\b|%|m?A\s*/\s*(?:cm|m)\s*(?:\^?2|²)|"
@@ -116,3 +121,22 @@ def classify(text, material_class):
     if material_class and re.search(r"fabricat|deposit|experimentally prepar|изготовлен\w*|экспериментально\s+получен\w*", text, re.I) and re.search(r"\b(?:PCE|Voc|Jsc|FF|КПД)\b|power conversion efficiency|фактор заполнения", text, re.I):
         return "included", "Обнаружены изготовление тонкоплёночного прибора и фотоэлектрические данные"
     return "needs_review", "Недостаточно явных признаков изготовленного однопереходного тонкоплёночного прибора"
+
+
+def physical_bounds(metric):
+    if metric in ("PCE", "stabilized_PCE", "retained_PCE"):
+        return {"min": 0, "max": 100, "unit": "%"}
+    if metric == "FF":
+        return {"min_exclusive": 0, "max": 100, "unit": "%"}
+    if metric == "Eg":
+        return {"min_exclusive": 0, "unit": "eV"}
+    return {}
+
+
+def outside_physical_bounds(metric, value):
+    if value is None:
+        return False
+    limits = physical_bounds(metric)
+    return (value < limits.get("min", -float("inf")) or
+            value <= limits.get("min_exclusive", -float("inf")) or
+            value > limits.get("max", float("inf")))

@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 3,
   "database": "SQLite",
   "documentation": "DATA_PASSPORT.md",
   "entities": {
@@ -140,6 +140,21 @@
           "type": "INTEGER",
           "nullable": false,
           "default_sql": "0"
+        },
+        "extraction_revision": {
+          "type": "INTEGER",
+          "nullable": false,
+          "default_sql": "0"
+        },
+        "refresh_requested": {
+          "type": "INTEGER",
+          "nullable": false,
+          "default_sql": "0"
+        },
+        "entity_scope": {
+          "type": "JSON",
+          "nullable": true,
+          "default_sql": null
         }
       }
     },
@@ -725,6 +740,11 @@
           "type": "INTEGER",
           "nullable": false,
           "default_sql": "0"
+        },
+        "superseded": {
+          "type": "INTEGER",
+          "nullable": false,
+          "default_sql": "0"
         }
       }
     },
@@ -1208,22 +1228,152 @@
           }
         }
       }
+    },
+    "measurement_device": {
+      "primary_key": [
+        "measurement_id",
+        "device_id"
+      ],
+      "columns": {
+        "measurement_id": {
+          "type": "TEXT",
+          "nullable": false,
+          "default_sql": null,
+          "references": {
+            "table": "measurement",
+            "column": "id"
+          }
+        },
+        "device_id": {
+          "type": "TEXT",
+          "nullable": false,
+          "default_sql": null,
+          "references": {
+            "table": "device",
+            "column": "id"
+          }
+        }
+      }
+    },
+    "measurement_source": {
+      "primary_key": [
+        "measurement_id",
+        "source_reference_id"
+      ],
+      "columns": {
+        "measurement_id": {
+          "type": "TEXT",
+          "nullable": false,
+          "default_sql": null,
+          "references": {
+            "table": "measurement",
+            "column": "id"
+          }
+        },
+        "source_reference_id": {
+          "type": "TEXT",
+          "nullable": false,
+          "default_sql": null,
+          "references": {
+            "table": "source_reference",
+            "column": "id"
+          }
+        }
+      }
+    },
+    "layer_source": {
+      "primary_key": [
+        "layer_id",
+        "source_reference_id"
+      ],
+      "columns": {
+        "layer_id": {
+          "type": "TEXT",
+          "nullable": false,
+          "default_sql": null,
+          "references": {
+            "table": "device_layer",
+            "column": "id"
+          }
+        },
+        "source_reference_id": {
+          "type": "TEXT",
+          "nullable": false,
+          "default_sql": null,
+          "references": {
+            "table": "source_reference",
+            "column": "id"
+          }
+        }
+      }
     }
   },
   "metric_registry": {
-    "stabilized_PCE": "(?:stabili[sz]ed|steady[- ]state(?: output)?)\\s+(?:PCE|(?:power conversion )?efficiency)",
-    "PCE": "PCE|power conversion efficiency|[ηɳ]",
-    "Voc": "V[ _]*[oₒ][c꜀]|open[- ]circuit voltage",
-    "Jsc_EQE": "J[ _]*[sₛ][c꜀][ _-]*EQE|EQE[- ]integrated J[ _]*[sₛ][c꜀]",
-    "Jsc": "J[ _]*[sₛ][c꜀]|short[- ]circuit current density",
-    "FF": "FF|fill factor",
-    "Rs": "R[ _]?s(?:eries)?|series resistance",
-    "Rsh": "R[ _]?sh(?:unt)?|shunt resistance",
-    "HI": "HI|hysteresis index",
+    "retained_PCE": "(?:efficiency|PCE)\\s+retention|retained\\s+(?:efficiency|PCE)|(?:сохранени[ея]|удержани[ея]|остаточн\\w+)\\s+(?:исходного\\s+)?(?:КПД|эффективност[иь])",
+    "stabilized_PCE": "stabili[sz]ed\\s+(?:(?:power conversion )?efficiency|PCE)",
+    "Vmpp": "V[ _]*mpp",
+    "Jmpp": "J[ _]*mpp",
+    "PCE": "PCE|power conversion efficiency|[ηɳ]|КПД|коэффициент\\w*\\s+полезного\\s+действия|эффективност[ьи]\\s+(?:фотоэлектрического\\s+)?преобразования",
+    "Voc": "V[ _]*[oₒ](?:[c꜀]|(?<=ₒ)�)|open[- ]circuit voltage|напряжени[ея]\\s+холостого\\s+хода",
+    "Jsc_EQE": "J[ _]*[sₛ](?:[c꜀]|(?<=ₛ)�)[ _-]*EQE|EQE[- ]integrated J[ _]*[sₛ](?:[c꜀]|(?<=ₛ)�)|плотност[ьи]\\s+тока\\s+короткого\\s+замыкания\\s+по\\s+(?:ВКЭ|внешней\\s+квантовой\\s+эффективности)",
+    "Jsc": "J[ _]*[sₛ](?:[c꜀]|(?<=ₛ)�)|short[- ]circuit current density|плотност[ьи]\\s+тока\\s+короткого\\s+замыкания",
+    "FF": "FF|fill factor|(?:фактор|коэффициент)\\s+заполнения",
+    "Rs": "R[ _]?s(?:eries)?|series resistance|последовательн\\w+\\s+сопротивлени[ея]",
+    "Rsh": "R[ _]?sh(?:unt)?|shunt resistance|шунтирующ\\w+\\s+сопротивлени[ея]|сопротивлени[ея]\\s+шунта",
+    "HI": "HI|hysteresis index|индекс\\s+гистерезиса",
     "T80": "T[ _]?80",
-    "Eg": "E[ _]?g|band gap|bandgap"
+    "Eg": "E[ _]?g|band gap|bandgap|ширин[аы]\\s+запрещ[её]нной\\s+зоны"
   },
   "normalization": {
+    "EQE": {
+      "target": "%",
+      "factor_by_unit": {
+        "%": 1
+      }
+    },
+    "retained_PCE": {
+      "target": "%",
+      "factor_by_unit": {
+        "%": 1
+      }
+    },
+    "Nt": {
+      "target": "cm⁻³",
+      "factor_by_unit": {
+        "cm⁻³": 1
+      }
+    },
+    "tau": {
+      "target": "s",
+      "factor_by_unit": {
+        "s": 1,
+        "ms": 0.001,
+        "µs": 1e-06,
+        "ns": 1e-09,
+        "ps": 1e-12
+      }
+    },
+    "stabilized_PCE": {
+      "target": "%",
+      "factor_by_unit": {
+        "%": 1
+      }
+    },
+    "Vmpp": {
+      "target": "V",
+      "factor_by_unit": {
+        "V": 1,
+        "mV": 0.001
+      }
+    },
+    "Jmpp": {
+      "target": "mA/cm²",
+      "factor_by_unit": {
+        "mA/cm²": 1,
+        "A/m²": 0.1,
+        "A/cm²": 1000
+      }
+    },
     "PCE": {
       "target": "%",
       "factor_by_unit": {
@@ -1243,18 +1393,6 @@
       "factor_by_unit": {
         "%": 1,
         "1": 100
-      }
-    },
-    "stabilized_PCE": {
-      "target": "%",
-      "factor_by_unit": {
-        "%": 1
-      }
-    },
-    "retained_PCE": {
-      "target": "%",
-      "factor_by_unit": {
-        "%": 1
       }
     },
     "Voc": {

@@ -6,7 +6,7 @@ from pathlib import Path
 import re
 from zipfile import ZIP_DEFLATED, ZipFile
 
-from flask import Blueprint, send_file
+from flask import Blueprint, abort, send_file
 from openpyxl import Workbook
 from openpyxl.cell import WriteOnlyCell
 from openpyxl.styles import Alignment, Font, PatternFill
@@ -14,6 +14,7 @@ from openpyxl.utils import get_column_letter
 
 from .science import issue_report
 from .store import TABLES, data_dir, db, rows
+from .submission import submission_files
 
 exporter=Blueprint("exports",__name__)
 
@@ -155,3 +156,16 @@ def validation():
         connection.execute("BEGIN")
         result=dump(issue_report(connection))
     return send_file(io.BytesIO(result),mimetype="application/json",as_attachment=True,download_name="validation_report.json")
+
+
+@exporter.get("/api/export/submission.zip")
+def submission():
+    data, _, report = relational_snapshot()
+    if any(row["processing_status"] in ("queued", "processing") for row in data["pdf_version"]):
+        abort(409, "Дождитесь завершения обработки PDF, затем скачайте CSV.")
+    result = io.BytesIO()
+    with ZipFile(result, "w", ZIP_DEFLATED) as archive:
+        for name, content in submission_files(data, report):
+            archive.writestr(name, content)
+    result.seek(0)
+    return send_file(result, as_attachment=True, download_name="softx-submission.zip", mimetype="application/zip")
