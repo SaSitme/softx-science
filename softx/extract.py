@@ -349,6 +349,7 @@ class Extraction:
         self.table_conditions = {}
         self.devices = {}
         self.measurements = set()
+        self.result_ids = set()
         self.measurement_spectra = {}
         self.conditions = {}
         self.sections = {}
@@ -688,7 +689,7 @@ class Extraction:
                      author="softx-parser")
                 result_id = previous["id"]
         from_table = any(kind == "table_cell" for _, kind in refs)
-        status = d.REVIEW if uncertain else d.AUTO
+        status = d.REVIEW if uncertain or d.outside_physical_bounds(metric, norm) else d.AUTO
         insert(self.db, "measurement_result", id=result_id, publication_id=self.pub, pdf_version_id=self.version,
                material_id=self.device_materials.get(device, self.material_id) if origin == "primary" else None, device_id=device, measurement_id=measurement,
                metric_name=metric, metric_value=value, metric_unit=effective_unit, raw_value=original_value, raw_unit=unit,
@@ -712,6 +713,7 @@ class Extraction:
                 value_state=?, extraction_status=?, note=?
                 WHERE id=? AND manual=0 AND raw_unit IS NULL AND normalized_value IS NULL""",
                 (effective_unit,norm,norm_unit,state,status,"FF без указанной единицы интерпретирован как доля; требуется проверка.",result_id))
+        self.result_ids.add(result_id)
         if from_table and measurement:
             # Re-reading a printed table can repair the current links, including
             # old rows where a scan label was incorrectly treated as the device.
@@ -802,10 +804,12 @@ class Extraction:
             return
         line, span = source
         if one(self.db, """SELECT 1 FROM source_reference s JOIN result_source l ON l.source_reference_id=s.id
-                          WHERE s.pdf_version_id=? AND s.source_page=? AND s.fragment_role='value' AND
+                          JOIN measurement_result r ON r.id=l.result_id
+                          WHERE s.pdf_version_id=? AND s.source_page=? AND s.fragment_role='value'
+                            AND (r.manual=1 OR r.deleted=1 OR l.result_id IN (SELECT value FROM json_each(?))) AND
                             json_extract(s.bbox,'$[0]')<=? AND json_extract(s.bbox,'$[1]')<=?
                             AND json_extract(s.bbox,'$[2]')>=? AND json_extract(s.bbox,'$[3]')>=? LIMIT 1""",
-               self.version,line.page,(span.bbox[0]+span.bbox[2])/2,(span.bbox[1]+span.bbox[3])/2,
+               self.version,line.page,json.dumps(sorted(self.result_ids)),(span.bbox[0]+span.bbox[2])/2,(span.bbox[1]+span.bbox[3])/2,
                (span.bbox[0]+span.bbox[2])/2,(span.bbox[1]+span.bbox[3])/2):
             return
         context = " ".join(part.text for _,part in group)

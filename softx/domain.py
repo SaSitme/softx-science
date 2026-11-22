@@ -121,3 +121,22 @@ def classify(text, material_class):
     if material_class and re.search(r"fabricat|deposit|experimentally prepar|изготовлен\w*|экспериментально\s+получен\w*", text, re.I) and re.search(r"\b(?:PCE|Voc|Jsc|FF|КПД)\b|power conversion efficiency|фактор заполнения", text, re.I):
         return "included", "Обнаружены изготовление тонкоплёночного прибора и фотоэлектрические данные"
     return "needs_review", "Недостаточно явных признаков изготовленного однопереходного тонкоплёночного прибора"
+
+
+def physical_bounds(metric):
+    if metric in ("PCE", "stabilized_PCE", "retained_PCE"):
+        return {"min": 0, "max": 100, "unit": "%"}
+    if metric == "FF":
+        return {"min_exclusive": 0, "max": 100, "unit": "%"}
+    if metric == "Eg":
+        return {"min_exclusive": 0, "unit": "eV"}
+    return {}
+
+
+def outside_physical_bounds(metric, value):
+    if value is None:
+        return False
+    limits = physical_bounds(metric)
+    return (value < limits.get("min", -float("inf")) or
+            value <= limits.get("min_exclusive", -float("inf")) or
+            value > limits.get("max", float("inf")))

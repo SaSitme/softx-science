@@ -4,8 +4,9 @@ set -euo pipefail
 umask 022
 test "$EUID" -eq 0 || { echo 'Run from the VPS console as root.' >&2; exit 1; }
 
-backend_commit=c34ba3fc7d381663701c2a5c1c0fe29da3b1fb5a
-client_commit=768832be803cb6317fd41ee6d2e0c00690e4eb81
+backend_commit=${1:-c34ba3fc7d381663701c2a5c1c0fe29da3b1fb5a}
+client_commit=${2:-768832be803cb6317fd41ee6d2e0c00690e4eb81}
+[[ "$backend_commit" =~ ^[0-9a-f]{40}$ && "$client_commit" =~ ^[0-9a-f]{40}$ ]]
 service=softx.service
 work=$(systemctl show -p WorkingDirectory --value "$service")
 pid=$(systemctl show -p MainPID --value "$service")
@@ -71,7 +72,7 @@ from io import BytesIO
 from zipfile import ZipFile
 from softx.app import app
 with app.test_client() as client:
-    assert b"app.js?v=submission" in client.get("/").data
+    assert b"/static/app.js" in client.get("/").data
     assert b"submission.zip" in client.get("/static/app.js").data
     response = client.get("/api/export/submission.zip")
     assert response.status_code == 200
@@ -105,8 +106,8 @@ fi
 systemctl start "$service"
 for _ in {1..20}; do
     if curl -fsS --max-time 4 https://s0ftx.ru/ -o "$stage/home.html" &&
-       grep -Fq 'app.js?v=submission' "$stage/home.html" &&
-       curl -fsS --max-time 4 'https://s0ftx.ru/static/app.js?v=submission' -o "$stage/site-app.js" &&
+       cmp -s "$stage/client/index.html" "$stage/home.html" &&
+       curl -fsS --max-time 4 "https://s0ftx.ru/static/app.js?v=$client_commit" -o "$stage/site-app.js" &&
        cmp -s "$stage/client/app.js" "$stage/site-app.js" &&
        curl -fsS --max-time 4 https://s0ftx.ru/api/export/submission.zip -o "$stage/live.zip"; then
         "$python" - "$stage/live.zip" <<'PY'

@@ -6,6 +6,8 @@ from contextlib import contextmanager
 from contextvars import ContextVar
 from pathlib import Path
 
+EXTRACTION_REVISION = 1
+
 ROOT = Path(__file__).resolve().parent
 DATA = Path(os.environ.get("SOFTX_DATA", ROOT.parent / "instance")).resolve()
 workspace = ContextVar("workspace", default=DATA)
@@ -51,10 +53,18 @@ def initialize():
             connection.execute("ALTER TABLE pdf_version ADD COLUMN allow_cloud INTEGER NOT NULL DEFAULT 0 CHECK(allow_cloud IN (0,1))")
         connection.execute("""INSERT OR IGNORE INTO measurement_device (measurement_id, device_id)
             SELECT id, device_id FROM measurement""")
+        for table, field, definition in (
+            ("pdf_version", "extraction_revision", "INTEGER NOT NULL DEFAULT 0"),
+            ("pdf_version", "refresh_requested", "INTEGER NOT NULL DEFAULT 0"),
+            ("pdf_version", "entity_scope", "JSON"),
+            ("measurement_result", "superseded", "INTEGER NOT NULL DEFAULT 0 CHECK(superseded IN (0,1))"),
+        ):
+            if field not in {row["name"] for row in connection.execute(f"PRAGMA table_info({table})")}:
+                connection.execute(f"ALTER TABLE {table} ADD COLUMN {field} {definition}")
         connection.execute("DROP VIEW IF EXISTS active_pv_result")
         connection.execute("""CREATE VIEW active_pv_result AS
             SELECT r.*,r.rowid AS record_order FROM measurement_result r JOIN pdf_version f ON f.id=r.pdf_version_id
-            WHERE f.pv_extraction_enabled IS NOT 0 AND r.deleted=0""")
+            WHERE f.pv_extraction_enabled IS NOT 0 AND r.deleted=0 AND r.superseded=0""")
 
 
 def encode(value):

@@ -8,7 +8,8 @@ CREATE TABLE IF NOT EXISTS pdf_version (
  pages JSON NOT NULL DEFAULT '[]', processing_status TEXT NOT NULL CHECK(processing_status IN ('queued','processing','completed','partial','failed')),
  error_message TEXT, failed_pages JSON NOT NULL DEFAULT '[]', created_at TEXT DEFAULT CURRENT_TIMESTAMP,
  pv_extraction_enabled INTEGER CHECK(pv_extraction_enabled IN (0,1)),
- allow_cloud INTEGER NOT NULL DEFAULT 0 CHECK(allow_cloud IN (0,1))
+ allow_cloud INTEGER NOT NULL DEFAULT 0 CHECK(allow_cloud IN (0,1)),
+ extraction_revision INTEGER NOT NULL DEFAULT 0, refresh_requested INTEGER NOT NULL DEFAULT 0, entity_scope JSON
 );
 CREATE TABLE IF NOT EXISTS material (
  id TEXT PRIMARY KEY, publication_id TEXT NOT NULL REFERENCES publication(id), material_name_raw TEXT, formula_normalized TEXT,
@@ -43,7 +44,8 @@ CREATE TABLE IF NOT EXISTS measurement_result (
  extraction_method TEXT, confidence REAL, formula TEXT, input_result_ids JSON, calculation_inputs JSON, assumption_basis TEXT,
  extraction_status TEXT NOT NULL CHECK(extraction_status IN ('Извлечено автоматически','Подтверждено пользователем','Требует проверки')),
  duplicate_of TEXT REFERENCES measurement_result(id), note TEXT,
- manual INTEGER NOT NULL DEFAULT 0, deleted INTEGER NOT NULL DEFAULT 0 CHECK(deleted IN (0,1))
+ manual INTEGER NOT NULL DEFAULT 0, deleted INTEGER NOT NULL DEFAULT 0 CHECK(deleted IN (0,1)),
+ superseded INTEGER NOT NULL DEFAULT 0 CHECK(superseded IN (0,1))
 );
 CREATE TABLE IF NOT EXISTS source_reference (
  id TEXT PRIMARY KEY, publication_id TEXT NOT NULL REFERENCES publication(id), pdf_version_id TEXT NOT NULL REFERENCES pdf_version(id),

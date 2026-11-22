@@ -6,7 +6,7 @@ from pathlib import Path
 import re
 from zipfile import ZIP_DEFLATED, ZipFile
 
-from flask import Blueprint, send_file
+from flask import Blueprint, abort, send_file
 from openpyxl import Workbook
 from openpyxl.cell import WriteOnlyCell
 from openpyxl.styles import Alignment, Font, PatternFill
@@ -161,6 +161,8 @@ def validation():
 @exporter.get("/api/export/submission.zip")
 def submission():
     data, _, report = relational_snapshot()
+    if any(row["processing_status"] in ("queued", "processing") for row in data["pdf_version"]):
+        abort(409, "Дождитесь завершения обработки PDF, затем скачайте CSV.")
     result = io.BytesIO()
     with ZipFile(result, "w", ZIP_DEFLATED) as archive:
         for name, content in submission_files(data, report):

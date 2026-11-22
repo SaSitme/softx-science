@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "database": "SQLite",
   "documentation": "DATA_PASSPORT.md",
   "entities": {
@@ -140,6 +140,21 @@
           "type": "INTEGER",
           "nullable": false,
           "default_sql": "0"
+        },
+        "extraction_revision": {
+          "type": "INTEGER",
+          "nullable": false,
+          "default_sql": "0"
+        },
+        "refresh_requested": {
+          "type": "INTEGER",
+          "nullable": false,
+          "default_sql": "0"
+        },
+        "entity_scope": {
+          "type": "JSON",
+          "nullable": true,
+          "default_sql": null
         }
       }
     },
@@ -722,6 +737,11 @@
           "default_sql": "0"
         },
         "deleted": {
+          "type": "INTEGER",
+          "nullable": false,
+          "default_sql": "0"
+        },
+        "superseded": {
           "type": "INTEGER",
           "nullable": false,
           "default_sql": "0"

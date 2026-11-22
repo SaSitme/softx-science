@@ -5,6 +5,8 @@ import io
 from pathlib import Path
 import re
 
+from .domain import outside_physical_bounds
+
 COLUMNS = {
     "publications": "publication_id title year DOI authors in_scope exclusion_reason",
     "materials": "publication_id material_id material_name_raw formula_normalized material_class dimensionality additives bandgap_value bandgap_unit bandgap_method note",
@@ -77,6 +79,7 @@ def export_rows(data, issues):
         if previous is None or (version["created_at"] or "", version["id"]) > (previous["created_at"] or "", previous["id"]):
             versions[code] = version
     included = {}
+    scopes = {}
     records_by_pub = defaultdict(list)
     for code, version in sorted(versions.items()):
         pub = publications[version["publication_id"]]
@@ -87,15 +90,36 @@ def export_rows(data, issues):
         if scope:
             included[version["id"]] = code
             records_by_pub[pub["id"]].append(code)
+            if version.get("entity_scope") is not None:
+                scopes[code] = {name: set(ids) for name, ids in version["entity_scope"].items()}
+
     device_by_id = {d["id"]: d for d in data["device"]}
+    measurement_by_id = {m["id"]: m for m in data["measurement"]}
+    for row in data["measurement_result"]:
+        scope = scopes.get(included.get(row["pdf_version_id"]))
+        if scope is not None and row["manual"] and not row["deleted"]:
+            for name, field in (("devices", "device_id"), ("measurements", "measurement_id"), ("materials", "material_id")):
+                if row[field]:
+                    scope[name].add(row[field])
+    for scope in scopes.values():
+        scope["devices"].update(measurement_by_id[mid]["device_id"] for mid in scope["measurements"])
+        scope["materials"].update(device_by_id[did]["material_id"] for did in scope["devices"] if device_by_id[did]["material_id"])
+
+    def visible(code, collection, ident):
+        return code not in scopes or ident in scopes[code][collection]
+
     for row in data["material"]:
         for code in records_by_pub[row["publication_id"]]:
+            if not visible(code, "materials", row["id"]):
+                continue
             tables["materials"].append(dict(row, publication_id=code, material_id=row["id"],
                 material_class=MATERIAL_CLASSES.get(row["material_class"], "other" if row["material_class"] else None),
                 dimensionality=choice(row["dimensionality"], "3D", "2D", "2D-3D"),
                 bandgap_method=choice(row["bandgap_method"], "Tauc", "EQE", "PL", "cited")))
     for row in data["device"]:
         for code in records_by_pub[row["publication_id"]]:
+            if not visible(code, "devices", row["id"]):
+                continue
             kind = "cell" if row["device_type"] == "single-junction thin-film" else row["device_type"]
             tables["devices"].append(dict(row, publication_id=code, device_id=row["id"],
                 absorber_material_id=row["material_id"], device_type=choice(kind, "cell", "module", "minimodule"),
@@ -105,6 +129,8 @@ def export_rows(data, issues):
                 area_definition=choice(row["area_definition"], "designated illumination", "aperture", "total")))
     for row in data["device_layer"]:
         for code in records_by_pub[device_by_id[row["device_id"]]["publication_id"]]:
+            if not visible(code, "devices", row["device_id"]):
+                continue
             functions = {"contact": None, "buffer": "ETL", "electron transport layer": "ETL",
                          "hole transport layer": "HTL"}
             function = functions.get((row["layer_function"] or "").lower(), row["layer_function"])
@@ -117,10 +143,13 @@ def export_rows(data, issues):
         members[link["measurement_id"]].append(link["device_id"])
     for row in data["measurement"]:
         for code in records_by_pub[device_by_id[row["device_id"]]["publication_id"]]:
+            if not visible(code, "measurements", row["id"]):
+                continue
             kind = "J-V" if row["measurement_type"] == "JV" else row["measurement_type"]
             protocol = row["stability_protocol"]
             tables["measurements"].append(dict(row, publication_id=code, measurement_id=row["id"],
-                device_id=sorted(set([row["device_id"], *members[row["id"]]])),
+                device_id=sorted({did for did in [row["device_id"], *members[row["id"]]]
+                                  if visible(code, "devices", did)}),
                 measurement_type=choice(kind, "J-V", "MPP tracking", "EQE", "stability"),
                 scan_direction=choice(row["scan_direction"], "reverse", "forward", "average"),
                 intensity_unit=units(row["light_intensity_unit"]),
@@ -134,7 +163,7 @@ def export_rows(data, issues):
     for link in data["result_source"]:
         references[link["result_id"]].append(sources[link["source_reference_id"]])
     candidates = {
-        r["id"]:r for r in data["measurement_result"] if r["pdf_version_id"] in included and not r["deleted"]
+        r["id"]:r for r in data["measurement_result"] if r["pdf_version_id"] in included and not r["deleted"] and not r.get("superseded")
         and (r["acquisition_method"] == "published_numeric" or r["value_state"] == "unparseable")
     }
     children = defaultdict(list)
@@ -153,6 +182,8 @@ def export_rows(data, issues):
                   else "absent" if record["value_state"] == "missing"
                   else "present_not_extractable")
         extra = []
+        if outside_physical_bounds(record["metric_name"], record["normalized_value"]):
+            extra.append("Требуется проверка физических границ значения.")
         if record["inequality_op"]:
             extra.append(f"Неравенство: {record['inequality_op']} {record['metric_value']}")
         if record["range_min"] is not None and record["range_max"] is not None:
@@ -165,11 +196,15 @@ def export_rows(data, issues):
             and s["fragment_role"] != "value"
         )] if (match := REFERENCE.search(text))), None)
         unit = units(record["normalized_unit"])
+        code = included[record["pdf_version_id"]]
+        device = record["device_id"] if not cited and visible(code, "devices", record["device_id"]) else None
+        measurement = record["measurement_id"] if device and visible(code, "measurements", record["measurement_id"]) else None
+        material = record["material_id"] if visible(code, "materials", record["material_id"]) else None
         tables["results"].append(dict(record, **source_fields(source),
-            publication_id=included[record["pdf_version_id"]], result_id=record["id"],
+            publication_id=code, result_id=record["id"],
             metric_value=record["normalized_value"], metric_unit=unit, normalized_unit=unit,
             aggregation=choice(record["aggregation"], "champion", "mean", "median"),
-            device_id=None if cited else record["device_id"], measurement_id=None if cited else record["measurement_id"],
+            device_id=device, measurement_id=measurement, material_id=material,
             cited_publication_id=(citation or pub.get("doi")) if cited else None,
             extraction_status=status, duplicate_of=duplicate, note=note))
 
@@ -234,7 +269,9 @@ def export_rows(data, issues):
             source = first_source([s for s in issue["sources"] if included.get(s["pdf_version_id"]) == code
                                    and s["fragment_role"] == "value"])
             tables["issues"].append(dict(source_fields(source or {}), publication_id=code,
-                issue_id=issue["id"], record_ids=result_ids, check_name=CHECK_NAMES.get(issue["rule_code"], issue["rule_code"]),
+                issue_id=issue["id"], record_ids=result_ids,
+                check_name="unresolved_link" if (issue.get("threshold") or {}).get("missing_fields")
+                else CHECK_NAMES.get(issue["rule_code"], issue["rule_code"]),
                 description=issue["description"]))
     return tables
 
