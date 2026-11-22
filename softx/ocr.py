@@ -5,15 +5,17 @@ import os
 import re
 import subprocess
 import xml.etree.ElementTree as ET
+from contextlib import ExitStack
 
 from PIL import Image
 
-from .extract import METRIC, UNIT
+from .domain import CYRILLIC, INTENSITY_UNIT, normalize
+from .extract import METRIC, UNIT, prose_metrics
 from .graphs import raster_boxes
 from .pdf import Line, Span, draw
 
 
-CAPTION = re.compile(r"^(?:Table|Figure|Fig\.)\s+\d", re.I)
+CAPTION = re.compile(r"^(?:Table|Figure|Fig\.|Таблица|Рисунок|Рис\.)\s+(?:№\s*)?\d", re.I)
 ANNOTATION = re.compile(r"\s*[=:≈]\s*[+−-]?(?:\d+(?:[.,]\d+)?|[.,]\d+)\s*")
 
 
@@ -70,7 +72,7 @@ def recognize(image, page, box):
 
 
 def image_regions(path, meta, lines):
-    captions = [(index, line.span.bbox, line.text.lower().startswith("table"))
+    captions = [(index, line.span.bbox, line.text.lower().startswith(("table","таблица")))
                 for index, line in enumerate(lines) if CAPTION.match(line.text)]
     if not captions:
         return
@@ -95,22 +97,67 @@ def image_regions(path, meta, lines):
             yield index+1, box, not table
 
 
+def read_region(image, page_box, box, page):
+    left, bottom, right, top = page_box
+    sx, sy = image.width/(right-left), image.height/(top-bottom)
+    a, b, c, d = box
+    x0, y0, x1, y1 = (round(value) for value in ((a-left)*sx, (top-d)*sy, (c-left)*sx, (top-b)*sy))
+    if x0 >= x1 or y0 >= y1:
+        return [], box
+    crop_box = (left+x0/sx, top-y1/sy, left+x1/sx, top-y0/sy)
+    return list(recognize(image.crop((x0,y0,x1,y1)), page, crop_box)), crop_box
+
+
+def recognized_measurements(line):
+    count = 0
+    for metric, value, _ in prose_metrics(line.text):
+        unit = UNIT.match(line.text[value.end():].lstrip())
+        if unit and normalize(metric, 1, unit.group())[0] is not None:
+            count += 1
+    return count + int(bool(re.search(INTENSITY_UNIT, line.text)))
+
+
+def prefer_supported_units(observed, refined):
+    # OCR passes can disagree on superscripts or Cyrillic letters. Compare only
+    # lines in the same position and prefer a recognized metric with its unit.
+    for line in observed:
+        a, b, c, d = line.span.bbox
+        candidates = []
+        for other in refined:
+            e, f, g, h = other.span.bbox
+            if (min(d,h)-max(b,f) >= .6*min(d-b,h-f)
+                    and min(c,g)-max(a,e) >= .7*min(c-a,g-e)):
+                candidates.append(other)
+        if candidates:
+            best = max(candidates, key=recognized_measurements)
+            if recognized_measurements(best) > recognized_measurements(line):
+                yield best
+                continue
+        yield line
+
+
 def read_ocr(path, meta, native, *, vision_regions=None):
     page_box = meta["crop_box"]
     regions = list(image_regions(path, meta, native)) if native else [(0, page_box, False)]
     if not regions:
         return native
-    with Image.open(io.BytesIO(draw(path, "png", width=1900))) as page_image:
-        left, bottom, right, top = page_box
-        sx, sy = page_image.width/(right-left), page_image.height/(top-bottom)
+    languages = os.getenv("SOFTX_OCR_LANG", "eng").split("+")
+    with ExitStack() as images:
+        page_image = images.enter_context(Image.open(io.BytesIO(draw(path, "png", width=1900))))
         inserted = {}
-        for index, (a,b,c,d), figure in regions:
-            x0,y0,x1,y1 = (round(value) for value in ((a-left)*sx, (top-d)*sy, (c-left)*sx, (top-b)*sy))
-            if x0 >= x1 or y0 >= y1:
-                continue
-            cropped = page_image.crop((x0,y0,x1,y1))
-            crop_box = (left+x0/sx, top-y1/sy, left+x1/sx, top-y0/sy)
-            observed = list(recognize(cropped, meta["page"], crop_box))
+        high_resolution = None
+        for index, box, figure in regions:
+            observed, crop_box = read_region(page_image, page_box, box, meta["page"])
+            if ("rus" in languages and sum(len(CYRILLIC.findall(line.text)) for line in observed) >= 20):
+                try:
+                    if high_resolution is None:
+                        high_resolution = images.enter_context(
+                            Image.open(io.BytesIO(draw(path, "png", width=2300))))
+                    refined, _ = read_region(high_resolution, page_box, box, meta["page"])
+                except (OSError, ValueError, subprocess.SubprocessError):
+                    refined = []
+                if refined:
+                    observed = list(prefer_supported_units(observed, refined))
             if vision_regions is not None and observed:
                 vision_regions.append((path, meta, crop_box, figure, observed))
             inserted.setdefault(index, []).extend(figure_annotations(observed) if figure else observed)

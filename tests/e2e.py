@@ -456,84 +456,6 @@ def manual_result(page,url):
     print("PASS · manual result from a rotated PDF, review queue, confirmation and audit",flush=True)
 
 
-def linked_table_result(page,url):
-    writer = PdfWriter()
-    pdf = writer.add_blank_page(width=620,height=790)
-    pdf[NameObject("/Resources")] = DictionaryObject({NameObject("/Font"):DictionaryObject({
-        NameObject("/F1"):DictionaryObject({NameObject("/Type"):NameObject("/Font"),
-            NameObject("/Subtype"):NameObject("/Type1"),NameObject("/BaseFont"):NameObject("/Helvetica")})})})
-    lines = [
-        (45,730,"Experimental single-junction CdTe solar cells were fabricated."),
-        (45,695,"Table 1. Measured photovoltaic characteristics."),
-        (45,665,"Sample"),(130,665,"Scan"),(220,665,"PCE (%)"),(320,665,"Voc (V)"),
-        (45,641,"A"),(130,641,"reverse"),(220,641,"15.0"),(320,641,"0.80"),
-        (45,617,"B"),(130,617,"reverse"),(220,617,"15.0"),(320,617,"0.90"),
-        (45,593,"A"),(130,593,"forward"),(220,593,"15.0"),(320,593,"0.95"),
-        (45,490,"As shown in Table 1, PCE = 15.0 % and Voc = 0.80 V."),
-        (45,440,"Device A, with a stabilized PCE of 14.8%, was monitored."),
-        (45,400,"The cell retained 92% of its initial PCE for 500 h."),
-        (45,360,"Integration of the EQE spectrum yields a photocurrent of 21.1 mA/cm2."),
-    ]
-    stream=DecodedStreamObject()
-    parts=[]
-    for x,y,text in lines:
-        escaped=text.replace("(","\\(").replace(")","\\)")
-        parts.append(f"BT /F1 11 Tf {x} {y} Td ({escaped}) Tj ET")
-    stream.set_data("\n".join(parts).encode("ascii"))
-    pdf[NameObject("/Contents")]=writer._add_object(stream)
-    packet=io.BytesIO()
-    writer.write(packet)
-    content=packet.getvalue()
-    version=hashlib.sha256(content).hexdigest()
-    page.goto(url)
-    page.get_by_role("button",name="Загрузить PDF",exact=True).click()
-    page.locator("#files").set_input_files({"name":"synthetic-linked-table.pdf","mimeType":"application/pdf","buffer":content})
-    page.get_by_role("button",name="Обработать PDF").click()
-    expect(page.locator("tr").filter(has_text="synthetic-linked-table.pdf").get_by_text("Обработан",exact=True)).to_be_visible(timeout=15000)
-    detail=page.request.get(f"{url}/api/pdf/{version}").json()
-    results=[result for result in detail["results"] if result["metric_name"]=="PCE"]
-    assert {(r["device_label"],r["scan_direction"],r["normalized_value"]) for r in results}=={
-        ("A","reverse",15),("B","reverse",15),("A","forward",15)}
-    assert len(results)==3
-    matched=next(r for r in results if r["device_label"]=="A" and r["scan_direction"]=="reverse")
-    page.goto(f"{url}/#xray/{version}/{matched['id']}")
-    value_buttons=page.locator('#active-record [data-focus-ref]').filter(has_text="Значение")
-    expect(value_buttons).to_have_count(2)
-    value_buttons.first.click()
-    first=page.locator(".highlight-value.highlight-focused").get_attribute("y")
-    value_buttons.last.click()
-    second=page.locator(".highlight-value.highlight-focused").get_attribute("y")
-    assert float(first)!=float(second)
-    print("PASS · linked table and prose collapse into one record with two clickable sources, other scans stay distinct",flush=True)
-    specialized={r["metric_name"]:r for r in detail["results"] if r["metric_name"] in
-                 {"stabilized_PCE","retained_PCE","Jsc_EQE"}}
-    assert {metric: row["normalized_value"] for metric,row in specialized.items()} == {
-        "stabilized_PCE":14.8,"retained_PCE":92,"Jsc_EQE":21.1}
-    retained=specialized["retained_PCE"]
-    assert (retained["time_point"],retained["time_unit"]) == (500,"h")
-    page.goto(f"{url}/#xray/{version}/{retained['id']}")
-    expect(page.locator("#active-record h3")).to_contain_text("Доля сохранённого КПД (retained_PCE)")
-    expect(page.locator('#active-record [data-focus-ref]').filter(has_text="Условие")).to_have_count(2)
-    print("PASS · stabilized PCE, retained PCE with duration, and integrated EQE current",flush=True)
-    page.goto(f"{url}/#export")
-    with page.expect_download() as submission:
-        page.get_by_role("link",name="Скачать CSV для сдачи").click()
-    with ZipFile(submission.value.path()) as archive:
-        assert sorted(archive.namelist())==[
-            "devices.csv","issues.csv","layers.csv","materials.csv","measurements.csv","publications.csv","results.csv",
-        ]
-        rows=list(csv.DictReader(io.StringIO(archive.read("results.csv").decode())))
-    exported=[r for r in rows if r["publication_id"]=="synthetic-linked-table" and r["metric_name"]=="PCE"]
-    assert len(exported)==4
-    duplicates=[r for r in exported if r["duplicate_of"]]
-    assert len(duplicates)==1
-    primary=next(r for r in exported if r["result_id"]==duplicates[0]["duplicate_of"])
-    assert primary["source_table"] and not duplicates[0]["source_table"]
-    assert primary["normalized_value"]==duplicates[0]["normalized_value"]=="15"
-    assert len({r["measurement_id"] for r in exported})==3
-    print("PASS · submission CSV keeps distinct published mentions and scan directions",flush=True)
-
-
 def mobile_layout(browser,url):
     phone=browser.new_page(viewport={"width":390,"height":844},is_mobile=True,has_touch=True)
     try:
@@ -642,7 +564,6 @@ def main():
         raster_figure(page,url)
         mobile_layout(browser,url)
         manual_result(page,url)
-        linked_table_result(page,url)
         with tempfile.TemporaryDirectory(prefix="softx-private-e2e-") as workspaces, server(Path(workspaces), private=True) as private_url:
             private_libraries(browser,private_url,Path(workspaces))
         browser.close()

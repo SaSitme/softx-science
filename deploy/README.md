@@ -2,7 +2,7 @@
 
 Flask обслуживает интерфейс и API через Gunicorn. Один процесс Gunicorn запускает очередь обработки PDF и подхватывает незавершённые задания при перезапуске. Caddy принимает соединения HTTPS. У каждого профиля браузера своя база SQLite и каталог PDF в `SOFTX_DATA/workspaces/`. Доступ без регистрации привязан к cookie. При очистке cookie или переходе в другой профиль браузер получит новую пустую библиотеку.
 
-1. На VPS с systemd установите Python 3.11+, `python3-venv`, `mupdf-tools` и Caddy. Перенесите исходный код в `/opt/softx` и установите зависимости.
+1. На VPS с systemd установите Python 3.11+, `python3-venv`, `mupdf-tools` и Caddy. Разместите [серверный репозиторий](https://github.com/SaSitme/softx-science) в `/opt/softx`, а [клиентский](https://github.com/SaSitme/softx-science-client) в `/opt/softx-client`. Добавьте `SOFTX_STATIC_DIR=/opt/softx-client` в `/etc/softx.env`, затем установите зависимости.
 
    ```sh
    cd /opt/softx
@@ -27,10 +27,11 @@ Flask обслуживает интерфейс и API через Gunicorn. Од
 
 ## Локальная модель и OCR
 
-Поместите Linux-сборку llama.cpp с библиотеками в `/opt/softx-model/bin`, а GGUF-модель в `/opt/softx-model/model.gguf`. Установите `deploy/softx-model.service` в `/etc/systemd/system/` и запустите службу. Она принимает запросы приложения на `127.0.0.1:8090`. Установите `tesseract-ocr` и `tesseract-ocr-eng` для распознавания английских документов. Добавьте настройки в `/etc/softx.env` и перезапустите SoftX.
+Поместите Linux-сборку llama.cpp с библиотеками в `/opt/softx-model/bin`, а GGUF-модель в `/opt/softx-model/model.gguf`. Установите `deploy/softx-model.service` в `/etc/systemd/system/` и запустите службу. Она принимает запросы приложения на `127.0.0.1:8090`. Установите `tesseract-ocr`, `tesseract-ocr-eng` и `tesseract-ocr-rus` для распознавания английских и русских сканов. Добавьте настройки в `/etc/softx.env` и перезапустите SoftX.
 
 ```ini
 SOFTX_LOCAL_ONLY=1
 SOFTX_LOCAL_AI_PORT=8090
 SOFTX_OCR=1
+SOFTX_OCR_LANG=eng+rus
 ```

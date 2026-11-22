@@ -14,7 +14,6 @@ from openpyxl.utils import get_column_letter
 
 from .science import issue_report
 from .store import TABLES, data_dir, db, rows
-from .submission import submission_files
 
 exporter=Blueprint("exports",__name__)
 
@@ -156,14 +155,3 @@ def validation():
         connection.execute("BEGIN")
         result=dump(issue_report(connection))
     return send_file(io.BytesIO(result),mimetype="application/json",as_attachment=True,download_name="validation_report.json")
-
-
-@exporter.get("/api/export/submission.zip")
-def submission():
-    data,_,issues=relational_snapshot()
-    output=io.BytesIO()
-    with ZipFile(output,"w",ZIP_DEFLATED) as archive:
-        for name,content in submission_files(data,issues):
-            archive.writestr(name,content)
-    output.seek(0)
-    return send_file(output,as_attachment=True,download_name="softx-submission.zip",mimetype="application/zip")

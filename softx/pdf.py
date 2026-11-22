@@ -74,6 +74,7 @@ class Line:
     cells: list
     ocr: bool = False
     image_annotation: bool = False
+    rotated: bool = False
 
     @property
     def span(self):
@@ -95,15 +96,21 @@ def read_lines(path, meta):
     x0, _, _, y1 = meta["crop_box"]
     unit = meta["user_unit"]
     baselines = []
+    rotated = []
     for element in root.iter("line"):
-        if not element.get("dir", "1 0").startswith("1 "):
-            continue
+        direction = tuple(map(float,element.get("dir","1 0").split()))
         characters = []
         for char in element.iter("char"):
             coords = list(map(float, char.get("quad").split()))
             xs, ys = coords[::2], coords[1::2]
             box = [x0+min(xs)/unit, y1-max(ys)/unit, x0+max(xs)/unit, y1-min(ys)/unit]
             characters.extend((symbol, box) for symbol in char.get("c", ""))
+        if characters and abs(direction[0]-1) > .001:
+            content = "".join(symbol for symbol,_ in characters)
+            start,end = len(content)-len(content.lstrip()),len(content.rstrip())
+            if end>start:
+                rotated.append(Line(meta["page"],[Span(content[start:end],[box for _,box in characters[start:end]])],rotated=True))
+            continue
         if characters:
             baseline = float(next(element.iter("char")).get("y")) / unit
             group = next((chars for y, chars in reversed(baselines) if abs(y-baseline) < 1.7), None)
@@ -149,7 +156,7 @@ def read_lines(path, meta):
             if right:
                 right_lines.append(Line(line.page,right))
         result=left_lines+right_lines
-    return result
+    return result+rotated
 
 
 def page_file(directory, page):

@@ -8,9 +8,7 @@ from urllib.error import URLError
 from urllib.request import build_opener, HTTPRedirectHandler, ProxyHandler, Request
 
 from . import domain
-from .extraction_options import enabled
-from .extract import (SHARED_PERCENT, UNIT, VALUE, has_nonmeasurement_tail, locate_prose_span,
-                      measurement_cues, ordered_prose_values, prose_metrics, prose_windows, shared_percentage_values)
+from .extract import METRIC, SHARED_PERCENT, UNIT, VALUE, locate_prose_span, ordered_prose_values, prose_metrics, prose_windows
 
 LOG = logging.getLogger(__name__)
 OPENAI_ENDPOINT = "https://api.openai.com/v1/responses"
@@ -38,11 +36,6 @@ UNRELATED_VALUE = re.compile(
     r"\b(?:relative humidity|humidity|transmittance|concentration|weight fraction|"
     r"improvement|increase|decrease|reduction)\s*(?:(?:of|by|at|was|is)\s*|[:=~≈]\s*)?$", re.I
 )
-NON_RESULT_CONTEXT = re.compile(
-    r"\b(?:relative humidity|material yield|material (?:usage |utilization )?efficiency|"
-    r"optical transmittance|efficiency retention|relative PCE|normalized PCE|"
-    r"axis ticks?|tick marks?)\b",re.I
-)
 
 
 class NoRedirect(HTTPRedirectHandler):
@@ -63,7 +56,6 @@ def candidates(lines):
             if located:
                 known.add((located[0].page, tuple(located[1].bbox)))
         shared_units={}
-        shared_metrics = {value.start("n"):metric for metric,value,_ in shared_percentage_values(text)}
         for sequence in SHARED_PERCENT.finditer(text):
             unit=UNIT.match(text,sequence.start("unit"))
             for item in LIST_NUMBER.finditer(text,*sequence.span("values")):
@@ -74,7 +66,7 @@ def candidates(lines):
             offset = value.end()
             direct_unit = UNIT.match(text, offset+len(text[offset:])-len(text[offset:].lstrip()))
             unit = direct_unit or shared_units.get(value.start("n"))
-            if not unit or has_nonmeasurement_tail(text,unit):
+            if not unit:
                 continue
             located = locate_prose_span(group, *value.span("n"))
             if not located or not locate_prose_span(group, *unit.span()):
@@ -88,15 +80,9 @@ def candidates(lines):
             if UNRELATED_VALUE.search(text[start:value.start()].rstrip(" (")):
                 continue
             context = text[start:end]
-            if enabled("model") and NON_RESULT_CONTEXT.search(context):
-                continue
-            options = {metric for metric,(left,right) in measurement_cues(text,value,unit)
-                       if start<=left and right<=end and locate_prose_span(group,left,right)}
-            if value.start("n") in shared_metrics:
-                options.add(shared_metrics[value.start("n")])
-            if enabled("model") and len(options)>1:
-                continue
-            options = sorted(options)
+            metrics = {match.lastgroup for match in METRIC.finditer(context)}
+            metrics.update(metric for metric, cues in PERFORMANCE.items() if any(cue in context.lower() for cue in cues))
+            options = sorted(metric for metric in metrics if domain.normalize(metric, 1, unit.group())[0] is not None)
             if options and (ident not in proposed or len(context)>len(proposed[ident][0])):
                 right=unit.end() if direct_unit else value.end()
                 marked=text[start:value.start("n")]+"["+text[value.start("n"):right]+"]"+text[right:end]
