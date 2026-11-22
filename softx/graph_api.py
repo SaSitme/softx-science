@@ -13,7 +13,7 @@ from .pdf import page_file
 from .raster_trace import trace_curve
 from .science import recheck
 from .export import csv_value
-from .store import data_dir, db, edit, insert, one, rows
+from .store import data_dir, db, device_measurement, edit, insert, one, rows
 
 graph = Blueprint("graph", __name__)
 
@@ -107,7 +107,7 @@ def save_plot(ident):
         measurement=body.get("measurement_id") or None
         if device and not one(connection,"SELECT id FROM device WHERE id=? AND publication_id=?",device,version["publication_id"]):
             abort(400,"Прибор должен принадлежать публикации")
-        if measurement and not one(connection,"SELECT id FROM measurement WHERE id=? AND device_id=?",measurement,device):
+        if measurement and not device_measurement(connection,measurement,device):
             abort(400,"Измерение должно принадлежать прибору")
         prior_raw=[{"px":p["px"],"py":p["py"]} for p in current["points"]] if current else []
         width=current["stroke_width_pdf"] if current and prior_raw==raw and page==current["source_page"] else None

@@ -58,7 +58,7 @@ for table,column,metric in (("device","active_area","area"),("device_layer","lay
     entities[table]["columns"][column]["normalized_dimension"]=units[metric]["target"]
 
 data={
-    "schema_version":1,"database":"SQLite","documentation":"DATA_PASSPORT.md",
+    "schema_version":2,"database":"SQLite","documentation":"DATA_PASSPORT.md",
     "entities":entities,
     "metric_registry":domain.METRICS,"normalization":units,
     "canonical_pdf":{"bbox_order":["x_min","y_min","x_max","y_max"],"space":"unrotated_pdf_user_space",

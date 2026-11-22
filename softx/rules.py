@@ -207,13 +207,13 @@ def checks(connection, publication, corpus_status):
     measurement_groups=defaultdict(list)
     eg_by_material=defaultdict(list)
     for r in rs:
-        measurement_groups[r["pdf_version_id"],r["measurement_id"]].append(r)
+        measurement_groups[r["pdf_version_id"],r["measurement_id"],r["device_id"]].append(r)
         if r["metric_name"]=="Eg":
             eg_by_material[r["material_id"]].append(r)
     for r in rs:
         metric=r["metric_name"]
         gap=gap_for(r,eg_by_material)
-        group=measurement_groups[r["pdf_version_id"],r["measurement_id"]] if r["measurement_id"] else []
+        group=measurement_groups[r["pdf_version_id"],r["measurement_id"],r["device_id"]] if r["measurement_id"] else []
         yield from physical(r,gap)
         if metric=="PCE" and r["acquisition_method"]=="published_numeric":
             yield pce(r,group,references,verified)

@@ -10,6 +10,8 @@ UNITS = {
     "EQE": {"%": 1},
     "retained_PCE": {"%": 1},
     "Nt": {"cm⁻³": 1}, "tau": {"s": 1, "ms": 1e-3, "µs": 1e-6, "ns": 1e-9, "ps": 1e-12},
+    "stabilized_PCE": {"%": 1}, "Vmpp": {"V": 1, "mV": .001},
+    "Jmpp": {"mA/cm²": 1, "A/m²": .1, "A/cm²": 1000},
     "PCE": {"%": 1, "1": 100}, "FF": {"%": 1, "1": 100}, "HI": {"%": 1, "1": 100},
     "Voc": {"V": 1, "mV": .001}, "Jsc": {"mA/cm²": 1, "A/m²": .1, "A/cm²": 1000},
     "Jsc_EQE": {"mA/cm²": 1, "A/m²": .1, "A/cm²": 1000},
@@ -21,6 +23,8 @@ UNITS = {
 }
 METRICS = {
     "retained_PCE": r"(?:efficiency|PCE)\s+retention|retained\s+(?:efficiency|PCE)|(?:сохранени[ея]|удержани[ея]|остаточн\w+)\s+(?:исходного\s+)?(?:КПД|эффективност[иь])",
+    "stabilized_PCE": r"stabili[sz]ed\s+(?:(?:power conversion )?efficiency|PCE)",
+    "Vmpp": r"V[ _]*mpp", "Jmpp": r"J[ _]*mpp",
     "PCE": r"PCE|power conversion efficiency|[ηɳ]|КПД|коэффициент\w*\s+полезного\s+действия|эффективност[ьи]\s+(?:фотоэлектрического\s+)?преобразования",
     "Voc": r"V[ _]*[oₒ](?:[c꜀]|(?<=ₒ)�)|open[- ]circuit voltage|напряжени[ея]\s+холостого\s+хода",
     "Jsc_EQE": r"J[ _]*[sₛ](?:[c꜀]|(?<=ₛ)�)[ _-]*EQE|EQE[- ]integrated J[ _]*[sₛ](?:[c꜀]|(?<=ₛ)�)|плотност[ьи]\s+тока\s+короткого\s+замыкания\s+по\s+(?:ВКЭ|внешней\s+квантовой\s+эффективности)",
@@ -57,6 +61,7 @@ RUSSIAN_UNIT_TOKENS = {
 UNIT_TOKEN = re.compile("|".join(sorted(RUSSIAN_UNIT_TOKENS, key=len, reverse=True)))
 INTENSITY_UNIT = rf"mW\s*/\s*cm(?:\^?2|²)|W\s*/\s*m(?:\^?2|²)|{RUSSIAN_INTENSITY_UNIT}"
 AREA_UNIT = rf"[cm]m[²2]|{RUSSIAN_AREA_UNIT}"
+CURRENT_UNIT = r"(?:mA|A)\s*(?:/\s*(?:cm|m)(?:\^?2|²)|[·⋅∙]?\s*(?:cm|m)\s*(?:[−-]2|⁻²))"
 THICKNESS_UNIT = r"nm|[µμu]m|Å|нм|мкм"
 BANDGAP_UNIT = r"m?eV|м?[эЭ][вВ]"
 UNIT_PATTERN = (RUSSIAN_UNIT + "|" + r"m?V\b|m?eV\b|%|m?A\s*/\s*(?:cm|m)\s*(?:\^?2|²)|"

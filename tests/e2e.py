@@ -311,6 +311,28 @@ def stage3(page,url,output):
     expect(page.locator("select[name=compare-a] option").filter(has_text="Время снижения эффективности до 80% (T80)")).to_have_count(1)
 
     page.goto(url+"/#export")
+    with page.expect_download() as submission:
+        page.get_by_role("link",name="Скачать CSV для сдачи").click()
+    with ZipFile(submission.value.path()) as archive:
+        assert sorted(archive.namelist()) == [
+            "devices.csv", "issues.csv", "layers.csv", "materials.csv",
+            "measurements.csv", "publications.csv", "results.csv",
+        ]
+        def read_table(name):
+            return list(csv.DictReader(io.StringIO(archive.read(name + ".csv").decode("utf-8"))))
+        public = {row["publication_id"]: row for row in read_table("publications")}
+        assert public["01-fabricated"]["in_scope"] == "true"
+        assert public["03-tandem"]["in_scope"] == "false"
+        identifiers = {(row["publication_id"], row["device_id"]) for row in read_table("devices")}
+        for row in read_table("results"):
+            assert row["source_page"].isdigit() and row["source_fragment"]
+            assert row["normalized_unit"] == row["metric_unit"]
+            assert row["normalized_value"] == row["metric_value"]
+            if row["device_id"]:
+                assert (row["publication_id"], row["device_id"]) in identifiers
+            if row["result_origin"] == "cited":
+                assert not row["device_id"] and not row["measurement_id"]
+    print("PASS · official submission CSV headers, source links and exclusions", flush=True)
     with page.expect_download() as package:
         page.get_by_role("link",name="Скачать набор ZIP").click()
     package.value.save_as(output/"dataset.zip")

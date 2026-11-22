@@ -11,7 +11,7 @@ DATA = Path(os.environ.get("SOFTX_DATA", ROOT.parent / "instance")).resolve()
 workspace = ContextVar("workspace", default=DATA)
 TABLES = ("publication", "pdf_version", "material", "device", "device_layer", "measurement", "measurement_result",
           "source_reference", "result_source", "plot_dataset", "plot_source", "validation_issue", "issue_result",
-          "issue_source", "audit_log", "result_plot")
+          "issue_source", "audit_log", "result_plot", "measurement_device", "measurement_source", "layer_source")
 
 
 def key(*parts):
@@ -49,6 +49,8 @@ def initialize():
             connection.execute("ALTER TABLE pdf_version ADD COLUMN pv_extraction_enabled INTEGER CHECK(pv_extraction_enabled IN (0,1))")
         if "allow_cloud" not in {row["name"] for row in connection.execute("PRAGMA table_info(pdf_version)")}:
             connection.execute("ALTER TABLE pdf_version ADD COLUMN allow_cloud INTEGER NOT NULL DEFAULT 0 CHECK(allow_cloud IN (0,1))")
+        connection.execute("""INSERT OR IGNORE INTO measurement_device (measurement_id, device_id)
+            SELECT id, device_id FROM measurement""")
         connection.execute("DROP VIEW IF EXISTS active_pv_result")
         connection.execute("""CREATE VIEW active_pv_result AS
             SELECT r.*,r.rowid AS record_order FROM measurement_result r JOIN pdf_version f ON f.id=r.pdf_version_id
@@ -82,3 +84,10 @@ def edit(connection, table, entity, changes, author="local-reviewer"):
         insert(connection, "audit_log", entity_type=table, entity_id=entity["id"], field_name=field,
                old_value=json.dumps(entity[field], ensure_ascii=False), new_value=json.dumps(value, ensure_ascii=False),
                author=author)
+
+
+def device_measurement(connection, measurement, device):
+    return one(connection, """SELECT m.* FROM measurement m
+        WHERE m.id=? AND (m.device_id=? OR EXISTS (
+            SELECT 1 FROM measurement_device link WHERE link.measurement_id=m.id AND link.device_id=?))""",
+        measurement, device, device)

@@ -2,22 +2,26 @@
 import json
 import re
 
-from . import domain as d
-from .store import edit, insert, key, one
+from . import domain as d, fabrication
+from .publication_metadata import DOI, bibliographic_doi, front_matter
+from .store import edit, insert, key, one, rows
 
 
 PATTERN = "|".join(f"(?P<{name}>{pattern})" for name, pattern in d.METRICS.items())
 METRIC = re.compile(rf"(?<![\w])(?:{PATTERN})(?![\w])", re.I)
 UNIT = re.compile(r"cm\s*(?:\^?\s*[-−]\s*3|⁻³)|1\s*/\s*cm(?:\^?3|³)|(?:[µμu]s|ns|ms|ps)\b|"+d.UNIT_PATTERN)
 VALUE = re.compile(rf"(?P<op><=|>=|[<>≤≥])?\s*(?P<n>{d.NUM})(?:\s*(?:±|\+/-)\s*(?P<spread>{d.NUM})|\s*(?:–|—|\bto\b|-)\s*(?P<end>{d.NUM}))?")
-DOI = re.compile(r"10\.\d{4,9}/[-._;()/:A-Z0-9]+", re.I)
-SCAN = re.compile(r"\b(forward|reverse|прям(?:ой|ого|ом)|обратн(?:ый|ого|ом))\b", re.I)
+SCAN = re.compile(r"\b(forward|reverse|FB\s*[-–—−]\s*SC|SC\s*[-–—−]\s*FB|прям(?:ой|ого|ом)|обратн(?:ый|ого|ом))\b", re.I)
 RUSSIAN_SAMPLE = r"образ(?:ец|ца)|прибор(?:а)?|устройств[оа]"
 DEVICE = re.compile(rf"\b(?:device|sample|cell|{RUSSIAN_SAMPLE})\s+([A-ZА-ЯЁ0-9][\w.-]{{0,20}})(?=\s*[:(,]|\s+{SCAN.pattern})", re.I)
 TABLE = re.compile(r"^(?:Table|Таблица)\s+(?:№\s*)?(\w+)\b", re.I)
 FOOTNOTE = re.compile(r"^(?:[*†‡]|Note\s*:|Примечани[ея]\s*[.:]|\[[a-z]\])")
 REFERENCE_HEADER = re.compile(r"(?:refs?\.?|references?|sources?|источник(?:и)?|ссылк[аи]|литература)", re.I)
 OWN_WORK = re.compile(r"(?:this|present|our)\s+(?:work|study|paper)|(?:данная|настоящая|эта)\s+работа", re.I)
+SAMPLE_HEADER = re.compile(rf"(?:sample|device|cell|{RUSSIAN_SAMPLE})(?:\s+(?:name|id|label))?", re.I)
+FROM_HEADER = re.compile(r"(" + fabrication.CHEM + r")\s*\(\s*from\s*\)", re.I)
+HEADER_WORDS = re.compile(r"(?:direction|scan|fabrication|structure|architecture|configuration|reference|material|parameters?|performance|conditions?|mean|median|average)", re.I)
+
 NUMBERED_REFERENCE = re.compile(r"\[\s*(\d+)\s*\]")
 
 CURRENT_DENSITY = re.compile(r"\bcurrent\s+density\s*(?:of\s+|[:=]\s*)", re.I)
@@ -93,25 +97,13 @@ def prose_metrics(text):
                 yield metric, value, descriptor.end()
 
 
-def bibliographic_doi(metadata,lines):
-    literal=metadata.get("/DOI")
-    if literal:
-        candidate=DOI.search(str(literal))
-        if candidate:
-            return candidate.group().rstrip(".,;").lower()
-    for line in lines[:12]:
-        if line.page!=1:
-            return None
-        match=re.search(r"\b(?:doi\s*[:=]|doi\.org/)\s*("+DOI.pattern+")",line.text,re.I)
-        if match:
-            return match[1].rstrip(".,;").lower()
-    return None
-
-
 def scan_direction(match):
     if not match:
         return None
     scan = match[1].lower()
+    flags = re.sub(r"[^a-z]", "", scan)
+    if flags in ("fbsc", "scfb"):
+        return "reverse" if flags == "fbsc" else "forward"
     return "forward" if scan.startswith("прям") else "reverse" if scan.startswith("обратн") else scan
 
 
@@ -217,7 +209,7 @@ def table_values(cells, columns):
             yield cell
 
 
-def prose_windows(lines):
+def prose_windows(lines, max_lines=3):
     """Short connected stretches printed in the same column."""
     for index, first in enumerate(lines):
         if len(first.cells) != 1 or len(first.text) < 12:
@@ -225,7 +217,7 @@ def prose_windows(lines):
         group = [(0, first)]
         text = first.text
         last = first
-        for line in lines[index+1:index+3]:
+        for line in lines[index+1:index+max_lines]:
             if len(line.cells) != 1 or line.page != first.page or first.rotated or line.rotated:
                 break
             left, bottom, _, _ = last.span.bbox
@@ -349,8 +341,14 @@ class Extraction:
     def __init__(self, connection, pub, version, lines):
         self.db, self.pub, self.version, self.lines = connection, pub, version, lines
         self.material_id = None
+        self.device_materials = {}
+        self.material_info = {}
+        self.device_aliases = {}
+        self.table_cohorts = set()
+        self.table_rows = {}
+        self.table_conditions = {}
         self.devices = {}
-        self.measurements = {}
+        self.measurements = set()
         self.measurement_spectra = {}
         self.conditions = {}
         self.sections = {}
@@ -371,18 +369,15 @@ class Extraction:
         text = "\n".join(line.text for line in self.lines)
         material_class = next((name for name, rx in d.CLASSES.items() if re.search(rx, text, re.I)), None)
         corpus, reason = d.classify(text, material_class)
-        title = metadata.get("/Title") or next((item.text for item in self.lines if "SYNTHETIC TEST" not in item.text and "ТЕСТОВЫЙ ДОКУМЕНТ" not in item.text), None)
-        doi = bibliographic_doi(metadata,self.lines)
-        author = metadata.get("/Author")
-        year = re.search(r"(?:©|copyright|published(?: online)?\s+(?:in\s+)?|опубликовано(?:\s+в)?)\s*(20\d{2}|19\d{2})", text, re.I)
-        journal = re.search(r"^(?:Journal|Журнал)\s*:\s*(.+)$", text, re.I | re.M)
+        title, authors, year, journal = front_matter(metadata, self.lines)
+        doi = bibliographic_doi(metadata, self.lines)
         fixture = any(re.match(r"SYNTHETIC TEST DOCUMENT|ТЕСТОВЫЙ ДОКУМЕНТ",line.text,re.I) for line in self.lines[:5])
         self.db.execute("""UPDATE publication SET title=COALESCE(?,title), doi=COALESCE(?,doi), authors=COALESCE(?,authors),
             year=COALESCE(?,year), journal=COALESCE(?,journal), is_fixture=MAX(is_fixture,?),
             corpus_status=CASE WHEN corpus_manual=0 THEN ? ELSE corpus_status END,
             corpus_reason=CASE WHEN corpus_manual=0 THEN ? ELSE corpus_reason END WHERE id=?""",
-                        (title, doi, None if not author else json.dumps([x.strip() for x in re.split(r";|\band\b", author) if x.strip()]),
-                         int(year[1]) if year else None, journal[1] if journal else None, fixture, corpus, reason, self.pub))
+                        (title, doi, json.dumps(authors) if authors else None,
+                         year, journal, fixture, corpus, reason, self.pub))
         effective=one(self.db,"SELECT corpus_status, corpus_manual FROM publication WHERE id=?",self.pub)
         corpus=effective["corpus_status"]
         eligible = not corpus.startswith("excluded") and (
@@ -391,22 +386,27 @@ class Extraction:
         self.db.execute("UPDATE pdf_version SET pv_extraction_enabled=? WHERE id=?", (int(eligible), self.version))
         if not eligible:
             return False
+        passage = fabrication.fabrication_passage(self.lines)
         if material_class:
             self.material_id = key(self.pub, "material", material_class)
             raw = re.search(d.CLASSES[material_class], text, re.I).group()
-            bandgap = re.search(rf"(?:{d.METRICS['Eg']})\s*(?:[=:]|of|составила)\s*({d.NUM})\s*({d.BANDGAP_UNIT})", text, re.I)
-            method = re.search(r"band\s?gap method\s*:\s*([^.;\n]+)", text, re.I)
-            dimension = re.search(r"\b([0123]D)\s+(?:perovskite|material)", text, re.I)
-            formula = re.search(r"\b(?:MAPbI3|FAPbI3|CsPbI3|Sb2Se3|CdTe|Cu2ZnSnS4)\b", text)
-            additives = re.search(r"\badditives?\s*:\s*([^.;\n]+)", text, re.I)
-            eg, eg_unit = d.normalize("Eg", number(bandgap[1],decimal_comma=bool(d.CYRILLIC.search(bandgap[0]))), bandgap[2]) if bandgap else (None, None)
-            insert(self.db, "material", id=self.material_id, publication_id=self.pub, material_name_raw=raw,
-                   material_class=material_class, formula_normalized=formula[0] if formula else None,
-                   dimensionality=dimension[1] if dimension else None, additives=[v.strip() for v in additives[1].split(",")] if additives else None,
-                   bandgap_value=eg, bandgap_unit=eg_unit, bandgap_method=method[1] if method else None)
+            recipe, formula, precursors = fabrication.absorber_recipe(title, material_class, passage)
+            bandgap = re.search(rf"(?:{d.METRICS['Eg']})\s*(?:[=:]|of|составила)\s*({d.NUM})\s*({d.BANDGAP_UNIT})", passage.text or text, re.I)
+            method = re.search(r"band\s?gap method\s*:\s*([^.;\n]+)", passage.text or text, re.I)
+            dimension = re.search(r"\b([0123]D)\s+(?:perovskite|material)", passage.text or (title or ""), re.I)
+            additives = re.search(r"\badditives?\s*:\s*([^.;\n]+)", passage.text or text, re.I)
+            eg, eg_unit = d.normalize("Eg", number(bandgap[1], decimal_comma=bool(d.CYRILLIC.search(bandgap[0]))), bandgap[2]) if bandgap else (None, None)
+            self.material_info = dict(publication_id=self.pub, material_name_raw=recipe or raw, material_class=material_class,
+                formula_normalized=formula, dimensionality=dimension[1] if dimension else None,
+                additives=precursors or ([v.strip() for v in additives[1].split(",")] if additives else None),
+                bandgap_value=eg, bandgap_unit=eg_unit, bandgap_method=method[1] if method else None)
+            insert(self.db, "material", id=self.material_id, **self.material_info)
+            if recipe:
+                self.db.execute("""UPDATE material SET material_name_raw=?,formula_normalized=?,additives=?
+                    WHERE id=?""", (recipe, formula, json.dumps(self.material_info["additives"]) if self.material_info["additives"] else None, self.material_id))
         for line in self.lines:
             match = DEVICE.search(line.text)
-            if match:
+            if match and self.is_device_label(match[1]):
                 self.device(match[1], line.text if "(" in line.text or "active area" in line.text.lower() else "")
         self.discover_table_devices()
         if not self.devices and corpus == "included":
@@ -415,14 +415,14 @@ class Extraction:
         for line in self.lines:
             layer = re.search(r"^Layer\s+(\d+)\s*:\s*([^/]+)\s*/\s*([^/]+)\s*/\s*([^/]+)\s*/\s*(.+)$", line.text, re.I)
             if layer and layer[2].strip() in self.devices:
-                thickness, _, fabrication = layer[5].partition("/")
+                thickness, _, process_text = layer[5].partition("/")
                 val = re.search(rf"({d.NUM})\s*({d.THICKNESS_UNIT})", thickness)
                 amount, unit = d.normalize("thickness", number(val[1]), val[2]) if val else (None, None)
                 insert(self.db, "device_layer", id=key(self.pub, "layer", layer[2].strip(), layer[1]),
                        device_id=self.devices[layer[2].strip()], layer_order=int(layer[1]), layer_function=layer[3].strip(),
                        layer_material=layer[4].strip(), layer_thickness=amount, thickness_unit=unit,
-                       deposition_method=fabrication.split(";")[0].strip(" .") or None,
-                       **self.named_conditions(fabrication, ("annealing_temperature", "annealing_time", "atmosphere")))
+                       deposition_method=process_text.split(";")[0].strip(" .") or None,
+                       **self.named_conditions(process_text, ("annealing_temperature", "annealing_time", "atmosphere")))
             layer_prose = re.search(rf"\b([\w₀-₉]+)\s+(ETL|HTL|absorber|contact)\s+layer\s*\(\s*({d.NUM})\s*({d.THICKNESS_UNIT})\s*\)", line.text, re.I)
             label = DEVICE.search(line.text)
             if layer_prose and label and label[1] in self.devices:
@@ -432,25 +432,95 @@ class Extraction:
                        layer_thickness=amount, thickness_unit=unit)
             if re.search(r"\b(?:all|each)\b.*\b(?:JV|J.V|scans?|measurements?)\b|\bвсе\s+(?:измерения|разв[её]ртки)\b", line.text, re.I):
                 self.conditions.update(self.conditions_for(line))
+        self.discover_layers(passage)
         return True
 
+    @staticmethod
+    def is_device_label(label):
+        return (0 < len(label) <= 80 and not HEADER_WORDS.fullmatch(label) and not SCAN.fullmatch(label)
+                and not METRIC.fullmatch(label) and not VALUE.fullmatch(label)
+                and not re.match(r"^(?:references?|Table|Figure|\[|10\.)", label, re.I))
+
     def discover_table_devices(self):
-        header=False
-        cited=False
+        table = scope = page = None
+        cited = False
+        prefix = None
+        caption_active = False
         for line in self.lines:
-            if TABLE.match(line.text):
-                cited=bool(re.search(r"literature|reported|previous|reference",line.text,re.I))
-                header=False
-            label=line.cells[0].text
-            if len(line.cells)>=3 and re.fullmatch(rf"(?:sample|device|cell|{RUSSIAN_SAMPLE})(?:\s+(?:name|id|label))?",label,re.I) and any(METRIC.search(c.text) for c in line.cells[1:]):
-                header=True
+            if line.page != page:
+                table = scope = None
+                page = line.page
+                cited = False
+                caption_active = False
+            if (caption := TABLE.match(line.text)):
+                table = caption[1]
+                cited = bool(re.search(r"literature|reported|previous|reference", line.text, re.I))
+                scope = None
+                caption_active = not cited
+            if caption_active and len(line.cells) == 1:
+                self.table_conditions.setdefault((page, table), {}).update(self.conditions_for(line))
+            else:
+                caption_active = False
+            label = line.cells[0].text
+            from_header = FROM_HEADER.fullmatch(label)
+            if len(line.cells) >= 3 and (SAMPLE_HEADER.fullmatch(label) or from_header) and sum(
+                    bool(METRIC.search(cell.text)) for cell in line.cells[1:]) >= 2:
+                scope = (line.page, table) if table and not cited else None
+                prefix = from_header[1] + " from " if from_header else None
                 continue
-            scalar_cells=sum(bool(VALUE.match(cell.text)) for cell in line.cells[1:])
-            if not header or cited or scalar_cells<2:
-                header=False
+            scalar_cells = sum(bool(VALUE.match(cell.text)) for cell in line.cells[1:])
+            if not scope or scalar_cells < 2 or not self.is_device_label(label):
+                scope = None
                 continue
-            if 0<len(label)<=46 and not re.match(r"^(?:mean|median|average|references?|\[|10\.)",label,re.I):
-                self.device(label,label)
+            if prefix:
+                self.device_aliases[label] = prefix + label
+            self.device(label, label, "cell")
+            self.table_rows[id(line)] = self.known_device(label)
+            if not any(SCAN.fullmatch(cell.text) for cell in line.cells[1:]):
+                self.table_cohorts.add(scope)
+        # Only promote concentration labels found in J–V figure captions when
+        # the paper already uses this sample-naming convention in its tables.
+        if any(fabrication.DOPANT.fullmatch(label) for label in self.devices):
+            for index, line in enumerate(self.lines):
+                if re.match(r"^Figure\s+\d+", line.text, re.I):
+                    section = " ".join(part.text for part in self.lines[index:index + 5] if part.page == line.page)
+                    if re.search(r"\bJ[–—−-]V\s+curves?\b", section, re.I):
+                        for match in fabrication.DOPANT.finditer(section):
+                            self.device(match[0], match[0], "cell")
+
+    def discover_layers(self, passage):
+        candidate = next(((match, line) for line in passage.lines + self.lines
+                          if (match := fabrication.STACK.search(line.text)) and not re.search(
+                              r"reported|literature|previous", line.text, re.I)), None)
+        stack = fabrication.identify_layers(passage, candidate, self.material_info.get("formula_normalized"))
+        for label, device in self.devices.items():
+            roles = [role for role, _, _ in stack]
+            if roles == ["front_contact", "ETL", "absorber", "HTL", "back_contact"]:
+                self.db.execute("UPDATE device SET architecture=COALESCE(architecture,'n-i-p') WHERE id=?", (device,))
+            if stack and re.search(r"(?:FTO|ITO|AZO)\)?\s+glass", passage.text, re.I):
+                self.db.execute("UPDATE device SET substrate_type=COALESCE(substrate_type,'rigid') WHERE id=?", (device,))
+            if one(self.db, "SELECT id FROM device_layer WHERE device_id=?", device):
+                continue
+            material_id = self.device_materials.get(device)
+            material = one(self.db, "SELECT material_name_raw FROM material WHERE id=?", material_id) if material_id else None
+            for order, (role, layer, bounds) in enumerate(stack, 1):
+                if role == "absorber" and material:
+                    layer = material["material_name_raw"]
+                if role == "ETL" and " from " in label and label.split(" from ", 1)[0].lower() == layer.lower():
+                    layer = label
+                props = fabrication.layer_properties(passage.text[slice(*bounds)]) if bounds else {}
+                if props.get("layer_thickness") is not None:
+                    props["layer_thickness"], props["thickness_unit"] = d.normalize(
+                        "thickness", props["layer_thickness"], props["thickness_unit"])
+                layer_id = key(self.pub, "derived-layer", device, order)
+                insert(self.db, "device_layer", id=layer_id, device_id=device, layer_order=order, layer_function=role,
+                       layer_material=layer, material_id=material_id if role == "absorber" else None, **props)
+                evidence = passage.sources(*bounds) if bounds else [(candidate[1], candidate[1].span.part(*candidate[0].span()))]
+                for line, span in evidence:
+                    insert(self.db, "layer_source", layer_id=layer_id, source_reference_id=self.ref(line, span, "condition"))
+
+    def known_device(self, label):
+        return self.devices.get(self.device_aliases.get(label, label))
 
     def cited_publication(self,literal, numbered=False):
         doi=DOI.search(literal)
@@ -504,43 +574,68 @@ class Extraction:
             result["intensity_source_id"] = self.ref(line, line.span.part(*intensity.span()), "condition")
         if re.search(r"\b(?:independently certified|certified by)\b", text, re.I):
             result["certified"] = 1
-        if re.search(r"\b(?:aperture mask|shadow mask|mask was used)\b", text, re.I):
+        mask = re.search(r"\b(?:aperture mask|shadow mask|mask was used|masked with a metal aperture)\b", text, re.I)
+        if mask:
             result["mask_used"] = 1
+            result["condition_source_ids"] = [self.ref(line, line.span.part(*mask.span()), "condition")]
+        speed = re.search(rf"\bscan rate\s+(?:of\s+)?({d.NUM}\s*V\s*(?:/s|s[−-]1|s⁻¹))", text, re.I)
+        if speed:
+            result["scan_rate"] = speed[1]
+            result.setdefault("condition_source_ids", []).append(self.ref(line, line.span.part(*speed.span(1)), "condition"))
         return result
 
     def device(self, label, text="", device_type=None):
+        source_label = label
+        label = self.device_aliases.get(label, label)
+        if not self.is_device_label(source_label):
+            return None
         if label in self.devices:
             return self.devices[label]
-        ident = key(self.pub, "device", label)
+        ident = key(self.pub, "device", source_label)
         self.devices[label] = ident
+        material_id = self.material_id
+        if self.material_info.get("formula_normalized") and (dopant := fabrication.DOPANT.fullmatch(label)):
+            material_id = key(self.pub, "absorber", label)
+            raw = f"{self.material_info['formula_normalized']} ({label})"
+            insert(self.db, "material", id=material_id, **dict(self.material_info, material_name_raw=raw,
+                   additives=[f"{dopant[2]} {dopant[1]} M"]))
+        self.device_materials[ident] = material_id
+        self.db.execute("UPDATE device SET device_label=?,material_id=COALESCE(?,material_id) WHERE id=?",
+                        (label, material_id, ident))
         role = re.search(r"\b(control|target|record)\b", text, re.I)
+        role_value = role[1].lower() if role else "control" if label.lower() == "pristine" else None
         architecture = re.search(r"(?<!\w)(n-i-p|p-i-n|superstrate|substrate)(?!\w)", text, re.I)
         area = re.search(rf"(active|aperture|total)\s+area\s*[:=]?\s*({d.NUM})\s*({d.AREA_UNIT})", text, re.I)
         v, u = d.normalize("area", number(area[2]), area[3]) if area else (None, None)
         encapsulation = re.search(r"\b(unencapsulated|encapsulated)\b", text, re.I)
-        insert(self.db, "device", id=ident, publication_id=self.pub, material_id=self.material_id, device_label=label,
-               device_role=role[1].lower() if role else None, device_type=device_type or ("single-junction thin-film" if architecture else None),
+        insert(self.db, "device", id=ident, publication_id=self.pub, material_id=material_id, device_label=label,
+               device_role=role_value, device_type=device_type or ("single-junction thin-film" if architecture else None),
                architecture=architecture[1].lower() if architecture else None, active_area=v, area_unit=u,
                area_definition=area[1].lower() if area else None, encapsulation=encapsulation[1] if encapsulation else None,
                **self.named_conditions(text, ("substrate_type",)))
         return ident
 
-    def measurement(self, device, scan, local=None, kind="JV"):
+    def measurement(self, device, scan, local=None, kind="JV", cohort=None):
         if device is None:
             return None
         evidence = dict(self.conditions) if kind == "JV" else {}
         evidence.update(local or {})
         spectrum_source = evidence.pop("spectrum_source_id", None)
+        sources = evidence.pop("condition_source_ids", ())
         signature = {k: v for k, v in evidence.items() if k != "intensity_source_id"}
-        ident = key(self.version, device, scan, kind, sorted(signature.items()))
-        self.measurements[ident] = device
+        ident = key(self.version, cohort or device, scan, kind, sorted(signature.items()))
+        self.measurements.add(ident)
         if spectrum_source:
             self.measurement_spectra.setdefault(ident, spectrum_source)
         insert(self.db, "measurement", id=ident, device_id=device, scan_direction=scan,
                measurement_type=kind, **evidence)
+        insert(self.db, "measurement_device", measurement_id=ident, device_id=device)
+        for source in (spectrum_source, evidence.get("intensity_source_id"), *sources):
+            if source:
+                insert(self.db, "measurement_source", measurement_id=ident, source_reference_id=source)
         return ident
 
-    def result(self, metric, match, line, span, unit, refs, device, scan, origin, cited=None, extra="", conditions=None, row_aggregation=None, extraction_method=None, numeric_override=None, raw_literal=None, row_labelled=False, row_model=False):
+    def result(self, metric, match, line, span, unit, refs, device, scan, origin, cited=None, extra="", conditions=None, row_aggregation=None, extraction_method=None, numeric_override=None, raw_literal=None, row_labelled=False, row_model=False, cohort=None, linked_measurement=None):
         decimal_comma = bool(d.CYRILLIC.search(f"{line.text} {unit or ''} {extra}"))
         # Table readers can also pass a parsed scalar; prefer the original localized literal.
         if decimal_comma and match and "," in match["n"] and (
@@ -553,7 +648,15 @@ class Extraction:
         low, high = sorted((value,end)) if end is not None else (None,None)
         local = self.conditions_for(line)
         local.update(conditions or {})
-        measurement = self.measurement(device, scan, local, "stability" if metric in ("T80","retained_PCE") else "JV") if origin == "primary" and metric != "Eg" and not row_model else None
+        measurement_kind = {"T80": "stability", "retained_PCE": "stability", "Jsc_EQE": "EQE",
+                            "stabilized_PCE": "MPP tracking", "Jmpp": "MPP tracking", "Vmpp": "MPP tracking"}.get(metric, "JV")
+        if metric == "Jsc_EQE" and scan:
+            # A published EQE comparison may explicitly name the corresponding J–V scan.
+            measurement_kind = "JV"
+        measurement = linked_measurement
+        if measurement is None and origin == "primary" and metric != "Eg" and not row_model:
+            measurement = self.measurement(device, scan if measurement_kind == "JV" else None,
+                                           local, measurement_kind, cohort=cohort)
         agg = row_aggregation or aggregation(extra + " " + line.text)
         fraction = (metric == "FF" and unit is None and match and op is None and end is None
                     and re.fullmatch(r"(?:0[.,]|[.,])\d+",match["n"]) and 0 < value < 1)
@@ -587,7 +690,7 @@ class Extraction:
         from_table = any(kind == "table_cell" for _, kind in refs)
         status = d.REVIEW if uncertain else d.AUTO
         insert(self.db, "measurement_result", id=result_id, publication_id=self.pub, pdf_version_id=self.version,
-               material_id=self.material_id if origin == "primary" else None, device_id=device, measurement_id=measurement,
+               material_id=self.device_materials.get(device, self.material_id) if origin == "primary" else None, device_id=device, measurement_id=measurement,
                metric_name=metric, metric_value=value, metric_unit=effective_unit, raw_value=original_value, raw_unit=unit,
                raw_record=raw_record, normalized_value=norm, normalized_unit=norm_unit, aggregation=agg,
                value_state=state, spread_value=spread, range_min=low, range_max=high, inequality_op=op,
@@ -610,21 +713,25 @@ class Extraction:
                 WHERE id=? AND manual=0 AND raw_unit IS NULL AND normalized_value IS NULL""",
                 (effective_unit,norm,norm_unit,state,status,"FF без указанной единицы интерпретирован как доля; требуется проверка.",result_id))
         if from_table and measurement:
-            # A table header can identify a device that an earlier text pass left unresolved.
-            self.db.execute(
-                """UPDATE measurement_result
-                   SET device_id=?, measurement_id=?, aggregation=?, value_state=?, extraction_status=?,
-                       extraction_method='geometry_table', candidate_device_ids='[]', candidate_measurement_ids='[]'
-                   WHERE id=? AND manual=0 AND device_id IS NULL AND measurement_id IS NULL
-                     AND result_origin='primary' AND extraction_method='pdf_text'
-                     AND raw_value=? AND raw_unit IS ?""",
-                (device, measurement, agg, state, status, result_id, span.text, unit),
-            )
+            # Re-reading a printed table can repair the current links, including
+            # old rows where a scan label was incorrectly treated as the device.
+            existing = one(self.db, """SELECT * FROM measurement_result WHERE id=? AND manual=0 AND deleted=0
+                AND result_origin='primary' AND acquisition_method='published_numeric'
+                AND extraction_method IN ('geometry_table','pdf_text','local_ocr')
+                AND raw_value=? AND raw_unit IS ?""", result_id, original_value, unit)
+            if existing:
+                edit(self.db, "measurement_result", existing,
+                     dict(device_id=device, measurement_id=measurement, material_id=self.device_materials.get(device),
+                          aggregation=agg, value_state=state, extraction_status=status,
+                          extraction_method="geometry_table" if not line.ocr else "local_ocr",
+                          candidate_device_ids=[], candidate_measurement_ids=[]), author="softx-parser")
         for ref, _ in refs:
             insert(self.db, "result_source", result_id=result_id, source_reference_id=ref)
         if measurement:
             conditions = one(self.db, "SELECT intensity_source_id FROM measurement WHERE id=?", measurement)
-            for ref in (conditions["intensity_source_id"], self.measurement_spectra.get(measurement)):
+            measurement_sources = rows(self.db, "SELECT source_reference_id FROM measurement_source WHERE measurement_id=?", measurement)
+            for ref in {conditions["intensity_source_id"], self.measurement_spectra.get(measurement),
+                        *(source["source_reference_id"] for source in measurement_sources)}:
                 if ref:
                     insert(self.db, "result_source", result_id=result_id, source_reference_id=ref)
         if ambiguous:
@@ -706,6 +813,53 @@ class Extraction:
         refs = [(self.ref(line,span,"value"),"text"),(self.ref(*unit_source,"unit"),"text")]
         self.result(metric,value,line,span,unit.group(),refs,None,None,origin,
                     self.cited_publication(context) if origin=="cited" else None,extraction_method=method)
+
+    def contextual_experiments(self):
+        eqe = re.compile(r"\b(?:integration of (?:the )?EQE spectrum yields? (?:the )?photocurrent of|"
+                         r"EQE[- ]integrated current density (?:of|was))\s+"
+                         rf"(?P<j>{d.NUM})\s*(?P<ju>{d.CURRENT_UNIT})\s+for\s+(?:the\s+)?(?P<sample>.{{1,110}}?)\s+"
+                         rf"and\s+(?P<j2>{d.NUM})\s*(?P<ju2>{d.CURRENT_UNIT})\s+for\s+(?:the\s+)?(?P<sample2>.{{1,110}}?)(?=,(?!\d)|\.(?!\d)|;|$)", re.I)
+        mpp = re.compile(r"\bcurrent density at (?:the )?MPP was\s+"
+                         rf"(?P<j>{d.NUM})\s*(?P<ju>{d.CURRENT_UNIT})\s+at a bias voltage of\s+"
+                         rf"(?P<v>{d.NUM})\s*(?P<vu>mV|V),?\s+corresponding to an?\s+(?:efficiency|effci iency) of\s+(?P<p>{d.NUM})\s*(?P<pu>%)", re.I)
+        seen = set()
+        for text, group in prose_windows(self.lines, max_lines=6):
+            for match in eqe.finditer(text):
+                association = []
+                for value, unit, sample in (("j", "ju", "sample"), ("j2", "ju2", "sample2")):
+                    label = match[sample]
+                    candidates = [(name, ident) for name, ident in self.devices.items() if re.search(
+                        r"(?<![\w.])" + re.escape(name) + r"(?!\w)", label, re.I)]
+                    if len(candidates) == 1:
+                        association.append((value, unit, candidates[0][1], sample))
+                cue = locate_prose_span(group, match.start(), min(match.start()+12, match.end()))
+                cohort = ("eqe", cue[0].page, tuple(cue[1].bbox)) if cue and len(association) > 1 else None
+                for value, unit, device, sample in association:
+                    label_ref = locate_prose_span(group, *match.span(sample))
+                    self.contextual_value(group, match, value, unit, "Jsc_EQE", device, seen, cohort, label_ref)
+            for match in mpp.finditer(text):
+                prefix = text[:match.start()]
+                candidates = {ident for name, ident in self.devices.items() if re.search(
+                    r"(?<![\w.])" + re.escape(name) + r"(?!\w)", prefix, re.I)}
+                device = next(iter(candidates)) if len(candidates) == 1 else None
+                for value, unit, metric in (("j","ju","Jmpp"),("v","vu","Vmpp"),("p","pu","stabilized_PCE")):
+                    self.contextual_value(group, match, value, unit, metric, device, seen)
+
+    def contextual_value(self, group, match, value, unit, metric, device, seen, cohort=None, label_ref=None):
+        observed = locate_prose_span(group, *match.span(value))
+        observed_unit = locate_prose_span(group, *match.span(unit))
+        if not observed or not observed_unit:
+            return
+        line, span = observed
+        ident = (metric, line.page, tuple(span.bbox))
+        if ident in seen:
+            return
+        seen.add(ident)
+        refs = [(self.ref(*observed, "value"), "text"), (self.ref(*observed_unit, "unit"), "text")]
+        if label_ref:
+            refs.append((self.ref(*label_ref, "sample_label"), "text"))
+        self.result(metric, VALUE.fullmatch(match[value]), line, span, match[unit], refs, device, None,
+                    "primary", extraction_method="pdf_prose_context", cohort=cohort)
 
     def grouped_table_rows(self):
         """Associate vertically centered sample labels with paired mean and record rows."""
@@ -875,6 +1029,27 @@ class Extraction:
                     edit(self.db,"measurement_result",result,{"deleted":1,
                          "note":"Исходный ноль — аргумент функции η(0)."},author="softx-parser")
 
+    def comparison_measurement(self, metric, match, unit, label):
+        if match is None or match["end"] or match["op"]:
+            return None
+        value, _ = d.normalize(metric, number(match["n"]), unit)
+        if value is None:
+            return None
+        variants = []
+        for result in rows(self.db, """SELECT DISTINCT r.device_id,r.measurement_id,d.device_label
+             FROM measurement_result r JOIN device d ON d.id=r.device_id
+             WHERE r.pdf_version_id=? AND r.metric_name=? AND r.normalized_value=?
+               AND r.result_origin='primary' AND r.extraction_method='geometry_table'
+               AND r.measurement_id IS NOT NULL AND r.deleted=0""", self.version, metric, value):
+            alias = result["device_label"].rsplit(" from ", 1)[-1]
+            if re.search(r"(?<!\w)" + re.escape(alias) + r"(?!\w)", label, re.I):
+                variants.append(result)
+                continue
+            stem = re.sub(r"[-–]\d+$", "", alias)
+            if stem != alias and re.search(r"(?<!\w)" + re.escape(stem) + r"(?!\w)", label, re.I):
+                variants.append(result)
+        return variants[0] if len(variants) == 1 else None
+
     def parse(self):
         self.retire_formula_arguments()
         row_labels = self.parse_row_labelled_tables()
@@ -984,9 +1159,15 @@ class Extraction:
                             label = next((cell for cell in line.cells[1:] if cell.bbox[2] < min(headers)-4), reference)
                 if origin=="cited":
                     cited=self.cited_publication(reference.text, numbered=True) if reference else self.cited_publication(label.text)
-                device = self.devices.get(label.text) if origin == "primary" else None
-                if not device and origin=="primary" and table and label is not reference and len(label.text)<46 and not VALUE.fullmatch(label.text) and not SCAN.fullmatch(label.text) and not re.search(r"[.!?]",label.text):
-                    device=self.device(label.text,label.text)
+                device = self.known_device(label.text) if origin == "primary" else None
+                if origin == "primary" and SCAN.fullmatch(label.text):
+                    matching = {self.known_device(dopant[0]) for dopant in fabrication.DOPANT.finditer(heading)} - {None}
+                    if len(matching) == 1:
+                        device = matching.pop()
+                if (not device and origin == "primary" and table and reference is None
+                        and self.is_device_label(label.text) and label.bbox[2] < min(headers)
+                        and not re.search(r"[!?]", label.text)):
+                    device = self.device(label.text, label.text, "cell")
                 used = False
                 columns=dict(subheaders)
                 for x,(header_line,header_cell,metric) in headers.items():
@@ -1037,8 +1218,8 @@ class Extraction:
                     metric_scan=scan or (scan_direction(inherited_scan))
                     if inherited_scan:
                         refs.append((self.ref(qualifier_line,qualifier,"condition","table_header",table),"table_header"))
-                    local_conditions={}
-                    for scan_cell in line.cells[1:]:
+                    local_conditions = dict(self.table_conditions.get((line.page, table), {}))
+                    for scan_cell in line.cells:
                         if SCAN.fullmatch(scan_cell.text):
                             refs.append((self.ref(line, scan_cell, "condition", "table_cell", table), "table_cell"))
                     for foot in self.lines:
@@ -1052,18 +1233,27 @@ class Extraction:
                                     local_conditions.update(self.conditions_for(foot))
                                     if not unit and foot_unit:
                                         unit=foot_unit.group()
-                    result_id = self.result(metric, match, line, cell, unit, refs, device, metric_scan, origin, cited, heading+" "+header_cell.text,local_conditions,row_aggregation,
-                                            numeric_override=scientific_cell_value(cell))
-                    if origin == "primary" and device is None:
+                    cohort = (line.page, table) if (line.page, table) in self.table_cohorts else None
+                    linked = self.comparison_measurement(metric, match, unit, label.text) if (
+                        device is None and reference and OWN_WORK.fullmatch(reference.text)) else None
+                    measured_device = linked["device_id"] if linked else device
+                    pair_is_summary = bool(alternate and id(line) in self.table_rows
+                                           and number(alternate[1]) >= number(match["n"]))
+                    row_kind = row_aggregation or ("mean" if pair_is_summary else None)
+                    result_id = self.result(metric, match, line, cell, unit, refs, measured_device, metric_scan, origin,
+                                            cited, heading+" "+header_cell.text, local_conditions, row_kind,
+                                            numeric_override=scientific_cell_value(cell), cohort=cohort,
+                                            linked_measurement=linked["measurement_id"] if linked else None)
+                    if origin == "primary" and measured_device is None:
                         ambiguous.append(result_id)
                     if alternate:
                         other=cell.part(match.end()+alternate.start(1),match.end()+alternate.end(1))
                         other_refs=[(self.ref(line,other,"value","table_cell",table),"table_cell"),*refs[1:]]
                         value_aggregation = "champion" if (
                             re.search(r"\b(?:champion|best|record)\b",heading,re.I)
-                            and re.search(r"\bparenthes(?:es|is)\b",heading,re.I)) else "unknown"
+                            and re.search(r"\bparenthes(?:es|is)\b",heading,re.I)) or pair_is_summary else "unknown"
                         other_id=self.result(metric,VALUE.fullmatch(other.text),line,other,unit,other_refs,device,
-                                             metric_scan,origin,cited,heading,local_conditions,value_aggregation)
+                                             metric_scan,origin,cited,heading,local_conditions,value_aggregation,cohort=cohort)
                         if origin == "primary" and device is None:
                             ambiguous.append(other_id)
                 if used:
@@ -1077,7 +1267,7 @@ class Extraction:
             table_right, reference_header = None, None
             span = line.span
             device_match = DEVICE.search(line.text)
-            explicit_device = self.devices.get(device_match[1]) if device_match else None
+            explicit_device = self.known_device(device_match[1]) if device_match else None
             if not explicit_device and len(self.devices) == 1 and "Образец без обозначения" in self.devices:
                 explicit_device = next(iter(self.devices.values()))
             for metric, match, descriptor_end in prose_metrics(line.text):
@@ -1108,6 +1298,7 @@ class Extraction:
                 if metric != "Eg" and not explicit_device and origin == "primary":
                     ambiguous.append(result_id)
         self.extra_prose()
+        self.contextual_experiments()
         for result_id in ambiguous:
             self.db.execute("UPDATE measurement_result SET candidate_measurement_ids=? WHERE id=? AND manual=0",
-                            (json.dumps(list(self.measurements)), result_id))
+                            (json.dumps(sorted(self.measurements)), result_id))

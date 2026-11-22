@@ -92,3 +92,19 @@ CREATE TABLE IF NOT EXISTS result_plot (
  result_id TEXT NOT NULL REFERENCES measurement_result(id), plot_id TEXT NOT NULL REFERENCES plot_dataset(id),
  PRIMARY KEY(result_id,plot_id)
 );
+
+CREATE TABLE IF NOT EXISTS measurement_device (
+ measurement_id TEXT NOT NULL REFERENCES measurement(id) ON DELETE CASCADE,
+ device_id TEXT NOT NULL REFERENCES device(id) ON DELETE CASCADE,
+ PRIMARY KEY (measurement_id, device_id)
+);
+CREATE TABLE IF NOT EXISTS measurement_source (
+ measurement_id TEXT NOT NULL REFERENCES measurement(id) ON DELETE CASCADE,
+ source_reference_id TEXT NOT NULL REFERENCES source_reference(id) ON DELETE CASCADE,
+ PRIMARY KEY (measurement_id, source_reference_id)
+);
+CREATE TABLE IF NOT EXISTS layer_source (
+ layer_id TEXT NOT NULL REFERENCES device_layer(id) ON DELETE CASCADE,
+ source_reference_id TEXT NOT NULL REFERENCES source_reference(id) ON DELETE CASCADE,
+ PRIMARY KEY (layer_id, source_reference_id)
+);

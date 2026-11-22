@@ -26,7 +26,7 @@ from .pdf import draw, page_file, prepare, read_lines
 from .publications import delete_publication
 from .qwen_review import approve_qwen_evidence
 from .science import recheck, science
-from .store import DATA, data_dir, db, edit, encode, initialize, insert, key, one, rows, workspace
+from .store import DATA, data_dir, db, device_measurement, edit, encode, initialize, insert, key, one, rows, workspace
 from .vision import vision_suggestions
 
 app = Flask(__name__, static_folder=None)
@@ -365,7 +365,24 @@ def data_entities(name):
             record["publication_code"]=version["filename"] if version else None
             record["pdf_version_id"]=version["id"] if version else None
         columns=["publication_code"]+[r["name"] for r in rows(connection,f"PRAGMA table_info({table})")]
+        if name == "measurements":
+            records = include_measurement_devices(connection, records)
+            columns = ["device_ids" if column == "device_id" else column for column in columns]
     return jsonify(records=records,columns=columns)
+
+
+def include_measurement_devices(connection, records):
+    members = {}
+    for link in rows(connection, "SELECT measurement_id,device_id FROM measurement_device ORDER BY device_id"):
+        members.setdefault(link["measurement_id"], []).append(link["device_id"])
+    return [dict(row, device_ids=members.get(row["id"], [row["device_id"]])) for row in records]
+
+
+def with_source_ids(records, source_links, entity_key):
+    refs = {}
+    for link in source_links:
+        refs.setdefault(link[entity_key], []).append(link["source_reference_id"])
+    return [dict(record, source_ids=refs.get(record["id"], [])) for record in records]
 
 
 @app.get("/api/pdf/<version>")
@@ -375,11 +392,17 @@ def detail(version):
         if not f:
             abort(404)
         pub = f["publication_id"]
+        measurements = include_measurement_devices(connection, rows(connection,
+            "SELECT q.* FROM measurement q JOIN device d ON d.id=q.device_id WHERE d.publication_id=?", pub))
+        measurements = with_source_ids(measurements, rows(connection, """SELECT l.* FROM measurement_source l
+            JOIN source_reference s ON s.id=l.source_reference_id WHERE s.pdf_version_id=?""", version), "measurement_id")
+        layers = with_source_ids(rows(connection, """SELECT l.* FROM device_layer l JOIN device d ON d.id=l.device_id
+            WHERE d.publication_id=?""", pub), rows(connection, """SELECT l.* FROM layer_source l
+            JOIN source_reference s ON s.id=l.source_reference_id WHERE s.pdf_version_id=?""", version), "layer_id")
         return jsonify(pdf=f, publication=one(connection,"SELECT * FROM publication WHERE id=?",pub),
                        materials=rows(connection,"SELECT * FROM material WHERE publication_id=?",pub),
                        devices=rows(connection,"SELECT * FROM device WHERE publication_id=?",pub),
-                       measurements=rows(connection,"SELECT q.* FROM measurement q JOIN device d ON d.id=q.device_id WHERE d.publication_id=?",pub),
-                       layers=rows(connection,"SELECT l.* FROM device_layer l JOIN device d ON d.id=l.device_id WHERE d.publication_id=?",pub),
+                       measurements=measurements, layers=layers,
                        results=results(connection, version),
                        sources=rows(connection,"SELECT * FROM source_reference WHERE pdf_version_id=?",version),
                        links=rows(connection,"SELECT l.* FROM result_source l JOIN active_pv_result r ON r.id=l.result_id WHERE r.pdf_version_id=?",version),
@@ -443,7 +466,7 @@ def add_result(version):
         if any(val is not None and not isinstance(val,str) for val in (device,measurement)):
             abort(400,"Некорректная привязка")
         bound = one(connection,"SELECT material_id FROM device WHERE id=? AND publication_id=?",device,pub) if device else None
-        if device and not bound or measurement and not one(connection,"SELECT id FROM measurement WHERE id=? AND device_id=?",measurement,device):
+        if device and not bound or measurement and not device_measurement(connection,measurement,device):
             abort(400,"Прибор и измерение должны принадлежать публикации")
         quote = body.get("quote") or literal
         if not isinstance(quote,str) or len(quote)>1500:
@@ -556,7 +579,7 @@ def update_result(ident):
                 abort(400, "Прибор должен принадлежать публикации")
             changes["material_id"] = device["material_id"]
         if updated["measurement_id"]:
-            measurement = one(connection,"SELECT * FROM measurement WHERE id=? AND device_id=?",updated["measurement_id"],updated["device_id"])
+            measurement = device_measurement(connection,updated["measurement_id"],updated["device_id"])
             if not measurement:
                 abort(400, "Измерение должно принадлежать выбранному прибору")
         scalar = not updated["inequality_op"] and updated["range_min"] is None and updated["range_max"] is None
